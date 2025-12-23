@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 02 | 折射震測學與數位實作</title>
+    
+    <!-- 外部庫：Tailwind CSS, MathJax, AOS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .accent-gold { color: #fbbf24; }
+        .bg-accent-gold { background-color: #fbbf24; }
+        .border-seismic { border-left: 4px solid #fbbf24; }
+        .gradient-text {
+            background: linear-gradient(90deg, #fbbf24, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-6 py-4 glass-card flex justify-between items-center">
+        <div class="text-xl font-bold gradient-text italic">GEOPHYSICS @ 0917</div>
+        <a href="index.html" class="hover:accent-gold transition-colors">← Back to Index</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="h-[60vh] flex flex-col justify-center items-center text-center pt-20">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-4" data-aos="zoom-in">波的幾何解析</h1>
+        <p class="text-xl text-slate-400 max-w-2xl px-4" data-aos="fade-up" data-aos-delay="200">
+            探討臨界折射的走時奧秘，並透過 ObsPy 與 GitHub 實現地球物理資料的數位化工作流。
+        </p>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- 課程摘要卡片 -->
+        <section class="mb-20" data-aos="fade-up">
+            <div class="glass-card p-8 rounded-3xl border-seismic">
+                <h2 class="text-3xl font-bold mb-6 flex items-center">
+                    <span class="bg-accent-gold text-slate-900 px-3 py-1 rounded-lg mr-4">Summary</span>
+                    本週學習核心
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold accent-gold mb-3">震測學概論</h3>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2">
+                            <li>折射震測法 (Seismic Refraction)：專注於臨界角路徑。</li>
+                            <li>反射震測法 (Seismic Reflection)：探討層狀介面的回彈。</li>
+                            <li>走時曲線 (T-X Curve) 的物理意義。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold accent-gold mb-3">數位工具應用</h3>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2">
+                            <li>使用 GitHub Codespace 建立雲端開發環境。</li>
+                            <li>ObsPy 抓取 IRIS FDSN 地震波觀測資料。</li>
+                            <li>Pull Request (PR) 協作流程練習。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HW4: 公式推導區 -->
+        <section class="mb-20">
+            <h2 class="text-4xl font-bold mb-10 text-center" data-aos="fade-down">幾何與代數的交響曲</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- 推導內容 -->
+                <div class="space-y-6">
+                    <div class="glass-card p-6 rounded-2xl" data-aos="fade-right">
+                        <h3 class="text-xl font-bold accent-gold mb-4">1. 臨界折射波走時公式</h3>
+                        <p class="text-slate-300 mb-4">根據司乃耳定律與幾何路徑，總走時 \(T_x\) 為：</p>
+                        <div class="bg-slate-900 p-4 rounded-xl text-center text-lg">
+                            \[ T_x = \frac{x}{V_2} + \frac{2h\cos\theta_c}{V_1} \]
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl" data-aos="fade-right" data-aos-delay="200">
+                        <h3 class="text-xl font-bold accent-gold mb-4">2. Crossover Distance (Xcr)</h3>
+                        <p class="text-slate-300 mb-4">定義：折射波初至時間等於直達波時間的路徑點距離。當 \(X = X_{cr}\) 時：</p>
+                        <div class="bg-slate-900 p-4 rounded-xl text-center">
+                            \[ \frac{X_{cr}}{V_1} = \frac{X_{cr}}{V_2} + \frac{2h\cos\theta_c}{V_1} \]
+                            <p class="text-sm mt-4 text-slate-500">整理後可得：</p>
+                            \[ X_{cr} = 2h \sqrt{\frac{V_2+V_1}{V_2-V_1}} \]
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 手寫成果圖 -->
+                <div class="grid grid-cols-1 gap-4" data-aos="fade-left">
+                    <div class="group relative overflow-hidden rounded-2xl border-2 border-slate-700">
+                        <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/HW4_1.jpg" alt="HW4 Derivation 1" class="w-full grayscale hover:grayscale-0 transition duration-500">
+                        <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-slate-900 text-sm">手寫推導：路徑幾何關係</div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-2xl border-2 border-slate-700">
+                        <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/HW4_2.jpg" alt="HW4 Derivation 2" class="w-full grayscale hover:grayscale-0 transition duration-500">
+                        <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-slate-900 text-sm">手寫推導：Xcr 最終代數整理</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HW3: 數位實踐區 -->
+        <section class="mb-20 py-16 bg-slate-900/50 rounded-[3rem] px-8">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl font-bold mb-12 text-center gradient-text">雲端協作與程式實作</h2>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div data-aos="fade-up">
+                        <h3 class="text-2xl font-bold mb-6 italic">ObsPy 資料抓取實作</h3>
+                        <div class="glass-card p-6 rounded-2xl font-mono text-sm overflow-hidden">
+                            <p class="text-blue-400"># 參數設定</p>
+                            <p>client = Client(<span class="text-yellow-500">"IRIS"</span>)</p>
+                            <p>starttime = UTCDateTime(<span class="text-yellow-500">"2025-10-07T23:52:12"</span>)</p>
+                            <p>st = client.get_waveforms(<span class="text-yellow-500">"TW", "NACB", "", "BHZ", ...</span>)</p>
+                            <p class="text-blue-400 mt-4"># 成果展示</p>
+                            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/HW3_result.png" alt="ObsPy Waveform" class="mt-4 rounded-lg border border-slate-600">
+                        </div>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="text-2xl font-bold mb-6 italic">GitHub Workflow</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-accent-gold text-slate-900 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div>
+                                    <h4 class="font-bold">Fork & Codespace</h4>
+                                    <p class="text-slate-400 text-sm">建立個人副本並啟動雲端 VS Code 環境。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="bg-accent-gold text-slate-900 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
+                                <div>
+                                    <h4 class="font-bold">Git All Script</h4>
+                                    <p class="text-slate-400 text-sm">執行 <code>sh git_all.sh</code> 快速完成 Add, Commit 與 Push。</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="bg-accent-gold text-slate-900 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
+                                <div>
+                                    <h4 class="font-bold">Pull Request (PR)</h4>
+                                    <p class="text-slate-400 text-sm">提交變更至老師的 Repository 等待批改。</p>
+                                </div>
+                            </div>
+                            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/GitHub_PR.png" alt="PR Evidence" class="mt-6 rounded-xl shadow-2xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HW2: Blogger 展示區 -->
+        <section class="mb-20 text-center" data-aos="zoom-in">
+            <div class="glass-card p-12 rounded-[2rem] relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10">
+                    <i class="fas fa-quote-right text-9xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-6">作業二：教授視角的創意網頁</h2>
+                <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                    利用 AI 模擬大學教授語氣，設計一個引發學生學習興趣的靜態 HTML。
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://rrrnnn0518.blogspot.com/2025/09/blog-post_23.html" target="_blank" class="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-accent-gold transition duration-300">
+                        View on Blogger
+                    </a>
+                    <div class="w-full mt-6">
+                        <span class="text-xs text-slate-500 uppercase tracking-widest">Prompt Used</span>
+                        <p class="text-sm italic text-slate-400 mt-2">"你是一個地球物理大學教授，你想要讓同學知悉上課內容，並對課程產生期待..."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 border-t border-slate-800 text-center text-slate-500 text-sm">
+        <p>Created by U11310028 | 地球物理課程學習成果</p>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>
