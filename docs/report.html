@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>折射震測實驗報告</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --panel: #1e1e1e;
+            --accent: #ffcc00;
+            --cyan: #00e5ff;
+            --text: #ececec;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        nav { background: rgba(0,0,0,0.8); padding: 15px 30px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; }
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source1.png?raw=true');
+            background-size: cover; background-position: center;
+            height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+        }
+        .hero-section h1 { font-size: 3.5rem; color: var(--accent); margin: 0; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+
+        .content-wrap { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+
+        .glass-card {
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid #333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+
+        .info-tag { color: var(--cyan); font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px; display: block; }
+
+        .data-img { width: 100%; border-radius: 10px; border: 1px solid var(--accent); transition: transform 0.5s; }
+        .data-img:hover { transform: scale(1.02); }
+
+        .stat-box {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px;
+        }
+        .stat-item { background: #111; padding: 20px; border-radius: 10px; text-align: center; border-bottom: 3px solid var(--accent); }
+        .stat-item .val { font-size: 1.5rem; font-weight: bold; color: var(--accent); display: block; }
+        .stat-item .lbl { font-size: 0.8rem; color: #888; }
+
+        .quote-box {
+            border-left: 5px solid var(--cyan);
+            background: rgba(0, 229, 255, 0.05);
+            padding: 30px;
+            border-radius: 0 15px 15px 0;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 850px) { .grid-2 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">← 返回主課程表</a>
+</nav>
+
+<div class="hero-section">
+    <span class="info-tag" style="color:white">校園實地實驗報告</span>
+    <h1>折射震測實驗</h1>
+</div>
+
+<div class="content-wrap">
+    <!-- 實驗簡介 -->
+    <div class="glass-card grid-2">
+        <div>
+            <span class="info-tag">實驗核心</span>
+            <h2>數據採集與分析</h2>
+            <p>我們利用地震波在不同地層交界面的折射現象，推測地下地層的波速與厚度分布。透過 24 個 Geophone 接收鐵鎚敲擊產生的震波訊號，並分析「走時曲線」中的轉折點。</p>
+            <div class="stat-box">
+                <div class="stat-item"><span class="val">~430</span><span class="lbl">V1 (m/s)</span></div>
+                <div class="stat-item"><span class="val">~1037</span><span class="lbl">V2 (m/s)</span></div>
+                <div class="stat-item"><span class="val">3.5-4.5</span><span class="lbl">深度 (m)</span></div>
+            </div>
+        </div>
+        <div>
+            <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source2.png?raw=true" class="data-img" alt="分析圖表">
+        </div>
+    </div>
+
+    <!-- 個人心得 - 林靖融 -->
+    <div class="glass-card">
+        <span class="info-tag">組員回饋</span>
+        <h2>實驗洞察：林靖融</h2>
+        <div class="quote-box">
+            「這次的震測實驗是我第一次將課本上的理論付諸實踐。在馬路邊進行實驗時，我發現現實環境中的干擾（如車輛震動）對接收器的影響遠比想像中大。這種『現場變數』是單純看公式無法體會的。
+            <br><br>
+            此外，看到數據從雜亂的波形變成精確的地層深度圖，讓我對地球物理的精密性感到驚嘆。老師介紹的小型接收器串接功能，也讓我思考到儀器人性化與工程實踐的關聯，這對我未來的學習極具啟發。」
+        </div>
+    </div>
+</div>
+
+<footer style="text-align:center; padding:50px; color:#555">
+    <p>地球物理實驗小組 | 2024</p>
+</footer>
+
+</body>
+</html>
