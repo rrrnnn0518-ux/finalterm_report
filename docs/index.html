@@ -10,6 +10,7 @@
             --card-bg: #1a1a1a;
             --accent: #fbbf24; /* 震測波金色 */
             --tech: #22d3ee;   /* 資料科學藍 */
+            --map-green: #10b981; /* PyGMT 地圖綠 */
             --text: #e2e8f0;
             --sub-text: #94a3b8;
         }
@@ -31,7 +32,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80');
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80');
             background-size: cover;
             background-position: center;
             border-bottom: 3px solid var(--accent);
@@ -39,18 +40,19 @@
         }
 
         header h1 { 
-            font-size: 3rem; 
+            font-size: 3.2rem; 
             margin: 0; 
             letter-spacing: 4px; 
             color: var(--accent);
             text-transform: uppercase;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
         header p { 
             font-size: 1.2rem; 
             color: var(--sub-text); 
             margin-top: 10px; 
-            max-width: 600px;
+            max-width: 650px;
             padding: 0 20px;
         }
 
@@ -84,6 +86,9 @@
             background: #262626;
             box-shadow: 0 15px 40px rgba(251, 191, 36, 0.1);
         }
+
+        /* W09 特殊綠色邊框 */
+        .card-w09:hover { border-left-color: var(--map-green); }
 
         .week-num { 
             min-width: 80px; 
@@ -131,6 +136,7 @@
 
         .b-geo { background: rgba(251, 191, 36, 0.1); color: var(--accent); border: 1px solid var(--accent); }
         .b-tech { background: rgba(34, 211, 238, 0.1); color: var(--tech); border: 1px solid var(--tech); }
+        .b-map { background: rgba(16, 185, 129, 0.1); color: var(--map-green); border: 1px solid var(--map-green); }
 
         .action-btn {
             background: var(--accent);
@@ -144,7 +150,7 @@
             transition: 0.3s;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
             text-align: center;
-            min-width: 140px;
+            min-width: 150px;
         }
 
         .action-btn:hover { 
@@ -266,8 +272,24 @@
             link: "week07.html", 
             btnText: "啟動 AI 助手 →" 
         },
-        { week: "08", date: "10/29", title: "期中成果驗收", geo: "理論與計算能力檢測", tech: "Midterm Examination", link: "" },
-        { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "全球構造理論、地震波傳遞", tech: "pygmt 震央圖繪製", link: "" },
+        { 
+            week: "08", 
+            date: "10/29", 
+            title: "期中成果驗收", 
+            geo: "理論與計算能力檢測", 
+            tech: "Midterm Examination", 
+            link: "", 
+            btnText: "" 
+        },
+        { 
+            week: "09", 
+            date: "11/05", 
+            title: "板塊構造與科學繪圖", 
+            geo: "板塊邊界種類、地形景觀成因", 
+            tech: "PyGMT 地圖視覺化、GitHub 專案管理", 
+            link: "week09.html", 
+            btnText: "查看地圖成果 →" 
+        },
         { week: "10", date: "11/12", title: "板塊構造與地震 (II)", geo: "地震機制與板塊動力學", tech: "pygmt 視覺化進階", link: "" },
         { week: "11", date: "11/19", title: "板塊構造與地磁 (I)", geo: "地磁場原理、海床擴張實證", tech: "obspy 震譜訊號處理", link: "" },
         { week: "12", date: "11/26", title: "板塊構造與地磁 (II)", geo: "古地磁學與磁偏角觀測", tech: "數位濾波技術實作", link: "" },
@@ -284,7 +306,7 @@
     
     courseData.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = item.week === "09" ? 'card card-w09' : 'card';
         
         let buttonHTML = "";
         if (item.link && item.link !== "") {
@@ -292,6 +314,9 @@
         } else {
             buttonHTML = `<span class="action-btn btn-disabled">內容整理中...</span>`;
         }
+
+        // 為 W09 設置特殊的技術標籤樣式
+        const techBadgeClass = item.week === "09" ? "badge b-map" : "badge b-tech";
         
         card.innerHTML = `
             <div class="week-num">W${item.week}</div>
@@ -300,7 +325,7 @@
                 <div class="title">${item.title}</div>
                 <div class="details">
                     <div><span class="badge b-geo">地球物理知識</span><br>${item.geo}</div>
-                    <div><span class="badge b-tech">資料處理技能</span><br>${item.tech}</div>
+                    <div><span class="${techBadgeClass}">資料處理技能</span><br>${item.tech}</div>
                 </div>
             </div>
             ${buttonHTML}
