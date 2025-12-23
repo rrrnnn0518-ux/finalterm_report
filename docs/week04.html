@@ -3,267 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 04 | 地震層析與深度成像專題</title>
-    
-    <!-- 外部庫：Tailwind CSS, AOS 動畫, FontAwesome, Canvas-confetti (用於噴發特效) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
+    <title>W04 地球物理專題演講 | 層析成像研究</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;900&family=JetBrains+Mono&display=swap');
-        
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent: #fbbf24; /* 震測金色 */
+            --tech: #22d3ee;   /* 科技藍 */
+            --text: #e2e8f0;
+            --sub-text: #94a3b8;
+        }
+
         body {
-            background-color: #000814;
-            color: #e0e2e5;
-            font-family: 'Noto Sans TC', sans-serif;
-            scroll-behavior: smooth;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        .glass-dark {
-            background: rgba(0, 29, 61, 0.6);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        nav {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .text-gradient-fire {
-            background: linear-gradient(to right, #ffc300, #ff4d00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .header-section {
+            border-left: 4px solid var(--tech);
+            padding-left: 20px;
+            margin-bottom: 40px;
         }
 
-        /* 火山互動區樣式 */
-        #volcano-area {
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .week-tag { background: var(--tech); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+
+        /* --- 核心互動特效：地震層析掃描器 --- */
+        .seismic-tomography-box {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 16px;
+            margin: 30px 0;
             position: relative;
-            background: radial-gradient(circle at bottom, #1d3557 0%, #000814 80%);
             overflow: hidden;
-            cursor: pointer;
+            border: 1px solid #334155;
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.1);
         }
 
-        .volcano-mountain {
+        /* 網格背景 */
+        .grid-bg {
             position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 150px;
-            background: #111;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            z-index: 10;
+            width: 100%; height: 100%;
+            background-image: linear-gradient(#1e293b 1px, transparent 1px),
+                              linear-gradient(90deg, #1e293b 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
         }
 
-        .crater-glow {
+        /* 掃描線動畫 */
+        .scan-line {
             position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+            box-shadow: 0 0 15px var(--accent);
+            top: 0;
+            animation: scan 4s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        /* 震測波形線條容器 */
+        .waves-container {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 20px 0;
+        }
+
+        .seismic-trace {
+            width: 100%;
+            height: 2px;
+            background: rgba(34, 211, 238, 0.2);
+            position: relative;
+        }
+
+        .wave-path {
+            position: absolute;
+            top: -10px;
+            width: 100%;
             height: 20px;
-            background: #ff4d00;
-            filter: blur(10px);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+            stroke: var(--tech);
+            stroke-width: 1.5;
+            fill: none;
+            opacity: 0.8;
         }
 
-        @keyframes pulse {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-            50% { transform: translateX(-50%) scale(1.5); opacity: 1; }
-            100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+        /* --- 內容卡片樣式 --- */
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
         }
 
-        .formula-card {
-            border-left: 4px solid #ffc300;
-            background: rgba(255, 195, 0, 0.05);
+        h2 { color: var(--accent); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
+        .concept-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 5px;
+            border: 1px solid var(--accent);
         }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <!-- 導覽列 -->
-    <nav class="fixed w-full z-50 px-8 py-4 glass-dark flex justify-between items-center border-b border-white/10">
-        <div class="text-xl font-black tracking-widest text-white">
-            <span class="text-yellow-400">WEEK</span> 04 <span class="text-orange-500">TOMOGRAPHY</span>
+<nav>
+    <a href="index.html">← 返回成果展主頁</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 專題演講筆記</div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <span class="week-tag">WEEK 04</span>
+        <h1>層析成像與阿蘇火山研究</h1>
+        <p style="color: var(--sub-text);">演講者：甘禮有 博士 (Dr. Gan Liyou)</p>
+    </div>
+
+    <!-- 震測層析特效區塊 -->
+    <div class="seismic-tomography-box">
+        <div class="grid-bg"></div>
+        <div class="scan-line"></div>
+        <div class="waves-container" id="waveContainer">
+            <!-- 由 JS 產生動態震測波 -->
         </div>
-        <a href="index.html" class="text-xs font-bold hover:text-yellow-400 transition-all uppercase">← Back to Journey</a>
-    </nav>
-
-    <!-- Header Section -->
-    <header class="h-[70vh] flex flex-col justify-center items-center text-center px-4 relative">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-30"></div>
-        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter" data-aos="zoom-in">
-            地球的 <span class="text-gradient-fire">層析掃描儀</span>
-        </h1>
-        <p class="text-xl text-slate-400 max-w-2xl font-light" data-aos="fade-up" data-aos-delay="200">
-            本週聚焦：甘禮有博士專題演講紀錄、震測數據深度分析與數位協作進化。
-        </p>
-        <div class="mt-10 animate-bounce text-yellow-400">
-            <i class="fas fa-chevron-down text-2xl"></i>
+        <div style="position: absolute; bottom: 10px; right: 20px; color: var(--tech); font-family: monospace; font-size: 0.7rem; letter-spacing: 2px;">
+            SYSTEM: TOMOGRAPHY SCANNING...
         </div>
-    </header>
+    </div>
 
-    <main class="container mx-auto px-6 max-w-6xl pb-20">
+    <div class="content-card">
+        <h2>📌 演講核心摘要</h2>
+        <p>甘博士本次分享的主題圍繞在<b>地震層析成像 (Seismic Tomography)</b> 技術的理論應用，並以日本著名的阿蘇火山 (Aso Volcano) 為例，展示如何利用地震波速度結構來解構地底的岩漿庫分佈。</p>
+        
+        <div style="margin-top: 20px;">
+            <span class="concept-tag">正演問題 (Forward Problem)</span>
+            <span class="concept-tag">逆推問題 (Inverse Problem)</span>
+            <span class="concept-tag">波速異常分析</span>
+            <span class="concept-tag">岩漿路徑追蹤</span>
+        </div>
+    </div>
 
-        <!-- 1. 甘禮有博士演講精華 -->
-        <section id="lecture" class="mb-32">
-            <div class="flex items-center gap-4 mb-12">
-                <div class="h-12 w-2 bg-orange-600"></div>
-                <div>
-                    <h2 class="text-4xl font-bold">甘禮有博士：遠震全波形逆推</h2>
-                    <p class="text-slate-500 italic">Lithospheric Seismic Imaging Using Teleseismic FWI</p>
-                </div>
-            </div>
+    <div class="content-card">
+        <h2>🧠 重點筆記與思考</h2>
+        <p><b>1. 地底的「數位斷層掃描」：</b></p>
+        <p>層析成像的原理類似醫學用的 CT Scan，透過佈署在不同位置的接收器，紀錄地震波穿過岩層的時間差。透過計算不同路徑的「走時殘差」，我們可以反推出地底哪些位置波速較慢（可能存在高溫岩漿或流體）。</p>
+        
+        <p><b>2. 數學邏輯：</b></p>
+        <ul>
+            <li><b>正演：</b>給定一個模型，計算震波該怎麼跑。</li>
+            <li><b>逆推：</b>拿觀測到的結果，去反推地底模型長什麼樣子。</li>
+        </ul>
 
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- 心得摘要一：淺顯易懂的邏輯 -->
-                <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up">
-                    <i class="fas fa-lightbulb text-3xl text-yellow-400 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">深入淺出的解讀</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        演講最令人印象深刻的是博士將複雜的「地震層析成像」比喻為生活常識。刻意跳過艱澀專有名詞，而是鎖定關鍵原理，讓即便對地物知之甚少的學生也能大致理解地下結構的尺度觀念。
-                    </p>
-                </div>
+        <p><b>3. 阿蘇火山應用：</b></p>
+        <p>透過層析成像，研究團隊精確標定出了阿蘇火山下方的低速帶，這為預測火山活動提供了重要的地質物理證據。</p>
+    </div>
 
-                <!-- 心得摘要二：核心原理 F=ma -->
-                <div class="glass-dark p-8 rounded-3xl border-t-4 border-orange-500" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fas fa-atom text-3xl text-orange-500 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">物理核心：F = ma</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        博士強調所有的正演與逆推問題，其靈魂皆源自「牛頓第二運動定律」。在連續體空間中轉化為應力與位移的數學推斷，這是將理論化繁為簡的極致展現。
-                    </p>
-                </div>
+    <div class="content-card" style="border-top: 4px solid var(--accent);">
+        <h2>💡 學習感悟</h2>
+        <p>這次演講讓我認識到「層析成像」不僅是純粹的數學模型，更是我們探測地球內部的最強大「探針」。博士分享的研究成果展示了如何將枯燥的數位信號轉化為生動的地底結構圖，這對於我們理解自然災害的根源具有重大意義。</p>
+    </div>
 
-                <!-- 心得摘要三：留學啟發 -->
-                <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="400">
-                    <i class="fas fa-globe-americas text-3xl text-cyan-400 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">國際視野與啟發</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        博士分享的留學經歷與實習建議點燃了對國外實驗室的興趣。透過投遞資歷進入自由研發環境的途徑，為未來的學術職涯打開了全新的想像空間。
-                    </p>
-                </div>
-            </div>
-        </section>
+</div>
 
-        <!-- 2. 互動互動：火山噴發與流體辨識 (阿蘇火山專題) -->
-        <section class="mb-32">
-            <h2 class="text-3xl font-bold text-center mb-12">阿蘇火山：超臨界流體辨識模擬</h2>
-            <div id="volcano-area" class="h-[400px] rounded-[3rem] shadow-2xl flex flex-col items-center justify-center p-10" data-aos="zoom-in" onclick="eruptVolcano()">
-                <div class="volcano-mountain"></div>
-                <div class="crater-glow"></div>
-                
-                <div class="relative z-20 text-center">
-                    <h4 class="text-2xl font-black text-white mb-4">點擊火山進行觀測實驗</h4>
-                    <p class="text-yellow-400 font-mono text-sm">[ STATUS: MONITORING MAGMA RESERVOIR ]</p>
-                </div>
-                
-                <div class="absolute top-10 right-10 glass-dark p-4 rounded-2xl text-xs max-w-[200px]">
-                    <p class="text-orange-400 font-bold mb-2">博士研究點：</p>
-                    從層析影像中辨識超臨界流體與減壓相變作用，分析地震與火山噴發的關聯。
-                </div>
-            </div>
-        </section>
+<footer>
+    <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
+</footer>
 
-        <!-- 3. 理論核心：正演問題與逆推問題 (Forward vs Inverse) -->
-        <section class="mb-32">
-            <div class="flex items-center gap-4 mb-12">
-                <div class="h-12 w-2 bg-yellow-500"></div>
-                <h2 class="text-4xl font-bold">層析演算法的邏輯架構</h2>
-            </div>
+<script>
+    // 生成動態震測波形的簡易腳本
+    const container = document.getElementById('waveContainer');
+    const lineCount = 6; // 顯示 6 條測站線
 
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-6" data-aos="fade-right">
-                    <div class="formula-card p-6 rounded-2xl">
-                        <h4 class="font-black text-yellow-400 mb-2">FORWARD PROBLEM 正演問題</h4>
-                        <p class="text-sm text-slate-300">給定「模型（地下構造）」，利用物理定律推算出「預測資料（波形、到時）」。這是模擬地震波如何傳遞的過程。</p>
-                        <code class="block mt-4 text-cyan-400 font-mono">Model → (Physics: F=ma) → Data</code>
-                    </div>
-                    <div class="formula-card p-6 rounded-2xl border-orange-500 bg-orange-500/5">
-                        <h4 class="font-black text-orange-500 mb-2">INVERSE PROBLEM 逆推問題</h4>
-                        <p class="text-sm text-slate-300">從「觀測資料（地震紀錄）」反過來推求「模型參數」。這是一個「病態問題」，因為可能有多種模型都能解釋同一組資料。</p>
-                        <code class="block mt-4 text-orange-400 font-mono">Data → (Optimization) → Model</code>
-                    </div>
-                </div>
+    for (let i = 0; i < lineCount; i++) {
+        const trace = document.createElement('div');
+        trace.className = 'seismic-trace';
+        
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("class", "wave-path");
+        svg.setAttribute("viewBox", "0 0 800 20");
+        
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        svg.appendChild(path);
+        trace.appendChild(svg);
+        container.appendChild(trace);
 
-                <div class="glass-dark p-10 rounded-[2.5rem] flex items-center justify-center border-dashed border-2 border-slate-700" data-aos="fade-left">
-                    <div class="text-center">
-                        <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Challenge of FWI</p>
-                        <h3 class="text-2xl font-bold text-gradient-fire mb-6">全波形逆推 (FWI) 的挑戰</h3>
-                        <ul class="text-left text-sm space-y-3 text-slate-400">
-                            <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>Cycle-skipping (週期跳躍) 偽影</li>
-                            <li><i class="fas fa-microchip text-orange-500 mr-2"></i>耗費巨大的計算資源 (需要多卡 GPU)</li>
-                            <li><i class="fas fa-chart-line text-orange-500 mr-2"></i>模型Covariance 矩陣的定義難度</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. 其他成果：Prompt 與 GitHub -->
-        <section class="grid md:grid-cols-2 gap-8">
-            <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up">
-                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <i class="fab fa-blogger text-orange-500"></i> Prompt 分享
-                </h3>
-                <p class="text-sm text-slate-400 mb-6">本週深入探討如何下達優質 Prompt 來處理地物數據，並將成果記錄於 Google Blogger。</p>
-                <a href="https://oceanicdayi.blogspot.com/2025/09/blog-post_30.html" target="_blank" class="inline-block px-6 py-3 bg-white text-black rounded-full font-bold text-sm hover:bg-yellow-400 transition-all">前往閱讀筆記</a>
-            </div>
-
-            <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <i class="fab fa-github text-white"></i> GitHub 實務
-                </h3>
-                <p class="text-sm text-slate-400 mb-6">持續深化作業三的 GitHub 操作，包括分支管理與 Pull Request 協作細節。</p>
-                <a href="#" class="inline-block px-6 py-3 bg-slate-800 text-white rounded-full font-bold text-sm hover:bg-slate-700 transition-all">查看 Repo 更新</a>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="py-20 border-t border-white/5 text-center">
-        <p class="text-slate-600 text-xs">U11310028 | 地球物理課程學習成果展</p>
-        <p class="text-slate-700 text-[10px] mt-2 uppercase tracking-widest">Special thanks to Dr. Li-Yu Kan</p>
-    </footer>
-
-    <script>
-        AOS.init();
-
-        function eruptVolcano() {
-            // 火山噴發特效
-            const duration = 2 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
+        // 建立動畫函數
+        function updateWave() {
+            let d = "M 0 10";
+            for (let x = 0; x <= 800; x += 10) {
+                // 模擬隨機微震數據，中間段落有較大震幅
+                let noise = (Math.random() - 0.5) * 5;
+                let burst = (x > 300 && x < 500) ? (Math.random() - 0.5) * 15 : 0;
+                d += ` L ${x} ${10 + noise + burst}`;
             }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
-                const particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { 
-                    particleCount, 
-                    origin: { x: 0.5, y: 0.65 },
-                    colors: ['#ff0000', '#ff4d00', '#ffc300', '#333'],
-                    gravity: 1.5,
-                    scalar: 0.8
-                }));
-            }, 250);
-
-            // 觸發文字更新
-            const info = document.querySelector('#volcano-area h4');
-            info.innerText = "ERUPTION DETECTED!";
-            info.style.color = "#ff4d00";
-            setTimeout(() => {
-                info.innerText = "點擊火山進行觀測實驗";
-                info.style.color = "#ffffff";
-            }, 3000);
+            path.setAttribute("d", d);
+            setTimeout(() => requestAnimationFrame(updateWave), 100 + Math.random() * 200);
         }
-    </script>
+        updateWave();
+    }
+</script>
+
 </body>
 </html>
