@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W07 重力探勘 (II) 與 AI 助手建置 | 地球物理學筆記</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent: #fbbf24; /* 震測金色 */
+            --tech: #22d3ee;   /* 科技藍 */
+            --notion: #ffffff; /* Notion 白 */
+            --text: #e2e8f0;
+            --sub-text: #94a3b8;
+        }
 
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        nav {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .header-section {
+            border-left: 4px solid var(--tech);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .week-tag { background: var(--tech); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* 工作流視覺化展示 */
+        .workflow-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #000;
+            padding: 40px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .node {
+            background: #262626;
+            border: 2px solid #334155;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 140px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .node:hover { border-color: var(--tech); transform: translateY(-5px); }
+
+        .node i { display: block; font-size: 1.5rem; margin-bottom: 8px; }
+
+        .arrow { color: var(--sub-text); font-size: 1.5rem; }
+
+        /* API 標籤樣式 */
+        .api-tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--tech);
+            border: 1px solid var(--tech);
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .demo-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--tech), #0ea5e9);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4);
+        }
+
+        .demo-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .midterm-box {
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px dashed var(--accent);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .workflow-visual { flex-direction: column; }
+            .arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">← 返回課程總覽</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 2024 地球物理學成果</div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <span class="week-tag">WEEK 07</span>
+        <h1>AI 賦能：地球物理小助手建置</h1>
+        <p style="color: var(--sub-text);">從重力理論到 Dify 工作流自動化</p>
+    </div>
+
+    <!-- 期中說明區 -->
+    <div class="content-card midterm-box">
+        <h2>📌 期中重點回顧</h2>
+        <p>本週我們完成了重力探勘理論的最後彙整，並為即將到來的 **期中成果驗收** 做準備。老師強調了正演 (Forward) 與逆推 (Inverse) 的思考邏輯，這不僅適用於地球物理建模，也是建構 AI 模型的核心邏輯。</p>
+    </div>
+
+    <!-- AI 助手核心專案 -->
+    <div class="content-card">
+        <h2>🤖 專題：Dify + Gemini 數位助理</h2>
+        <p>身為地球物理系學生，我們經常需要查閱最新的文獻與地質調查資料。透過這項實作，我建立了一個 **自動化研究助手**，能將網頁內容抓取、總結並儲存至 Notion 個人知識庫。</p>
+        
+        <div class="workflow-visual">
+            <div class="node">
+                <div>🌐 開始</div>
+                <div class="api-tag">Web URL</div>
+            </div>
+            <div class="arrow">➔</div>
+            <div class="node">
+                <div>🔍 Tavily</div>
+                <div class="api-tag">網頁內容解析</div>
+            </div>
+            <div class="arrow">➔</div>
+            <div class="node">
+                <div>🧠 Gemini</div>
+                <div class="api-tag">LLM 智慧總結</div>
+            </div>
+            <div class="arrow">➔</div>
+            <div class="node" style="border-color: #fff;">
+                <div>📝 Notion</div>
+                <div class="api-tag" style="border-color: #fff; color: #fff;">儲存至資料庫</div>
+            </div>
+        </div>
+
+        <h3>🛠️ 技術棧架構 (Tech Stack)</h3>
+        <ul>
+            <li><strong>Dify.ai：</strong> 作為工作流的中樞，串接不同的 API 節點。</li>
+            <li><strong>Google Gemini 2.0 Flash API：</strong> 負責將複雜的地質名詞與研究內容轉化為易懂的筆記。</li>
+            <li><strong>Tavily Search API：</strong> 優化 AI 搜索，專門針對研究型內容進行抓取。</li>
+            <li><strong>Notion API：</strong> 實現「無感儲存」，閱讀與記錄一鍵完成。</li>
+        </ul>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <p><strong>想看看我的 AI 助手是如何運作的嗎？</strong></p>
+            <a href="https://cloud.dify.ai/app/26b7bbff-9222-4e1f-92b9-f4bb726347b6/workflow" target="_blank" class="demo-btn">
+                🚀 啟動我的 AI 助手 (Dify 工作流)
+            </a>
+        </div>
+    </div>
+
+    <!-- 學習感悟 -->
+    <div class="content-card">
+        <h2>💡 地球物理學家的數位轉型</h2>
+        <p>在學習重力校正（布蓋校正、緯度校正）的過程中，我發現大量的計算與資料對比非常耗時。本週的 AI 小助手實作讓我意識到：<strong>現代地球物理學家不只要會拿重力儀，更要會操作「數位探針」</strong>。</p>
+        <p>透過 Dify 建立的工作流，我可以快速摘要 Aso 火山的最新觀測報告，並直接存入我的 Notion 期末專題資料庫。這大大提升了我的研究效率。</p>
+    </div>
+
+</div>
+
+<footer>
+    <p>製作者：林靖融 | 地球物理學學期成果展</p>
+</footer>
+
+</body>
+</html>
