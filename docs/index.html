@@ -3,139 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geophysics Course Timeline</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <title>地球物理學課程筆記 | Geophysics Index</title>
     <style>
         :root {
-            --bg: #0d0d0d;
-            --card-bg: rgba(30, 30, 30, 0.7);
-            --gold: #FFD700;
-            --blue: #00D4FF;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --accent: #ffcc00;
+            --tech: #00d4ff;
             --text: #e0e0e0;
         }
-
-        * { box-sizing: border-box; font-family: 'Segoe UI', "Microsoft JhengHei", sans-serif; }
-        body { background-color: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
-
-        /* 背景地震波動畫 */
-        .bg-wave {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.1;
-            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        body {
+            font-family: 'Segoe UI', Microsoft JhengHei, sans-serif;
+            background: var(--bg); color: var(--text);
+            margin: 0; padding: 0; line-height: 1.6;
         }
-
         header {
-            height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: radial-gradient(circle, #222 0%, #0d0d0d 100%);
-            border-bottom: 2px solid var(--gold);
+            padding: 80px 20px; text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2000');
+            background-size: cover; border-bottom: 3px solid var(--accent);
         }
-        header h1 { font-size: 3.5rem; letter-spacing: 10px; color: var(--gold); text-transform: uppercase; margin: 0; }
-        header p { color: var(--blue); letter-spacing: 2px; margin-top: 10px; }
-
-        .container { max-width: 1000px; margin: -100px auto 100px; padding: 0 20px; }
-
-        /* 時間軸垂直線 */
-        .timeline { position: relative; border-left: 2px solid rgba(255, 215, 0, 0.3); padding-left: 40px; }
-
-        .week-card {
-            background: var(--card-bg); backdrop-filter: blur(10px);
-            border-radius: 15px; padding: 30px; margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; cursor: pointer;
+        header h1 { color: var(--accent); margin: 0; font-size: 2.5rem; letter-spacing: 3px; }
+        
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        
+        .week-list { display: flex; flex-direction: column; gap: 20px; }
+        .card {
+            background: var(--card-bg); border-radius: 12px;
+            padding: 25px; display: flex; align-items: flex-start;
+            border-left: 5px solid #333; transition: 0.3s;
+            position: relative; overflow: hidden;
         }
-        .week-card::before {
-            content: ''; position: absolute; left: -51px; top: 35px;
-            width: 20px; height: 20px; background: var(--bg);
-            border: 3px solid var(--gold); border-radius: 50%; z-index: 2;
+        .card:hover { border-left-color: var(--accent); transform: translateX(10px); background: #252525; }
+        
+        .week-num { min-width: 80px; font-weight: bold; color: var(--accent); font-size: 1.2rem; }
+        .content { flex-grow: 1; padding-left: 20px; }
+        .date { font-size: 0.85rem; color: #888; margin-bottom: 5px; }
+        .title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        
+        .details { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9rem; }
+        .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+        .b-geo { background: rgba(255,204,0,0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .b-tech { background: rgba(0,212,255,0.1); color: var(--tech); border: 1px solid var(--tech); }
+
+        /* 按鈕樣式 */
+        .action-btn {
+            background: var(--accent); color: #000; padding: 10px 18px;
+            border-radius: 8px; text-decoration: none; font-weight: bold;
+            font-size: 0.85rem; align-self: center; margin-left: 20px;
+            white-space: nowrap; transition: 0.3s;
         }
-        .week-card:hover {
-            transform: scale(1.03) translateX(10px);
-            border-color: var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        .action-btn:hover { background: #fff; box-shadow: 0 0 15px var(--accent); }
+
+        @media (max-width: 600px) {
+            .details { grid-template-columns: 1fr; }
+            .card { flex-direction: column; }
+            .action-btn { margin: 15px 0 0 0; align-self: flex-start; }
         }
-
-        .week-tag { color: var(--gold); font-weight: 900; font-size: 0.9rem; margin-bottom: 5px; display: block; }
-        .title { font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
-
-        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .box { padding: 15px; border-radius: 8px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.05); }
-        .box-title { font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; display: block; }
-        .geo { background: rgba(255, 215, 0, 0.05); color: var(--gold); }
-        .tech { background: rgba(0, 212, 255, 0.05); color: var(--blue); }
-
-        .btn-report {
-            display: inline-block; margin-top: 20px; padding: 10px 25px;
-            background: var(--gold); color: #000; text-decoration: none;
-            border-radius: 50px; font-weight: bold; font-size: 0.8rem;
-            transition: 0.3s;
-        }
-        .btn-report:hover { background: #fff; box-shadow: 0 0 20px #fff; }
-
-        /* 底部裝飾 */
-        footer { text-align: center; padding: 50px; opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-<div class="bg-wave"></div>
-
 <header>
-    <h1 class="animate__animated animate__fadeInDown">Geophysics</h1>
-    <p class="animate__animated animate__fadeInUp animate__delay-1s">地球物理學：從地層結構到數位建模</p>
-    <a href="https://huggingface.co/spaces/cwadayi/Geophysics_class" target="_blank" style="color:var(--gold); margin-top:20px; text-decoration:none; font-size:0.8rem;">[ 進入課程互動空間 ]</a>
+    <h1>地球物理學各週課程彙整</h1>
+    <p>林靖融的學習與實驗紀錄成果展</p>
 </header>
 
 <div class="container">
-    <div id="timeline-list" class="timeline">
-        <!-- JS 自動插入 -->
+    <div id="course-container" class="week-list">
+        <!-- 這裡由 JavaScript 自動動態生成 -->
     </div>
 </div>
 
-<footer>
-    Designed for 2024 Geophysics Course | Student: 林靖融
-</footer>
-
 <script>
-    const data = [
-        { w: "01", d: "9/10", t: "課程介紹與數位環境建置", g: "地球物理概要", s: "Python, GitHub, Dify, Colab", link: "" },
-        { w: "02", d: "9/17", t: "折射探勘學理論", g: "Snell's Law 與走時曲線", s: "pygmt, obspy, streamlit", link: "" },
-        { w: "03", d: "9/24", t: "校園野外實驗", g: "實地折射震測觀測", s: "震源激發與檢波器佈設", link: "report.html" },
-        { w: "04", d: "10/1", t: "地球物理專題演講", g: "業界實務分享", s: "專題筆記整理", link: "" },
-        { w: "05", d: "10/8", t: "折射探勘進階應用", g: "臨界折射波分析", s: "HF Space 互動開發", link: "" },
-        { w: "06", d: "10/15", t: "重力探勘學 (I)", g: "重力場與異常分析", s: "Colab 數據運算", link: "" },
-        { w: "07", d: "10/22", t: "重力探勘學 (II)", g: "地下構造密度建模", s: "Gemini API, Dify 集成", link: "" },
-        { w: "08", d: "10/29", t: "期中能力檢測", g: "期中考：理論與實作結合", s: "Comprehensive Skill Test", link: "" },
-        { w: "09", d: "11/05", t: "板塊構造與地震 (I)", g: "地震波傳播理論", s: "pygmt 震央圖繪製", link: "" },
-        { w: "10", d: "11/12", t: "板塊構造與地震 (II)", g: "全球板塊動力學", s: "pygmt 地形視覺化", link: "" },
-        { w: "11", d: "11/19", t: "板塊構造與地磁 (I)", g: "地磁倒轉與海床擴張", s: "obspy 震譜處理", link: "" },
-        { w: "12", d: "11/26", t: "板塊構造與地磁 (II)", g: "地磁異常觀測", s: "obspy 濾波技術", link: "" },
-        { w: "13", d: "12/3", t: "板塊構造與地熱", g: "地溫梯度與地熱能", s: "Dify 工作流優化", link: "" },
-        { w: "14", d: "12/10", t: "黃有志博士專題", g: "火山與嘉南地震觀測", s: "實務應用分析", link: "" },
-        { w: "15", d: "12/17", t: "廖勿渝博士專題", g: "AI 遇上地震學", s: "深度學習監測技術", link: "" },
-        { w: "16", d: "12/24", t: "期末專案發表", g: "期末專題：地球物理應用", s: "綜合開發呈現", link: "" },
-        { w: "17", d: "12/31", t: "中油大樓參訪", g: "探勘實務現場觀察", s: "業界技術銜接", link: "" },
-        { w: "18", d: "1/7", t: "地質調查所參訪", g: "國家地質觀測與應用", s: "地質資料庫操作", link: "" }
+    // --- 課程資料清單 ---
+    const courseData = [
+        { week: "01", date: "9/10", title: "課程介紹與環境建置", geo: "地球物理概要", tech: "Python, GitHub, Dify", link: "week01.html", btnText: "查看詳情與互動 →" },
+        { week: "02", date: "9/17", title: "折射探勘學", geo: "折射探勘學原理", tech: "pygmt, obspy, streamlit", link: "" },
+        { week: "03", date: "9/24", title: "校園野外實驗", geo: "實地折射探勘觀測", tech: "儀器操作與數據擷取", link: "report.html", btnText: "查看實驗報告 →" },
+        { week: "04", date: "10/1", title: "地球物理專題演講", geo: "專家知識分享", tech: "紀錄與筆記", link: "" },
+        { week: "05", date: "10/8", title: "折射探勘學進階", geo: "折射理論深化", tech: "HF Space 互動程式", link: "" },
+        { week: "06", date: "10/15", title: "重力探勘學 (I)", geo: "重力場理論", tech: "Colab 資料分析", link: "" },
+        { week: "07", date: "10/22", title: "重力探勘學 (II)", geo: "密度建模", tech: "Gemini API, Dify", link: "" },
+        { week: "08", date: "10/29", title: "期中考", geo: "範圍：Week 1-7", tech: "實機測驗", link: "" },
+        { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "地震學基礎", tech: "pygmt 繪圖", link: "" },
+        { week: "10", date: "11/12", title: "板塊構造與地震 (II)", geo: "全球板塊動力學", tech: "pygmt 視覺化", link: "" },
+        { week: "11", date: "11/19", title: "板塊構造與地磁 (I)", geo: "地磁場原理", tech: "obspy 震譜處理", link: "" },
+        { week: "12", date: "11/26", title: "板塊構造與地磁 (II)", geo: "古地磁紀錄", tech: "obspy 數據分析", link: "" },
+        { week: "13", date: "12/3", title: "板塊構造與地熱", geo: "地溫梯度與能源", tech: "Gemini API 應用", link: "" },
+        { week: "14", date: "12/10", title: "黃有志博士專題演講", geo: "阿蘇火山與地震觀測", tech: "實際應用案例", link: "" },
+        { week: "15", date: "12/17", title: "廖勿渝博士專題演講", geo: "AI 遇上地震學", tech: "深度學習監測", link: "" },
+        { week: "16", date: "12/24", title: "期末專題發表", geo: "專案成果呈現", tech: "綜合技能展現", link: "" },
+        { week: "17", date: "12/31", title: "參訪中油大樓", geo: "業界探勘實務", tech: "實地考察", link: "" },
+        { week: "18", date: "1/7", title: "參訪地質調查所", geo: "國家級地質觀測", tech: "資料庫應用", link: "" }
     ];
 
-    const list = document.getElementById('timeline-list');
-    data.forEach((item, index) => {
+    const container = document.getElementById('course-container');
+    
+    courseData.forEach(item => {
         const card = document.createElement('div');
-        card.className = `week-card animate__animated animate__fadeInLeft`;
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.className = 'card';
         
-        let reportBtn = item.link ? `<a href="${item.link}" class="btn-report">查看震測實驗報告 →</a>` : "";
+        // 如果該週有連結，就產生按鈕
+        let buttonHTML = item.link ? `<a href="${item.link}" class="action-btn">${item.btnText || '查看更多 →'}</a>` : "";
         
         card.innerHTML = `
-            <span class="week-tag">WEEK ${item.w} • ${item.d}</span>
-            <div class="title">${item.t}</div>
-            <div class="content-grid">
-                <div class="box geo"><span class="box-title">Geo-Knowledge</span>${item.g}</div>
-                <div class="box tech"><span class="box-title">Processing Skills</span>${item.s}</div>
+            <div class="week-num">W${item.week}</div>
+            <div class="content">
+                <div class="date">${item.date}</div>
+                <div class="title">${item.title}</div>
+                <div class="details">
+                    <div><span class="badge b-geo">地球物理知識</span><br>${item.geo}</div>
+                    <div><span class="badge b-tech">資料處理技能</span><br>${item.tech}</div>
+                </div>
             </div>
-            ${reportBtn}
+            ${buttonHTML}
         `;
-        list.appendChild(card);
+        container.appendChild(card);
     });
 </script>
+
 </body>
 </html>
