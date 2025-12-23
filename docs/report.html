@@ -15,7 +15,6 @@
             --accent: #FFD700; /* 震測波金色 */
             --cyan: #00E5FF; /* 數位採集藍 */
             --text: #e0e0e0;
-            --lava: #ff4500;
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -39,10 +38,10 @@
         nav a { color: #888; text-decoration: none; font-size: 0.8rem; margin: 0 15px; font-weight: bold; }
         nav a:hover { color: var(--accent); }
 
-        /* Hero Section - 使用 ss_source1 作為背景 */
+        /* Hero Section - 使用 png1 作為背景 */
         .hero {
             height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.7)), 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.7)), 
                         url('https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source1.png?raw=true');
             background-size: cover; background-position: center;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
@@ -53,34 +52,36 @@
         section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
         .section-title { font-size: 2.2rem; color: var(--accent); border-left: 6px solid var(--accent); padding-left: 20px; margin-bottom: 40px; }
 
-        /* 內容區塊 */
+        /* 原理與公式區塊 */
         .card-box { background: var(--surface); padding: 30px; border-radius: 15px; border: 1px solid #333; margin-bottom: 40px; }
-        .formula { font-family: 'Courier New', monospace; color: var(--cyan); background: #000; padding: 15px; border-radius: 8px; display: inline-block; margin: 15px 0; border-left: 4px solid var(--cyan); }
+        .formula { font-family: 'Courier New', monospace; color: var(--cyan); background: #000; padding: 15px; border-radius: 8px; display: inline-block; margin: 15px 0; border-left: 4px solid var(--cyan); font-size: 1.2rem; }
 
-        /* 實驗器材區塊 */
+        /* 器材配置區塊 */
         .equip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
-        .equip-item { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #333; border-top: 3px solid var(--accent); }
-        .equip-item i { font-size: 1.5rem; color: var(--accent); margin-bottom: 10px; display: block; }
-        .equip-item strong { color: var(--accent); display: block; margin-bottom: 5px; }
+        .equip-card { background: #111; padding: 25px; border-radius: 15px; border-top: 4px solid var(--accent); border: 1px solid #333; position: relative; }
+        .equip-card i { color: var(--accent); font-size: 1.5rem; margin-bottom: 15px; display: block; }
+        .equip-card strong { color: var(--accent); display: block; margin-bottom: 8px; font-size: 1.1rem; }
 
         /* 流程步驟 */
         .step-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .step-card { background: #222; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; }
-        .step-num { color: var(--accent); font-weight: 900; font-size: 1.2rem; }
+        .step-card { background: #222; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; border: 1px solid #333; }
+        .step-num { color: var(--accent); font-weight: 900; font-size: 1.2rem; min-width: 30px; }
 
         /* 數據表格 */
-        .table-wrap { overflow-x: auto; margin: 30px 0; background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid #333; }
+        .table-wrap { overflow-x: auto; margin: 30px 0; background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid var(--accent); }
         table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: #333; color: var(--accent); padding: 12px; border: 1px solid #444; }
-        td { padding: 12px; border: 1px solid #444; text-align: center; }
+        th { background: #333; color: var(--accent); padding: 15px; border: 1px solid #444; }
+        td { padding: 15px; border: 1px solid #444; text-align: center; }
+        .highlight { color: var(--cyan); font-weight: bold; }
 
-        /* 心得區塊 */
-        .reflection-section { background: linear-gradient(135deg, #1e1e1e, #0a0a0a); padding: 40px; border-radius: 25px; border: 1px solid var(--lava); position: relative; margin-top: 40px; }
-        .quote-content { font-style: italic; color: #ddd; font-size: 1.1rem; line-height: 1.8; }
+        /* 心得摘要區塊 */
+        .reflection-box { background: linear-gradient(135deg, #1e1e1e, #0a0a0a); padding: 40px; border-radius: 25px; border: 1px solid #444; margin-top: 50px; position: relative; }
+        .reflection-box h3 { color: var(--accent); margin-top: 0; font-size: 1.8rem; }
+        .quote-icon { position: absolute; top: 20px; right: 30px; font-size: 4rem; color: var(--accent); opacity: 0.1; }
 
         footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.8rem; }
 
-        @media (max-width: 768px) { .hero h1 { font-size: 2.2rem; } .step-list { grid-template-columns: 1fr; } }
+        @media (max-width: 850px) { .step-list { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -89,68 +90,68 @@
 
 <nav>
     <a href="index.html">HOME</a>
-    <a href="#theory">物理原理</a>
-    <a href="#equip">實驗器材</a>
+    <a href="#theory">實驗原理</a>
+    <a href="#equip">器材清單</a>
     <a href="#process">操作流程</a>
     <a href="#data">數據分析</a>
-    <a href="#reflection">心得感悟</a>
+    <a href="#summary">心得體悟</a>
 </nav>
 
 <div class="hero">
-    <h1 data-aos="zoom-in">地震折射震測實地報告</h1>
-    <p style="color:var(--cyan); letter-spacing: 2px; margin-top:10px;">林靖融 | 地層結構分析與速度建模</p>
+    <h1 data-aos="zoom-in">折射震測實驗分析報告</h1>
+    <p style="color:var(--cyan); letter-spacing: 2px;">林靖融 | 地底構造與速度層位建模分析</p>
 </div>
 
-<!-- 1. 物理原理與公式推導 -->
+<!-- 1. 實驗原理 -->
 <section id="theory">
     <h2 class="section-title">物理原理與推導過程</h2>
     <div class="card-box" data-aos="fade-up">
-        <p>本實驗利用地震波於地下介面產生的 <strong>臨界折射 (Critical Refraction)</strong> 現象。透過震源激發，波沿著地層介面以高速傳導並回折至地表，我們藉此逆推地層深度與物理性質。</p>
+        <p>本實驗利用地震波在不同介質交界面的 <strong>臨界折射 (Critical Refraction)</strong> 現象。當波接觸到速度較快的地層介面時，會依據 <b>Snell's Law</b> 產生折射並沿介面傳導，最後回折至地表。</p>
         
         <h3>核心計算公式：</h3>
         <div class="formula">h = (Xcr / 2) * √[(V2 - V1) / (V2 + V1)]</div>
-        <p>其中 <span style="color:var(--cyan)">Xcr</span> 為走時曲線轉折距離，<span style="color:var(--cyan)">V1</span> 為直達波速度，<span style="color:var(--cyan)">V2</span> 為折射波速度。</p>
-        
+        <p>其中 <span style="color:var(--cyan)">Xcr</span> 為轉折距離，<span style="color:var(--accent)">V1</span> 與 <span style="color:var(--accent)">V2</span> 分別為直達波與折射波波速。藉由此公式可精確推導地層介面的深度 (h)。</p>
+
         <h3>臨界角推導：</h3>
-        <p>根據 <b>Snell's Law</b>，當折射角為 90° 時，入射角即為臨界角 θc：</p>
+        <p>透過反三角函數計算，我們可得知地震波進入下層介面產生 90° 折射時的入射角：</p>
         <div class="formula">θc = arcsin(V1 / V2)</div>
-        <p>經實驗觀測數據帶入，測得 θc 約在 <span style="color:var(--accent)">23° ~ 25°</span> 之間，符合典型風化層與緻密層之界面特徵。</p>
+        <p>本測段計算所得之臨界角約落於 23° ~ 25° 之間。</p>
     </div>
 </section>
 
-<!-- 2. 實驗器材加回 -->
+<!-- 2. 器材配置 (加回原版清單) -->
 <section id="equip" style="background: rgba(255,255,255,0.02)">
-    <h2 class="section-title">所需器材配置</h2>
+    <h2 class="section-title">實驗器材清單</h2>
     <div class="equip-grid">
-        <div class="equip-item" data-aos="flip-left">
-            <i class="fas fa-box-open"></i>
+        <div class="equip-card" data-aos="flip-left">
+            <i class="fas fa-microchip"></i>
             <strong>資料擷取系統 (黃盒)</strong>
-            將接收器傳回的類比訊號轉化為數位數據並傳送至控制電腦。
+            核心中樞，將接收器採集的類比震動訊號轉化為數位數據傳輸至電腦。
         </div>
-        <div class="equip-item" data-aos="flip-left" data-aos-delay="100">
+        <div class="equip-card" data-aos="flip-left" data-aos-delay="100">
             <i class="fas fa-satellite-dish"></i>
-            <strong>Geophone 接收器 (24個)</strong>
-            埋入地下感測微小物理震動，紅色外殼便於野外辨識與佈設。
+            <strong>Geophone 接收器 (紅色)</strong>
+            共 24 組。埋入地下透過感應電流捕捉微小物理震動。
         </div>
-        <div class="equip-item" data-aos="flip-left" data-aos-delay="200">
+        <div class="equip-card" data-aos="flip-left" data-aos-delay="200">
             <i class="fas fa-project-diagram"></i>
-            <strong>橘色主電纜線</strong>
-            負責 24 個測站的數據傳輸，與皮尺平行佈設於 50 米測線上。
+            <strong>橘色電纜線</strong>
+            傳輸總線，負責將 24 個測站的數據整合傳回擷取系統。
         </div>
-        <div class="equip-item" data-aos="flip-left" data-aos-delay="300">
+        <div class="equip-card" data-aos="flip-left" data-aos-delay="300">
             <i class="fas fa-bolt"></i>
             <strong>白色 T0 感應線</strong>
-            利用類似短路原理，在鐵鎚擊中鐵板瞬間精確紀錄「時間零點」。
+            連接鐵板與電腦，紀錄鐵鎚敲擊瞬間的「零點時間」。
         </div>
-        <div class="equip-item" data-aos="flip-left" data-aos-delay="400">
+        <div class="equip-card" data-aos="flip-left" data-aos-delay="400">
             <i class="fas fa-hammer"></i>
             <strong>鐵鎚與鐵板</strong>
-            人工震源激發裝置，透過打擊產生地震波能量。
+            人工激發震源，透過強大物理打擊產生地震波能量。
         </div>
-        <div class="equip-item" data-aos="flip-left" data-aos-delay="500">
+        <div class="equip-card" data-aos="flip-left" data-aos-delay="500">
             <i class="fas fa-ruler-horizontal"></i>
             <strong>精密皮尺 (50M)</strong>
-            標定 2 公尺等間距之接收器位置，確保數據空間準確性。
+            標定測站間距 (2m) 與炸點位置，確保空間座標的精確。
         </div>
     </div>
 </section>
@@ -159,63 +160,66 @@
 <section id="process">
     <h2 class="section-title">操作流程描述</h2>
     <div class="step-list">
-        <div class="step-card" data-aos="fade-right"><span class="step-num">01</span><span>佈置 50 公尺皮尺並標定炸點。</span></div>
-        <div class="step-card" data-aos="fade-left"><span class="step-num">02</span><span>垂直埋入接收器，確保耦合良好。</span></div>
-        <div class="step-card" data-aos="fade-right"><span class="step-num">03</span><span>連接 24 個接收器至橘色電纜。</span></div>
-        <div class="step-card" data-aos="fade-left"><span class="step-num">04</span><span>設置資料擷取系統並連結主控電腦。</span></div>
-        <div class="step-card" data-aos="fade-right"><span class="step-num">05</span><span>監測背景環境雜訊並完成歸零。</span></div>
-        <div class="step-card" data-aos="fade-left"><span class="step-num">06</span><span>配置起點鐵板與感應感應器。</span></div>
-        <div class="step-card" data-aos="fade-right"><span class="step-num">07</span><span>執行震源激發並同步採集數據。</span></div>
-        <div class="step-card" data-aos="fade-left"><span class="step-num">08</span><span>重複變更炸點位置以獲得完整剖面。</span></div>
+        <div class="step-card" data-aos="fade-right"><span class="step-num">01</span><span>佈設 50 公尺皮尺標定測線方向。</span></div>
+        <div class="step-card" data-aos="fade-left"><span class="step-num">02</span><span>垂直埋設接收器於地下，間距 2 公尺。</span></div>
+        <div class="step-card" data-aos="fade-right"><span class="step-num">03</span><span>將 24 個接收器夾緊並串連至橘色電纜。</span></div>
+        <div class="step-card" data-aos="fade-left"><span class="step-num">04</span><span>設置控制電腦與初始化資料擷取系統。</span></div>
+        <div class="step-card" data-aos="fade-right"><span class="step-num">05</span><span>於起點放置鐵板，並配置 T0 感應器。</span></div>
+        <div class="step-card" data-aos="fade-left"><span class="step-num">06</span><span>執行敲擊產生震波，電腦同步收錄訊號。</span></div>
+        <div class="step-card" data-aos="fade-right"><span class="step-num">07</span><span>移動鐵板位置 (炸點位移)，重複收錄。</span></div>
+        <div class="step-card" data-aos="fade-left"><span class="step-num">08</span><span>將數據導入軟體，進行初至波標定。</span></div>
     </div>
 </section>
 
-<!-- 4. 數據與分析 -->
+<!-- 4. 數據與視覺分析 -->
 <section id="data">
-    <h2 class="section-title">數據分析與彙整</h2>
+    <h2 class="section-title">數據判讀與建模彙整</h2>
+    
     <div class="table-wrap" data-aos="fade-up">
-        <div style="margin-bottom:15px; font-weight:bold; color:var(--cyan);">[ 彙整表 ] 第二次修正計算數據 (h 平均約為 3.99m)</div>
+        <div style="margin-bottom:15px; font-weight:bold; color:var(--cyan);">[ 數據表 ] 第二次修正計算結果 (V1 平均 430 m/s)</div>
         <table>
             <thead>
                 <tr>
-                    <th>距離 (m)</th>
+                    <th>測站距離 (m)</th>
                     <th>0</th><th>6</th><th>12</th><th>18</th><th>24</th><th>30</th><th>36</th><th>42</th><th>46</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><strong>V1 (m/s)</strong></td>
-                    <td>434</td><td>423</td><td>464</td><td>427</td><td>619</td><td>430</td><td>426</td><td>427</td><td>410</td>
+                    <td>434</td><td>423</td><td>464</td><td>427</td><td class="highlight">619</td><td>430</td><td>426</td><td>427</td><td>410</td>
                 </tr>
                 <tr>
                     <td><strong>V2 (m/s)</strong></td>
                     <td>1067</td><td>1012</td><td>1085</td><td>985</td><td>1185</td><td>1100</td><td>1066</td><td>1005</td><td>974</td>
                 </tr>
                 <tr>
-                    <td><strong>厚度 h</strong></td>
+                    <td><strong>厚度 h (m)</strong></td>
                     <td>4.55</td><td>4.48</td><td>4.43</td><td>2.51</td><td>3.83</td><td>4.30</td><td>3.93</td><td>3.49</td><td>3.83</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     <div class="card-box" data-aos="fade-up">
-        <p><i class="fas fa-chart-line" style="color:var(--accent);"></i> <strong>分析結論：</strong> V1 平均約 430 m/s，代表表層鬆散土層；V2 平均約 1037 m/s，代表較緻密之底層結構。兩者間之深度大約落在地下 4 米處。</p>
+        <p><i class="fas fa-info-circle" style="color:var(--accent);"></i> <strong>分析結論：</strong> 經由二次計算修正，本區域 V1 平均波速顯示表層為較鬆散的風化土層；而 V2 的跳躍性增長 (平均 >1000 m/s) 指向地下約 4 米處存在一較緻密的硬土層或基岩面。</p>
     </div>
 </section>
 
-<!-- 5. 個人心得 -->
-<section id="reflection">
-    <h2 class="section-title">實驗心得：林靖融</h2>
-    <div class="reflection-section" data-aos="fade-up">
-        <div class="quote-content">
-            「這次的震測實驗是我第一次做地震物理相關的實驗，之前大多只有在書籍資料中理解實驗方法跟理論，而實際的操作讓我發現很多實際操作實驗的變數，比如我們這次是在馬路邊進行的緣故，車子經過的震動造成的干擾會直接影響到我們的接收器接收我們自己製作的振波。<br><br>
-            還有實際操作也可以發現如果要實際發展成功工程用具會有那些地方需要特意改良的人性化，像是老師介紹地者款小型的接收器和以前就是得相比可以和其他相同款式的做串接來增加測量的接收器上限，之前看資料時產生好奇的實際探測數據和圖像的呈現也得到了解惑，對我來說很有收穫的課程內容。」
-        </div>
+<!-- 5. 結論與心得摘要 -->
+<section id="summary">
+    <div class="reflection-box" data-aos="fade-up">
+        <i class="fas fa-quote-right quote-icon"></i>
+        <h3>個人心得報告：林靖融</h3>
+        <p style="font-style: italic; color: #ddd; line-height: 2;">
+            「這次的震測實驗是我第一次做地震物理相關的實驗，之前大多只有在書籍資料中理解實驗方法跟理論，而實際的操作讓我發現很多實際操作實驗的變數。比如我們這次是在馬路邊進行的緣故，車子經過的震動造成的干擾會直接影響到我們的接收器接收我們自己製作的振波。<br><br>
+            還有實際操作也可以發現如果要實際發展成功工程用具會有那些地方需要特意改良的人性化，像是老師介紹的地者款小型的接收器和以前就是得相比可以和其他相同款式的做串接來增加測量的接收器上限，之前看資料時產生好奇的實際探測數據和圖像的呈現也得到了解惑，對我來說很有收穫的課程內容。」
+        </p>
     </div>
 </section>
 
 <footer>
-    <p>林靖融 | 地球物理學學期報告成果展 | 2024</p>
+    <p>林靖融 | 地球物理課程實作報告 | 2024 | All Rights Reserved</p>
 </footer>
 
 <script>
