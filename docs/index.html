@@ -51,6 +51,7 @@
             color: var(--sub-text); 
             margin-top: 10px; 
             max-width: 600px;
+            padding: 0 20px;
         }
 
         .container { 
@@ -142,12 +143,26 @@
             white-space: nowrap;
             transition: 0.3s;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+            text-align: center;
         }
 
         .action-btn:hover { 
             background: #fff; 
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 尚未開放的按鈕樣式 */
+        .btn-disabled {
+            background: #334155;
+            color: #64748b;
+            cursor: default;
+            box-shadow: none;
+        }
+        .btn-disabled:hover {
+            background: #334155;
+            transform: none;
+            color: #64748b;
         }
 
         footer { 
@@ -162,7 +177,7 @@
             .details { grid-template-columns: 1fr; gap: 10px; }
             .card { flex-direction: column; align-items: flex-start; text-align: left; }
             .content { padding: 20px 0; }
-            .action-btn { align-self: stretch; text-align: center; }
+            .action-btn { align-self: stretch; }
             .week-num { text-align: left; }
         }
     </style>
@@ -186,6 +201,7 @@
 
 <script>
     // --- 課程資料資料庫 ---
+    // 提示：若要新增子網頁，請在 link 欄位填入檔名 (如 week06.html)
     const courseData = [
         { 
             week: "01", 
@@ -194,7 +210,7 @@
             geo: "地球物理概要、地底 X 光比喻", 
             tech: "GitHub, Hugging Face, AI 協作, Blogger", 
             link: "week01.html", 
-            btnText: "查看詳情與互動 →" 
+            btnText: "查看詳情 →" 
         },
         { 
             week: "02", 
@@ -203,7 +219,7 @@
             geo: "Snell's Law、臨界折射公式推導", 
             tech: "ObsPy 資料抓取、Codespace 實作範例", 
             link: "week02.html", 
-            btnText: "查看詳情與推導 →" 
+            btnText: "查看詳情 →" 
         },
         { 
             week: "03", 
@@ -232,7 +248,15 @@
             link: "week05.html", 
             btnText: "進入數位實驗室 →" 
         },
-        { week: "06", date: "10/15", title: "重力探勘學 (I)", geo: "重力場理論、地下密度差異", tech: "Google Colab 數據分析", link: "" },
+        { 
+            week: "06", 
+            date: "10/15", 
+            title: "重力探勘學 (I)", 
+            geo: "重力場理論、地下密度差異", 
+            tech: "Google Colab 數據分析", 
+            link: "week06.html", // 已連結
+            btnText: "進入重力實驗室 →" 
+        },
         { week: "07", date: "10/22", title: "重力探勘學 (II)", geo: "地殼密度建模與異常分析", tech: "Gemini API, Dify 應用", link: "" },
         { week: "08", date: "10/29", title: "期中成果驗收", geo: "理論與計算能力檢測", tech: "Midterm Examination", link: "" },
         { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "全球構造理論、地震波傳遞", tech: "pygmt 震央圖繪製", link: "" },
@@ -254,8 +278,15 @@
         const card = document.createElement('div');
         card.className = 'card';
         
-        // 只有在 link 不為空時才顯示按鈕
-        let buttonHTML = item.link ? `<a href="${item.link}" class="action-btn">${item.btnText || '查看詳情 →'}</a>` : "";
+        // 判斷是否具備連結
+        let buttonHTML = "";
+        if (item.link && item.link !== "") {
+            // 有連結：顯示金色按鈕
+            buttonHTML = `<a href="${item.link}" class="action-btn">${item.btnText || '查看詳情 →'}</a>`;
+        } else {
+            // 無連結：顯示深灰色「內容整理中」
+            buttonHTML = `<span class="action-btn btn-disabled">內容整理中...</span>`;
+        }
         
         card.innerHTML = `
             <div class="week-num">W${item.week}</div>
