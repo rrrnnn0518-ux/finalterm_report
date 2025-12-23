@@ -50,6 +50,7 @@
             font-size: 1.2rem; 
             color: var(--sub-text); 
             margin-top: 10px; 
+            max-width: 600px;
         }
 
         .container { 
@@ -73,12 +74,14 @@
             border-left: 5px solid #334155;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
             border-left-color: var(--accent);
             transform: translateX(10px);
             background: #262626;
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.1);
         }
 
         .week-num { 
@@ -97,6 +100,7 @@
         .date { 
             font-size: 0.85rem; 
             color: var(--sub-text); 
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
@@ -121,12 +125,12 @@
             display: inline-block; 
             margin-bottom: 6px; 
             font-weight: 800;
+            text-transform: uppercase;
         }
 
         .b-geo { background: rgba(251, 191, 36, 0.1); color: var(--accent); border: 1px solid var(--accent); }
         .b-tech { background: rgba(34, 211, 238, 0.1); color: var(--tech); border: 1px solid var(--tech); }
 
-        /* 按鈕樣式 */
         .action-btn {
             background: var(--accent);
             color: #000;
@@ -136,12 +140,14 @@
             font-weight: bold;
             font-size: 0.85rem;
             white-space: nowrap;
+            transition: 0.3s;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
         }
 
         .action-btn:hover { 
             background: #fff; 
             transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
         }
 
         footer { 
@@ -149,13 +155,15 @@
             padding: 60px; 
             color: var(--sub-text); 
             font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
         }
 
         @media (max-width: 768px) {
-            .details { grid-template-columns: 1fr; }
-            .card { flex-direction: column; align-items: flex-start; }
+            .details { grid-template-columns: 1fr; gap: 10px; }
+            .card { flex-direction: column; align-items: flex-start; text-align: left; }
             .content { padding: 20px 0; }
             .action-btn { align-self: stretch; text-align: center; }
+            .week-num { text-align: left; }
         }
     </style>
 </head>
@@ -168,7 +176,7 @@
 
 <div class="container">
     <div id="course-container" class="week-list">
-        <!-- JS 動態產生 -->
+        <!-- 由 JavaScript 自動產生內容 -->
     </div>
 </div>
 
@@ -177,7 +185,8 @@
 </footer>
 
 <script>
-    // --- 關鍵資料庫：請確認 week 02 的 link 是否正確 ---
+    // --- 課程資料資料庫 ---
+    // 以後只需要在這裡增加一筆資料，網頁就會自動畫出新的一行
     const courseData = [
         { 
             week: "01", 
@@ -193,8 +202,8 @@
             date: "09/17", 
             title: "折射探勘學與數位實作", 
             geo: "Snell's Law、臨界折射幾何推導", 
-            tech: "ObsPy 資料抓取、Codespace 實作", 
-            link: "week02.html",  // <--- 確保這裡有填寫！
+            tech: "ObsPy 資料抓取、Codespace 實作範例", 
+            link: "week02.html", 
             btnText: "查看詳情與推導 →" 
         },
         { 
@@ -206,30 +215,39 @@
             link: "report.html", 
             btnText: "查看實驗報告 →" 
         },
-        { week: "04", date: "10/01", title: "地球物理專題演講", geo: "業界知識與專家視野分享", tech: "筆記與心得整理", link: "" },
+        { 
+            week: "04", 
+            date: "10/01", 
+            title: "地球物理專題演講", 
+            geo: "甘禮有博士：層析成像與阿蘇火山研究", 
+            tech: "正演與逆推問題、Prompt 工程", 
+            link: "week04.html", 
+            btnText: "進入專題網頁 →" 
+        },
         { week: "05", date: "10/08", title: "折射探勘進階應用", geo: "臨界折射波深度解析", tech: "Hugging Face Space 互動佈署", link: "" },
         { week: "06", date: "10/15", title: "重力探勘學 (I)", geo: "重力場理論、地下密度差異", tech: "Google Colab 數據分析", link: "" },
         { week: "07", date: "10/22", title: "重力探勘學 (II)", geo: "地殼密度建模與異常分析", tech: "Gemini API, Dify 應用", link: "" },
-        { week: "08", date: "10/29", title: "期中考", geo: "範圍：Week 1-7", tech: "實機測驗", link: "" },
-        { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "地震學基礎", tech: "pygmt 繪圖", link: "" },
-        { week: "10", date: "11/12", title: "板塊構造與地震 (II)", geo: "全球板塊動力學", tech: "pygmt 視覺化", link: "" },
-        { week: "11", date: "11/19", title: "板塊構造與地磁 (I)", geo: "地磁場原理", tech: "obspy 震譜處理", link: "" },
-        { week: "12", date: "11/26", title: "板塊構造與地磁 (II)", geo: "古地磁紀錄", tech: "obspy 數據分析", link: "" },
-        { week: "13", date: "12/03", title: "板塊構造與地熱", geo: "地溫梯度與能源", tech: "Gemini API 應用", link: "" },
+        { week: "08", date: "10/29", title: "期中成果驗收", geo: "理論與計算能力檢測", tech: "Midterm Examination", link: "" },
+        { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "全球構造理論、地震波傳遞", tech: "pygmt 震央圖繪製", link: "" },
+        { week: "10", date: "11/12", title: "板塊構造與地震 (II)", geo: "地震機制與板塊動力學", tech: "pygmt 視覺化進階", link: "" },
+        { week: "11", date: "11/19", title: "板塊構造與地磁 (I)", geo: "地磁場原理、海床擴張實證", tech: "obspy 震譜訊號處理", link: "" },
+        { week: "12", date: "11/26", title: "板塊構造與地磁 (II)", geo: "古地磁學與磁偏角觀測", tech: "數位濾波技術實作", link: "" },
+        { week: "13", date: "12/03", title: "板塊構造與地熱", geo: "地溫梯度、再生能源探勘", tech: "AI 工作流優化整合", link: "" },
         { week: "14", date: "12/10", title: "專題演講：黃有志博士", geo: "阿蘇火山與地震觀測", tech: "實務監測資料分析", link: "" },
-        { week: "15", date: "12/17", title: "專題演講：廖勿渝博士", geo: "AI 遇上地震學", tech: "深度學習模型應用", link: "" },
-        { week: "16", date: "12/24", title: "期末專題發表", geo: "專案成果呈現", tech: "綜合技能展現", link: "" },
-        { week: "17", date: "12/31", title: "參訪：中油大樓", geo: "業界探勘實務現場", tech: "實地考察", link: "" },
-        { week: "18", date: "01/07", title: "參訪：地質調查所", geo: "國家級地質觀測", tech: "資料庫應用", link: "" }
+        { week: "15", date: "12/17", title: "專題演講：廖勿渝博士", geo: "AI 遇上地震學：全自動監測", tech: "深度學習模型應用", link: "" },
+        { week: "16", date: "12/24", title: "期末專題發表", geo: "綜合研究成果簡報", tech: "Final Project 展示", link: "" },
+        { week: "17", date: "12/31", title: "參訪：中油大樓", geo: "業界探勘實務現場考察", tech: "業界技術銜接學習", link: "" },
+        { week: "18", date: "01/07", title: "參訪：地質調查所", geo: "國家級地質觀測與資料庫", tech: "實地考察與資料應用", link: "" }
     ];
 
+    // --- 自動渲染函式 ---
     const container = document.getElementById('course-container');
     
     courseData.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
         
-        // 判斷是否有 link，有的話才加上按鈕
+        // 只有在 link 不為空時才顯示按鈕
         let buttonHTML = item.link ? `<a href="${item.link}" class="action-btn">${item.btnText || '查看詳情 →'}</a>` : "";
         
         card.innerHTML = `
