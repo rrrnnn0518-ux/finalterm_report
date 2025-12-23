@@ -15,6 +15,7 @@
             --magnetic: #f87171; /* 紅色 */
             --heat: #fb923c;    /* 橘色 */
             --ai: #6366f1;      /* AI 靛藍 */
+            --lecture: #ff4500;  /* 演講橘紅 */
             --text: #e2e8f0;
             --sub-text: #94a3b8;
         }
@@ -68,7 +69,6 @@
         .details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.85rem; }
         .badge { font-size: 0.7rem; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-bottom: 6px; font-weight: 800; text-transform: uppercase; }
         
-        /* 各類標籤配色 */
         .b-geo { background: rgba(251, 191, 36, 0.1); color: var(--accent); border: 1px solid var(--accent); }
         .b-tech { background: rgba(34, 211, 238, 0.1); color: var(--tech); border: 1px solid var(--tech); }
         .b-map { background: rgba(16, 185, 129, 0.1); color: var(--map); border: 1px solid var(--map); }
@@ -76,6 +76,7 @@
         .b-mag { background: rgba(248, 113, 113, 0.1); color: var(--magnetic); border: 1px solid var(--magnetic); }
         .b-heat { background: rgba(251, 146, 60, 0.1); color: var(--heat); border: 1px solid var(--heat); }
         .b-ai { background: rgba(99, 102, 241, 0.1); color: var(--ai); border: 1px solid var(--ai); }
+        .b-lec { background: rgba(255, 69, 0, 0.1); color: var(--lecture); border: 1px solid var(--lecture); }
 
         .action-btn {
             background: var(--accent);
@@ -120,7 +121,6 @@
 </footer>
 
 <script>
-    // --- 課程資料資料庫 ---
     const courseData = [
         { week: "01", date: "09/10", title: "課程導引與數位環境建置", geo: "地球物理概要、地底 X 光比喻", tech: "GitHub, Hugging Face, AI 協作", link: "week01.html", bClass: "b-tech" },
         { week: "02", date: "09/17", title: "折射探勘學與數位實作", geo: "Snell's Law、臨界折射公式推導", tech: "ObsPy 資料抓取、Codespace", link: "week02.html", bClass: "b-tech" },
@@ -134,20 +134,18 @@
         { week: "10", date: "11/12", title: "板塊構造與 PyGMT 進階教學", geo: "板塊動力機制與岩石圈理論", tech: "PyGMT 教學網站建置與發布", link: "week10.html", bClass: "b-tut" },
         { week: "11", date: "11/19", title: "地磁測勘與古地磁學", geo: "磁場三要素、古磁極移動路徑", tech: "殘餘磁性與 APW 證據分析", link: "week11.html", bClass: "b-mag" },
         { week: "12", date: "11/26", title: "地球的熱分布與專題公告", geo: "放射性生熱、大陸與海洋熱流來源", tech: "熱力學公式與 GitHub 數據處理", link: "week12.html", bClass: "b-heat" },
-        { week: "13", date: "12/03", title: "地熱探勘與 AI 地震實驗室", geo: "地熱演講探討、期末專案開發", tech: "Python/Gradio、Hugging Face 部署", link: "week13.html", bClass: "b-ai" },
-        { week: "14", date: "12/10", title: "專題演講：黃有志博士", geo: "阿蘇火山與嘉南地震觀測", tech: "實務監測資料分析", link: "", bClass: "b-tech" },
+        { week: "13", date: "12/03", title: "地熱探勘與 AI 地震實驗室", geo: "地熱演講探討、期末專題開發", tech: "Python/Gradio、Hugging Face 部署", link: "week13.html", bClass: "b-ai" },
+        { week: "14", date: "12/10", title: "專題演講：黃有志博士", geo: "阿蘇火山與嘉南地震觀測", tech: "旅日經驗與實務監測分析", link: "week14.html", bClass: "b-lec" },
         { week: "15", date: "12/17", title: "專題演講：廖勿渝博士", geo: "AI 遇上地震學：全自動監測", tech: "深度學習模型應用", link: "", bClass: "b-tech" },
         { week: "16", date: "12/24", title: "期末專案發表", geo: "綜合研究成果簡報", tech: "Final Project 展示", link: "", bClass: "b-tech" },
         { week: "17", date: "12/31", title: "參訪：中油大樓", geo: "業界探勘實務現場考察", tech: "業界技術銜接學習", link: "", bClass: "b-tech" },
         { week: "18", date: "01/07", title: "參訪：地質調查所", geo: "國家級地質觀測與資料庫", tech: "實地考察與資料應用", link: "", bClass: "b-tech" }
     ];
 
-    // --- 自動渲染函式 ---
     const container = document.getElementById('course-container');
     courseData.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
-        // 點擊卡片跳轉
         card.onclick = () => { if(item.link) window.location.href = item.link; };
         
         const btnHTML = item.link 
