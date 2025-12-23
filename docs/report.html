@@ -62,7 +62,7 @@
         .equip-item strong { color: var(--accent); display: block; }
         .equip-img { width: 100%; border-radius: 15px; border: 1px solid #444; }
 
-        /* --- 過程描述 --- */
+        /* --- 過程描述樣式 --- */
         .process-container { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .process-step { display: flex; align-items: center; background: #1a1a1a; padding: 12px 20px; border-radius: 8px; border: 1px solid #2a2a2a; }
         .step-idx { 
@@ -73,32 +73,38 @@
         .process-step:nth-child(even) .step-idx { background: var(--accent); color: #000; }
         .step-text { font-size: 1.1rem; font-weight: 500; color: #fff; }
 
-        /* --- 視覺分析：三圖併排對齊版 --- */
+        /* --- 視覺分析：三圖併排【內部縮小對齊版】 --- */
         .viz-layout { 
             display: flex; 
             gap: 15px; 
-            max-width: 900px; 
+            max-width: 950px; 
             margin: 30px auto; 
-            align-items: stretch;
+            /* 讓左邊和右邊高度一致 */
+            height: 500px; 
         }
         
-        /* 左側大圖 */
         .viz-main-side { 
-            flex: 1.2; 
+            flex: 1.3; 
             position: relative; 
             border: 1px solid rgba(255,215,0,0.3);
             border-radius: 10px;
             overflow: hidden;
             background: #000;
         }
-        .viz-main-side img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(1.1); }
+        /* 整體縮小核心代碼：object-fit: contain */
+        .viz-main-side img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block;
+        }
 
-        /* 右側疊加圖 */
         .viz-sub-column { 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
+            height: 100%;
         }
         .viz-sub-box { 
             flex: 1; 
@@ -107,15 +113,24 @@
             border-radius: 10px;
             overflow: hidden;
             background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .viz-sub-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* 整體縮小核心代碼：object-fit: contain */
+        .viz-sub-box img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block; 
+        }
 
-        /* 圖上標籤 */
         .viz-tag { 
             position: absolute; bottom: 0; width: 100%; 
-            background: rgba(0,0,0,0.7); color: var(--accent); 
+            background: rgba(0,0,0,0.75); color: var(--accent); 
             font-size: 0.75rem; padding: 5px 10px; font-weight: bold;
-            border-top: 1px solid rgba(255,215,0,0.3);
+            border-top: 1px solid rgba(255,215,0,0.2);
+            z-index: 10;
         }
         .tag-cyan { color: var(--cyan); border-top-color: var(--cyan); }
 
@@ -127,16 +142,19 @@
         table { width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem; }
         th { background: #222; color: var(--accent); padding: 10px; border: 1px solid #444; }
         td { padding: 10px; border: 1px solid #444; text-align: center; }
+        .highlight { color: var(--cyan); font-weight: bold; }
 
         .discussion-box { background: #1a1a1a; padding: 35px; border-radius: 15px; border-left: 6px solid var(--accent); margin-bottom: 40px; }
-        .discussion-box p { font-size: 1.15rem; color: #eee; line-height: 2; margin: 0; }
+        .discussion-box p { font-size: 1.1rem; color: #eee; line-height: 2; margin: 0; }
         .highlight-text { color: var(--accent); font-weight: bold; }
 
         footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.8rem; }
 
         @media (max-width: 850px) { 
-            .equip-grid, .calc-grid, .viz-layout { flex-direction: column; } 
-            .viz-main-side, .viz-sub-column { width: 100%; }
+            .equip-grid, .calc-grid { grid-template-columns: 1fr; } 
+            .viz-layout { flex-direction: column; height: auto; }
+            .viz-main-side { height: 300px; }
+            .viz-sub-box { height: 200px; }
         }
     </style>
 </head>
@@ -149,7 +167,7 @@
     <a href="#theory">理論原理</a>
     <a href="#equip">器材配置</a>
     <a href="#process">過程描述</a>
-    <a href="#analysis">數據計算</a>
+    <a href="#analysis">計算判讀</a>
     <a href="#discussion">結論探討</a>
     <a href="#summary">個人心得</a>
 </nav>
@@ -174,11 +192,11 @@
     <h2 class="section-title">所需器材配置</h2>
     <div class="equip-grid">
         <ul class="equip-list" data-aos="fade-right">
-            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>將接收器之類比訊號數位化並回傳電腦。</li>
-            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>捕捉微小震動，本次共佈設 24 個測站。</li>
-            <li class="equip-item"><strong>橘色電纜線</strong>負責所有測站數據的高速傳輸匯整。</li>
-            <li class="equip-item"><strong>白色感應線</strong>精確標記震源激發的起點時間（T0）。</li>
-            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工震源裝置，產生地層探測用之彈性能量。</li>
+            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>數位化地震訊號的主控核心。</li>
+            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>捕捉土壤物理震動，共佈設 24 組。</li>
+            <li class="equip-item"><strong>橘色電纜線</strong>負責 24 測站數據的高速傳輸。</li>
+            <li class="equip-item"><strong>白色感應線</strong>紀錄鐵鎚敲擊鐵板瞬間的「零點時間」。</li>
+            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工激發震源，提供實驗所需的彈性能量。</li>
         </ul>
         <div data-aos="fade-left">
             <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source1.png?raw=true" class="equip-img" alt="器材示意圖">
@@ -203,11 +221,11 @@
     </div>
 </section>
 
-<!-- 4. 數據計算與視覺化 -->
+<!-- 4. 數據計算與分析 -->
 <section id="analysis">
     <h2 class="section-title">數據判讀與計算分析</h2>
 
-    <!-- 三圖併排區塊 -->
+    <!-- 三圖併排區塊：內部整體縮小對齊 -->
     <div class="viz-layout" data-aos="zoom-in">
         <!-- 左側大圖 -->
         <div class="viz-main-side">
@@ -228,7 +246,7 @@
         </div>
     </div>
 
-    <!-- 計算卡片 -->
+    <!-- 計算細節 -->
     <div class="calc-grid">
         <div class="calc-card" data-aos="fade-up">
             <h4><i class="fas fa-calculator"></i> 平均波速彙整 (修正後)</h4>
@@ -240,7 +258,7 @@
             <h4><i class="fas fa-compass"></i> 臨界角計算 (θc)</h4>
             <p style="font-size:0.8rem; margin-bottom:5px;">公式：θc = arcsin(V1 / V2)</p>
             <div class="math-text" style="color:var(--cyan)">θc ≈ 24.729°</div>
-            <p style="font-size:0.75rem; color:#777;">穩定之臨界角驗證了介面物理特性的一致性。</p>
+            <p style="font-size:0.75rem; color:#777;">穩定的臨界角數據驗證了介面物理特性的一致性。</p>
         </div>
     </div>
 
