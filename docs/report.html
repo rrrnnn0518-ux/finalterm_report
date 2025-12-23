@@ -196,6 +196,12 @@
             <li><strong>環境干擾探討：</strong>實驗中觀察到測線旁馬路車輛震動對高頻訊號有明顯干擾，這證明了接收器埋設垂直度（Coupling）對訊號品質的關鍵影響。</li>
         </ul>
     </div>
+
+    <!-- 個人心得 (林靖融) -->
+    <div class="summary-box" style="margin-top:30px; border-color:var(--cyan)" data-aos="fade-up">
+        <h3><i class="fas fa-user-edit" style="margin-right:15px;"></i>組員心得：林靖融</h3>
+        <p style="font-style:italic">「這次的震測實驗是我第一次做地震物理相關的實驗，之前大多只有在書籍資料中理解實驗方法跟理論，而實際的操作讓我發現很多實際操作實驗的變數。比如我們這次是在馬路邊進行的緣故，車子經過的震動造成的干擾會直接影響到我們的接收器。此外，老師介紹的小型接收器串接功能也讓我對設備的演進有了新的認識，非常有收穫。」</p>
+    </div>
 </section>
 
 <footer>
@@ -203,8 +209,13 @@
 </footer>
 
 <script>
-    AOS.init({ duration: 1200, once: false });
+    // 初始化動畫
+    AOS.init({
+        duration: 1200,
+        once: false,
+    });
 
+    // 滾動進度條
     window.onscroll = function() {
         var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
