@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W13 地熱探勘與 AI 地震實驗室 | 地球物理學筆記</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent: #10b981; /* 再生能源綠 */
+            --ai-blue: #6366f1; /* AI 靛藍 */
+            --tech: #22d3ee;   /* 科技藍 */
+            --text: #e2e8f0;
+            --sub-text: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .header-section {
+            border-left: 4px solid var(--accent);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .week-tag { background: var(--accent); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        h2 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* --- 互動工具 1: 地熱技術選擇器 --- */
+        .tech-selector {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .tech-btn {
+            background: #262626;
+            border: 1px solid #334155;
+            color: var(--sub-text);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tech-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        #tech-display {
+            background: #000;
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 120px;
+            border-left: 3px solid var(--accent);
+            margin-top: 10px;
+        }
+
+        /* --- 互動工具 2: 震波脈衝模擬 --- */
+        .seismic-monitor {
+            background: #000;
+            height: 150px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid var(--ai-blue);
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            stroke: var(--ai-blue);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* AI 平台展示區 */
+        .platform-hero {
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+            border: 1px solid var(--ai-blue);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: var(--ai-blue);
+            color: #fff;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            margin-top: 25px;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover { transform: scale(1.05); background: #fff; color: var(--ai-blue); }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .feature-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">← 返回課程總覽</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 地熱與 AI 專題</div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <span class="week-tag">WEEK 13</span>
+        <h1>地熱能源探勘與數位地震實驗室</h1>
+        <p style="color: var(--sub-text);">整合演講核心知識與基於 Hugging Face 的 AI 震波分析平台</p>
+    </div>
+
+    <!-- 互動區 1: 地熱技術探討 -->
+    <div class="content-card">
+        <h2>🔥 地熱探勘技術選擇器</h2>
+        <p>點擊下方按鈕以切換本週演講探討的四大核心技術細節：</p>
+        
+        <div class="tech-selector">
+            <button class="tech-btn active" onclick="showTech('micro')">微震監測</button>
+            <button class="tech-btn" onclick="showTech('mt')">大地電磁法 (MT)</button>
+            <button class="tech-btn" onclick="showTech('status')">探勘近況</button>
+            <button class="tech-btn" onclick="showTech('ai')">AI 應用</button>
+        </div>
+
+        <div id="tech-display">
+            <h3 id="tech-title" style="color: var(--accent); margin-top:0;">微震監測 (Microseismic)</h3>
+            <p id="tech-desc">透過監測地下極微小的地震活動（微震），我們可以精確定位地下熱儲層的流體流動路徑與裂縫發育情況。這在地熱井的誘發裂隙監測中至關重要。</p>
+        </div>
+    </div>
+
+    <!-- 互動區 2: 地震平台展示 -->
+    <div class="content-card">
+        <h2>🚀 期末專案：AI 互動式地震視覺化平台</h2>
+        <p>這是利用 <strong>Python/Gradio</strong> 開發並部署於 <strong>Hugging Face Space</strong> 的地震波處理工具。</p>
+        
+        <!-- 模擬監測器 -->
+        <div class="seismic-monitor">
+            <div style="position: absolute; top: 10px; left: 10px; font-size: 0.7rem; color: var(--tech); z-index: 5;">
+                LIVE WAVEFORM SIMULATOR (FILTERED)
+            </div>
+            <svg class="wave" viewBox="0 0 800 150">
+                <path id="seismicPath" d="M 0 75 Q 20 75 40 75 T 80 75 T 120 75 T 160 75 T 200 75 T 240 75 T 280 75 T 320 75 T 360 75 T 400 75"></path>
+            </svg>
+        </div>
+
+        <div class="platform-hero">
+            <h3 style="margin: 0;">Eq_demo On Hugging Face</h3>
+            <div class="feature-grid">
+                <div class="feature-box"><strong>📈 自動走時繪製</strong><br>動態疊加 IASP91 理論走時，簡化震相判讀。</div>
+                <div class="feature-box"><strong>☁️ FDSN 雲端抓取</strong><br>直接連線 IRIS 資料庫，無需下載龐大數據。</div>
+                <div class="feature-box"><strong>🎛️ 實時數位濾波</strong><br>內建 Bandpass 與切換通道的高效能處理。</div>
+                <div class="feature-box"><strong>🤖 AI 輔助開發</strong><br>利用 Gemini 優化代碼結構，提升 UI 響應。</div>
+            </div>
+            <a href="https://huggingface.co/spaces/cwadayi/Eq_demo" target="_blank" class="action-btn">啟動線上實驗室 →</a>
+        </div>
+    </div>
+
+    <!-- 心得區 -->
+    <div class="content-card">
+        <h2>💡 數位轉型心得</h2>
+        <p>本週不僅學習了地熱能的物理背景，更體會到 <strong>AI 如何縮短「理論」到「工具」的距離</strong>。透過 Gradio 介面，我們能將複雜的 ObsPy 指令封裝成直觀的拉桿與按鈕，這讓非程式背景的人也能參與地震觀測。這正是我致力於期末製作的方向：讓地科數據更親民、更強大。</p>
+    </div>
+
+</div>
+
+<footer>
+    <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
+</footer>
+
+<script>
+    // --- 互動功能 1: 技術展示切換 ---
+    const techData = {
+        'micro': {
+            title: '微震監測 (Microseismic)',
+            desc: '透過監測地下極微小的地震活動（微震），我們可以精確定位地下熱儲層的流體流動路徑與裂縫發育情況。這在地熱井的誘發裂隙監測中至關重要。'
+        },
+        'mt': {
+            title: '大地電磁法 (MT)',
+            desc: '利用地表的天然電磁場變化，探測地下深層的電阻率分佈。因為含水熱儲層通常具有低電阻特徵，MT 是標定地熱目標最有效的手段之一。'
+        },
+        'status': {
+            title: '探勘近況 (Exploration Status)',
+            desc: '台灣目前正致力於大屯火山群與宜蘭地區的深層地熱開發。整合地質、地球物理與地球化學的綜合調查是提升成功率的關鍵。'
+        },
+        'ai': {
+            title: '人工智慧與地熱 (AI & Geothermal)',
+            desc: 'AI 能夠在海量的地震紀錄與電磁數據中，自動識別潛在的異常特徵。機器學習模型已被用於優化井位選取，大幅降低開發風險。'
+        }
+    };
+
+    function showTech(id) {
+        // 更新按鈕狀態
+        document.querySelectorAll('.tech-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // 更新文字內容
+        document.getElementById('tech-title').innerText = techData[id].title;
+        document.getElementById('tech-desc').innerText = techData[id].desc;
+    }
+
+    // --- 互動功能 2: 簡單的震波脈衝動畫 ---
+    let path = document.getElementById('seismicPath');
+    let points = [];
+    for (let i = 0; i <= 40; i++) { points.push({ x: i * 20, y: 75 }); }
+
+    function animateWave() {
+        let d = `M 0 75`;
+        points.forEach((p, i) => {
+            if (i > 0) {
+                // 產生隨機擾動模擬濾波後的波形
+                let noise = (Math.random() - 0.5) * 10;
+                p.y = 75 + noise;
+                // 每隔一段時間產生一個大脈衝
+                if (Date.now() % 3000 < 50) { p.y += (Math.random() - 0.5) * 60; }
+                d += ` L ${p.x} ${p.y}`;
+            }
+        });
+        path.setAttribute('d', d);
+        requestAnimationFrame(animateWave);
+    }
+    animateWave();
+</script>
+
+</body>
+</html>
