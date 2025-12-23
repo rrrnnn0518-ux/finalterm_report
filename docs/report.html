@@ -62,7 +62,7 @@
         .equip-item strong { color: var(--accent); display: block; }
         .equip-img { width: 100%; border-radius: 15px; border: 1px solid #444; }
 
-        /* 過程描述 */
+        /* --- 過程描述 --- */
         .process-container { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .process-step { display: flex; align-items: center; background: #1a1a1a; padding: 12px 20px; border-radius: 8px; border: 1px solid #2a2a2a; }
         .step-idx { 
@@ -73,34 +73,71 @@
         .process-step:nth-child(even) .step-idx { background: var(--accent); color: #000; }
         .step-text { font-size: 1.1rem; font-weight: 500; color: #fff; }
 
-        /* 視覺分析圖形 - 再次縮小版 */
-        .viz-small-container { text-align: center; margin: 20px 0; }
-        .viz-small-box { 
-            max-width: 400px; margin: 0 auto; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); 
-            overflow: hidden; background: #000; box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+        /* --- 視覺分析：三圖併排對齊版 --- */
+        .viz-layout { 
+            display: flex; 
+            gap: 15px; 
+            max-width: 900px; 
+            margin: 30px auto; 
+            align-items: stretch;
         }
-        .viz-small-box img { width: 100%; display: block; filter: brightness(1.1); }
-        .viz-label { padding: 6px; background: var(--accent); color: #000; font-weight: 800; font-size: 0.75rem; }
+        
+        /* 左側大圖 */
+        .viz-main-side { 
+            flex: 1.2; 
+            position: relative; 
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+        .viz-main-side img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(1.1); }
 
-        /* 計算卡片 */
+        /* 右側疊加圖 */
+        .viz-sub-column { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        .viz-sub-box { 
+            flex: 1; 
+            position: relative; 
+            border: 1px solid rgba(0,229,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+        .viz-sub-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* 圖上標籤 */
+        .viz-tag { 
+            position: absolute; bottom: 0; width: 100%; 
+            background: rgba(0,0,0,0.7); color: var(--accent); 
+            font-size: 0.75rem; padding: 5px 10px; font-weight: bold;
+            border-top: 1px solid rgba(255,215,0,0.3);
+        }
+        .tag-cyan { color: var(--cyan); border-top-color: var(--cyan); }
+
+        /* 計算與表格 */
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .calc-card { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #333; border-top: 3px solid var(--cyan); }
         .math-text { font-size: 1.1rem; font-weight: bold; color: #fff; margin: 5px 0; font-family: serif; }
-
-        /* 結論探討區塊 */
-        .discussion-box { background: #1a1a1a; padding: 35px; border-radius: 15px; border-left: 6px solid var(--accent); margin-bottom: 40px; }
-        .discussion-box p { font-size: 1.15rem; color: #eee; line-height: 2; margin: 0; }
-        .highlight-text { color: var(--accent); font-weight: bold; }
-
-        /* 數據表格 */
         .table-wrap { overflow-x: auto; margin: 30px 0; background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid #333; }
         table { width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem; }
         th { background: #222; color: var(--accent); padding: 10px; border: 1px solid #444; }
         td { padding: 10px; border: 1px solid #444; text-align: center; }
 
+        .discussion-box { background: #1a1a1a; padding: 35px; border-radius: 15px; border-left: 6px solid var(--accent); margin-bottom: 40px; }
+        .discussion-box p { font-size: 1.15rem; color: #eee; line-height: 2; margin: 0; }
+        .highlight-text { color: var(--accent); font-weight: bold; }
+
         footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.8rem; }
 
-        @media (max-width: 850px) { .equip-grid, .calc-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 850px) { 
+            .equip-grid, .calc-grid, .viz-layout { flex-direction: column; } 
+            .viz-main-side, .viz-sub-column { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -126,7 +163,7 @@
 <section id="theory">
     <h2 class="section-title">物理原理簡述</h2>
     <div class="card-box" data-aos="fade-up">
-        <p>本實驗透過分析地震波於地層介面的 <span style="color:var(--accent)">臨界折射現象</span>，逆推地下結構的速度分布。其核心在於辨識「直達波」與「折射波」在走時曲線上的交點。</p>
+        <p>本實驗旨在透過分析地震波於地層介面的 <span style="color:var(--accent)">臨界折射現象</span>，逆推地下結構的速度分布。其核心在於辨識「直達波」與「折射波」在走時曲線上的交點。</p>
         <div class="formula">h = (Xcr / 2) * √[(V2 - V1) / (V2 + V1)]</div>
         <p>藉由標定轉折距離 <span style="color:var(--cyan)">Xcr (Cross-over distance)</span>，結合 V1、V2 斜率，即可精確計算地層介面的深度 (h)。</p>
     </div>
@@ -137,11 +174,11 @@
     <h2 class="section-title">所需器材配置</h2>
     <div class="equip-grid">
         <ul class="equip-list" data-aos="fade-right">
-            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>數位化地震訊號的主控核心。</li>
-            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>捕捉土壤物理震動，共佈設 24 組。</li>
-            <li class="equip-item"><strong>橘色電纜線</strong>負責 24 測站數據的高速傳輸。</li>
-            <li class="equip-item"><strong>白色感應線</strong>紀錄鐵鎚敲擊鐵板瞬間的「零點時間」。</li>
-            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工激發震源，提供實驗所需的能量。</li>
+            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>將接收器之類比訊號數位化並回傳電腦。</li>
+            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>捕捉微小震動，本次共佈設 24 個測站。</li>
+            <li class="equip-item"><strong>橘色電纜線</strong>負責所有測站數據的高速傳輸匯整。</li>
+            <li class="equip-item"><strong>白色感應線</strong>精確標記震源激發的起點時間（T0）。</li>
+            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工震源裝置，產生地層探測用之彈性能量。</li>
         </ul>
         <div data-aos="fade-left">
             <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source1.png?raw=true" class="equip-img" alt="器材示意圖">
@@ -166,22 +203,35 @@
     </div>
 </section>
 
-<!-- 4. 數據計算 -->
+<!-- 4. 數據計算與視覺化 -->
 <section id="analysis">
-    <h2 class="section-title">數據判讀與計算</h2>
+    <h2 class="section-title">數據判讀與計算分析</h2>
 
-    <!-- 波形圖 - 已縮小至 400px -->
-    <div class="viz-small-container" data-aos="zoom-in">
-        <div class="viz-small-box">
-            <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source3.png?raw=true" alt="全測段原始圖">
-            <div class="viz-label">全測段初至波紀錄：人工標定與震相判讀基礎</div>
+    <!-- 三圖併排區塊 -->
+    <div class="viz-layout" data-aos="zoom-in">
+        <!-- 左側大圖 -->
+        <div class="viz-main-side">
+            <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source3.png?raw=true" alt="波形原始紀錄">
+            <div class="viz-tag">全測段初至波紀錄原始圖</div>
+        </div>
+        
+        <!-- 右側兩張計算圖 -->
+        <div class="viz-sub-column">
+            <div class="viz-sub-box">
+                <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source5.png?raw=true" alt="臨界角計算過程">
+                <div class="viz-tag tag-cyan">ssource5: 計算臨界角的過程</div>
+            </div>
+            <div class="viz-sub-box">
+                <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source6.png?raw=true" alt="平均波速計算">
+                <div class="viz-tag tag-cyan">ssource6: 計算平均速度</div>
+            </div>
         </div>
     </div>
 
-    <!-- 計算詳情 -->
+    <!-- 計算卡片 -->
     <div class="calc-grid">
         <div class="calc-card" data-aos="fade-up">
-            <h4><i class="fas fa-calculator"></i> 平均波速彙整 (第二次修正)</h4>
+            <h4><i class="fas fa-calculator"></i> 平均波速彙整 (修正後)</h4>
             <div class="math-text">V1<sub>avg</sub> ≈ 430.125 m/s</div>
             <div class="math-text">V2<sub>avg</sub> ≈ 1036.750 m/s</div>
             <p style="font-size:0.75rem; color:#777;">* 代表表層風化土層與下部緻密地層</p>
@@ -220,7 +270,7 @@
     </div>
 </section>
 
-<!-- 5. 結論探討 (新增區塊) -->
+<!-- 5. 結論探討 -->
 <section id="discussion">
     <h2 class="section-title">結論探討</h2>
     <div class="discussion-box" data-aos="fade-up">
