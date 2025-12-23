@@ -3,210 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>W03 折射震測實驗報告 | 林靖融</title>
+    <title>折射震測實驗報告 | 林靖融成果</title>
     <style>
         :root {
-            --bg: #0f0f0f;
-            --card-bg: #1a1a1a;
-            --accent: #fbbf24; /* 金色 */
-            --tech: #22d3ee;   /* 藍色 */
-            --text: #e2e8f0;
-            --sub-text: #94a3b8;
+            --ppt-bg: #3a3a3a;      /* PPT 深灰色背景 */
+            --ppt-yellow: #fbbf24;  /* PPT 標誌性黃色 */
+            --ppt-card: #2d2d2d;
+            --text: #ffffff;
+            --sub-text: #cccccc;
         }
 
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--ppt-bg);
             color: var(--text);
             margin: 0;
-            line-height: 1.7;
+            padding: 0;
+            line-height: 1.6;
         }
 
+        /* 導航 */
         nav {
-            background: rgba(15, 15, 15, 0.95);
-            padding: 15px 30px;
-            position: sticky;
-            top: 0;
-            border-bottom: 1px solid #334155;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 30px;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
+        }
+        nav a { color: var(--ppt-yellow); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+
+        /* 復刻 PPT 第一頁：標題頁 */
+        .hero-slide {
+            height: 100vh;
+            display: flex;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            padding: 50px;
+            border-bottom: 8px solid var(--ppt-yellow);
         }
 
-        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
-
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-
-        .header-section {
-            border-left: 4px solid var(--accent);
-            padding-left: 20px;
-            margin-bottom: 40px;
-        }
-
-        h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; }
-        .authors { color: var(--sub-text); font-size: 0.9rem; margin-bottom: 20px; }
-
-        .content-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid #334155;
-        }
-
-        h2 { color: var(--tech); border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 0; }
-        h3 { color: var(--accent); }
-
-        /* 實驗原理公式區 */
-        .formula-box {
-            background: #000;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: "Cambria Math", serif;
-            font-size: 1.2rem;
-            color: var(--accent);
-            margin: 20px 0;
-            border-left: 4px solid var(--accent);
-        }
-
-        /* 圖片網格 */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .image-grid img {
+        .hero-container {
+            display: flex;
+            max-width: 1100px;
             width: 100%;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            transition: 0.3s;
-            cursor: zoom-in;
+            align-items: center;
+            gap: 50px;
         }
 
-        .image-grid img:hover {
-            transform: scale(1.03);
-            border-color: var(--accent);
+        .hero-image {
+            flex: 1;
+            border-left: 10px solid var(--ppt-yellow);
+            border-right: 10px solid var(--ppt-yellow);
+            padding: 20px 0;
         }
+        .hero-image img { width: 100%; filter: grayscale(0.2); }
 
-        /* 心得區塊特化 */
-        .reflection-card {
-            border-top: 5px solid var(--accent);
-            background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
-        }
+        .hero-text { flex: 1; }
+        .hero-text h2 { font-size: 1.5rem; color: #aaa; margin: 0; }
+        .hero-text h1 { font-size: 4rem; color: #fff; margin: 10px 0; line-height: 1.1; }
+        .hero-text p { font-size: 1.2rem; color: var(--ppt-yellow); letter-spacing: 2px; }
 
-        .reflection-content {
-            font-style: italic;
-            color: #cbd5e1;
-            padding-left: 20px;
-            border-left: 2px solid #475569;
-        }
-
-        /* 列表樣式 */
-        ul { padding-left: 20px; }
-        li { margin-bottom: 8px; }
-
-        footer {
+        /* 復刻 PPT 第二頁：目錄圓框 */
+        .directory-section {
+            padding: 80px 20px;
             text-align: center;
-            padding: 60px;
-            color: var(--sub-text);
-            font-size: 0.9rem;
-            border-top: 1px solid #1e293b;
+            background: #333;
+        }
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        .dir-item {
+            border: 2px solid #555;
+            border-radius: 15px;
+            padding: 30px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dir-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--ppt-yellow);
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .dir-item span { font-size: 0.9rem; font-weight: bold; }
+
+        /* 通用投影片區塊 */
+        .slide-section {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 40px;
+            background: var(--ppt-card);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
-        .badge {
-            background: var(--accent);
-            color: #000;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
+        .slide-title {
+            font-size: 2.5rem;
+            border-bottom: 4px solid var(--ppt-yellow);
             display: inline-block;
+            margin-bottom: 30px;
         }
+
+        /* 數據分析配置：左圖右文 */
+        .analysis-block {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            align-items: flex-start;
+        }
+        .analysis-img { flex: 1.2; }
+        .analysis-img img { width: 100%; border-radius: 5px; border: 2px solid #555; }
+        .analysis-info {
+            flex: 1;
+            background: #222;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--ppt-yellow);
+        }
+        .math-code { font-family: 'Consolas', monospace; color: var(--ppt-yellow); font-size: 1.1rem; }
+
+        /* 表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 12px;
+            text-align: center;
+        }
+        th { background: #444; color: var(--ppt-yellow); }
+
+        /* 心得區塊 */
+        .reflection-content {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #eee;
+            border: 1px solid #444;
+        }
+
+        footer { text-align: center; padding: 100px; color: #666; font-size: 0.8rem; }
 
         @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
+            .hero-container, .analysis-block { flex-direction: column; }
+            .directory-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-text h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="index.html">← 返回課程總覽</a>
-    <div style="color: var(--sub-text); font-size: 0.8rem;">地球物理實驗室 | 校園實地觀測</div>
+    <a href="index.html">← 返回首頁成果展</a>
+    <span style="color:#666">Geophysics Report | W03</span>
 </nav>
 
-<div class="container">
-    <div class="header-section">
-        <span class="badge">WEEK 03 FIELD REPORT</span>
-        <h1>地震折射震測實驗報告</h1>
-        <p class="authors">實驗參與者：林靖融、洪敏書、李政暟</p>
-    </div>
-
-    <!-- 實驗目的 -->
-    <div class="content-card">
-        <h2>🎯 實驗目的</h2>
-        <ul>
-            <li>熟悉地震折射法的基本原理與野外實際觀測程序。</li>
-            <li>了解如何利用「走時資料」（Travel-time data）推算地下地層的波速與地層厚度。</li>
-            <li>實地體驗地球物理探勘在工程與地質調查中的實際應用。</li>
-        </ul>
-    </div>
-
-    <!-- 實驗原理 -->
-    <div class="content-card">
-        <h2>物理原理與公式推導</h2>
-        <p>利用地震波在不同介質交界面的折射現象（臨界折射波），來推測地下層位結構。當震源產生波後，部分波會依據 <b>Snell's Law</b> 產生臨界折射，並沿著介面以較快速度傳遞，最後回折至地表被接收。</p>
-        
-        <div class="formula-box">
-            h = (X<sub>cr</sub> / 2) * √[(V<sub>2</sub> - V<sub>1</sub>) / (V<sub>2</sub> + V<sub>1</sub>)]
+<!-- Slide 1: Title -->
+<section class="hero-slide">
+    <div class="hero-container">
+        <div class="hero-image">
+            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source1.png" alt="Waveform Cover">
         </div>
-        <p style="font-size: 0.9rem; color: var(--sub-text);">
-            * 註：h 為地層厚度；X<sub>cr</sub> 為轉折距離（Cross-over distance）；V<sub>1</sub> 為第一層直達波速；V<sub>2</sub> 為第二層折射波速。
-        </p>
-    </div>
-
-    <!-- 數據分析與過程 -->
-    <div class="content-card">
-        <h2>📊 數據分析與過程描述</h2>
-        <p>我們在校園內布置了 50 公尺長的皮尺，並以 2 公尺為間隔放置了 24 個接收器（Geophones）。</p>
-        
-        <div class="image-grid">
-            <!-- 這裡使用你提供的圖片連結，轉換為 raw 格式以正常顯示 -->
-            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source1.png" alt="數據分析圖1">
-            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source2.png" alt="數據分析圖2">
-            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source3.png" alt="數據分析圖3">
-            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source4.png" alt="數據分析圖4">
+        <div class="hero-text">
+            <h2>地球物理</h2>
+            <h1>折射震測實驗</h1>
+            <p>報告人：林靖融、洪敏書、李政暟</p>
         </div>
-
-        <h3>核心操作步驟：</h3>
-        <ol>
-            <li>放置 50 米皮尺，垂直埋設 24 個接收器於地面下。</li>
-            <li>連接資料擷取系統（黃色盒子）至筆記型電腦。</li>
-            <li>使用鐵鎚敲擊鐵板產生人工震波，記錄各炸點之訊號。</li>
-            <li>透過數位軟體標定初至波（First break），繪製走時曲線。</li>
-        </ol>
     </div>
+</section>
 
-    <!-- 個人心得 -->
-    <div class="content-card reflection-card">
-        <h2>💡 個人心得報告：林靖融</h2>
-        <div class="reflection-content">
-            <p>這次的震測實驗是我第一次做地震物理相關的實驗。之前大多只有在書籍資料中理解實驗方法跟理論，而實際的操作讓我發現很多實際操作實驗的變數。</p>
-            <p>比如我們這次是在馬路邊進行的緣故，車子經過的震動造成的干擾會直接影響到我們的接收器接收我們自己製作的振波。此外，實際操作也讓我發現，如果要發展成功的工程用具，有很多「人性化」的細節需要改良。</p>
-            <p>像是老師介紹的那款小型接收器，與以前的型號相比，可以和其他相同款式的做串接來增加測量的接收器上限，這點令我印象深刻。之前看資料時對數據和圖像呈現產生的好奇，也在這次實作中得到了完整的解惑，是非常有收穫的課程內容。</p>
+<!-- Slide 2: Directory -->
+<section class="directory-section">
+    <div class="slide-title" style="font-size: 1.5rem;">目錄</div>
+    <div class="directory-grid">
+        <div class="dir-item"><div class="dir-circle"></div><span>實驗目的</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>實驗原理</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>所需器材</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>過程描述</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>數據分析</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>結論探討</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>實驗照片</span></div>
+        <div class="dir-item"><div class="dir-circle"></div><span>組員心得</span></div>
+    </div>
+</section>
+
+<!-- Slide 3 & 4: Principles -->
+<section class="slide-section">
+    <h2 class="slide-title">實驗目的與原理</h2>
+    <p>熟悉地震折射法的基本原理和野外觀測程序，並利用走時資料（Distance-Time Plot）推算地層的波速與厚度。我們利用 <b>Snell's Law</b> 產生的臨界折射波，分析直達波與折射波的交界點（Cross-over distance）。</p>
+    <div style="background:#000; padding: 20px; border-radius: 10px; text-align: center; color: var(--ppt-yellow); font-size: 1.5rem; margin: 20px 0;">
+        h = (Xcr / 2) * √[(V2 - V1) / (V2 + V1)]
+    </div>
+</section>
+
+<!-- Slide 7-10: Data Analysis (整合你提供的 4 張圖片) -->
+<section class="slide-section">
+    <h2 class="slide-title">數據分析與計算</h2>
+    
+    <!-- 分析 1 -->
+    <div class="analysis-block">
+        <div class="analysis-img">
+            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source1.png" alt="炸點 0m">
+        </div>
+        <div class="analysis-info">
+            <h3>炸點在 0 公尺時</h3>
+            <div class="math-code">
+                v2 = 10 / 0.00937 ≈ 1067 m/s<br>
+                v1 = 8 / 0.01844 ≈ 434 m/s<br>
+                Xcr = 14 m
+            </div>
+            <p>公式帶入後得 <b>h(地層厚度) ≈ 4.55m</b></p>
         </div>
     </div>
 
-</div>
+    <!-- 分析 2 -->
+    <div class="analysis-block">
+        <div class="analysis-img">
+            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source2.png" alt="炸點 6m">
+        </div>
+        <div class="analysis-info">
+            <h3>炸點在 6 公尺時</h3>
+            <div class="math-code">
+                v2 = 12 / 0.00593 ≈ 1012 m/s<br>
+                v1 = 8 / 0.01891 ≈ 423 m/s<br>
+                Xcr = 14 m
+            </div>
+            <p>公式帶入後得 <b>h(地層厚度) ≈ 4.48m</b></p>
+        </div>
+    </div>
+
+    <!-- 分析 3 -->
+    <div class="analysis-block">
+        <div class="analysis-img">
+            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source3.png" alt="炸點 12m">
+        </div>
+        <div class="analysis-info">
+            <h3>炸點在 12 公尺時</h3>
+            <div class="math-code">
+                v2 = 6 / 0.00719 ≈ 1085 m/s<br>
+                v1 = 10 / 0.02156 ≈ 464 m/s<br>
+                Xcr = 14 m
+            </div>
+            <p>公式帶入後得 <b>h(地層厚度) ≈ 4.43m</b></p>
+        </div>
+    </div>
+
+    <!-- 分析 4 -->
+    <div class="analysis-block">
+        <div class="analysis-img">
+            <img src="https://raw.githubusercontent.com/rrrnnn0518-ux/finalterm_report/main/source/ss_source4.png" alt="炸點 18m">
+        </div>
+        <div class="analysis-info">
+            <h3>炸點在 18 公尺時</h3>
+            <div class="math-code">
+                v2 = 6 / 0.00812 ≈ 985 m/s<br>
+                v1 = 8 / 0.01875 ≈ 427 m/s<br>
+                Xcr = 8 m
+            </div>
+            <p>公式帶入後得 <b>h(地層厚度) ≈ 2.51m</b></p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 16 & 28: Result Table -->
+<section class="slide-section">
+    <h2 class="slide-title">計算結果彙整表</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>炸點距離(m)</th>
+                <th>0</th>
+                <th>6</th>
+                <th>12</th>
+                <th>18</th>
+                <th>平均值</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>v1 (m/s)</td>
+                <td>434</td>
+                <td>423</td>
+                <td>464</td>
+                <td>427</td>
+                <td>437.0</td>
+            </tr>
+            <tr>
+                <td>v2 (m/s)</td>
+                <td>1067</td>
+                <td>1012</td>
+                <td>1085</td>
+                <td>985</td>
+                <td>1037.2</td>
+            </tr>
+            <tr>
+                <td>h (m)</td>
+                <td>4.55</td>
+                <td>4.48</td>
+                <td>4.43</td>
+                <td>2.51</td>
+                <td>3.99</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Slide 33: Reflection (林靖融) -->
+<section class="slide-section">
+    <h2 class="slide-title">組員心得：林靖融</h2>
+    <div class="reflection-content">
+        <p>這次的震測實驗是我第一次做地震物理相關的實驗，之前大多只有在書籍資料中理解實驗方法跟理論，而實際的操作讓我發現很多實際操作實驗的變數。</p>
+        <p>比如我們這次是在馬路邊進行的緣故，車子經過的震動造成的干擾會直接影響到我們的接收器接收我們自己製作的振波，還有實際操作也可以發現如果要實際發展成功工程用具會有那些地方需要特意改良的人性化。</p>
+        <p>像是老師介紹的地者款小型的接收器和以前就是得相比可以和其他相同款式的做串接來增加測量的接收器上限，之前看資料時產生好奇的實際探測數據和圖像的呈現也得到了解惑，對我來說很有收穫的課程內容。</p>
+    </div>
+</section>
+
+<!-- Slide 34: Thanks -->
+<section style="text-align: center; padding: 100px 0;">
+    <h1 style="font-size: 5rem; color: var(--ppt-yellow); letter-spacing: 10px;">THANKS</h1>
+</section>
 
 <footer>
     <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
 </footer>
 
 </body>
-</html>
+</html>ㄒ
