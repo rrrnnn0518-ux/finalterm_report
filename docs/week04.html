@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 04 | 地震層析與深度成像專題</title>
+    
+    <!-- 外部庫：Tailwind CSS, AOS 動畫, FontAwesome, Canvas-confetti (用於噴發特效) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;900&family=JetBrains+Mono&display=swap');
+        
+        body {
+            background-color: #000814;
+            color: #e0e2e5;
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .glass-dark {
+            background: rgba(0, 29, 61, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient-fire {
+            background: linear-gradient(to right, #ffc300, #ff4d00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 火山互動區樣式 */
+        #volcano-area {
+            position: relative;
+            background: radial-gradient(circle at bottom, #1d3557 0%, #000814 80%);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .volcano-mountain {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 150px;
+            background: #111;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 10;
+        }
+
+        .crater-glow {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: #ff4d00;
+            filter: blur(10px);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+            50% { transform: translateX(-50%) scale(1.5); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+        }
+
+        .formula-card {
+            border-left: 4px solid #ffc300;
+            background: rgba(255, 195, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- 導覽列 -->
+    <nav class="fixed w-full z-50 px-8 py-4 glass-dark flex justify-between items-center border-b border-white/10">
+        <div class="text-xl font-black tracking-widest text-white">
+            <span class="text-yellow-400">WEEK</span> 04 <span class="text-orange-500">TOMOGRAPHY</span>
+        </div>
+        <a href="index.html" class="text-xs font-bold hover:text-yellow-400 transition-all uppercase">← Back to Journey</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="h-[70vh] flex flex-col justify-center items-center text-center px-4 relative">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-30"></div>
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter" data-aos="zoom-in">
+            地球的 <span class="text-gradient-fire">層析掃描儀</span>
+        </h1>
+        <p class="text-xl text-slate-400 max-w-2xl font-light" data-aos="fade-up" data-aos-delay="200">
+            本週聚焦：甘禮有博士專題演講紀錄、震測數據深度分析與數位協作進化。
+        </p>
+        <div class="mt-10 animate-bounce text-yellow-400">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 max-w-6xl pb-20">
+
+        <!-- 1. 甘禮有博士演講精華 -->
+        <section id="lecture" class="mb-32">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="h-12 w-2 bg-orange-600"></div>
+                <div>
+                    <h2 class="text-4xl font-bold">甘禮有博士：遠震全波形逆推</h2>
+                    <p class="text-slate-500 italic">Lithospheric Seismic Imaging Using Teleseismic FWI</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- 心得摘要一：淺顯易懂的邏輯 -->
+                <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up">
+                    <i class="fas fa-lightbulb text-3xl text-yellow-400 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">深入淺出的解讀</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        演講最令人印象深刻的是博士將複雜的「地震層析成像」比喻為生活常識。刻意跳過艱澀專有名詞，而是鎖定關鍵原理，讓即便對地物知之甚少的學生也能大致理解地下結構的尺度觀念。
+                    </p>
+                </div>
+
+                <!-- 心得摘要二：核心原理 F=ma -->
+                <div class="glass-dark p-8 rounded-3xl border-t-4 border-orange-500" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-atom text-3xl text-orange-500 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">物理核心：F = ma</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        博士強調所有的正演與逆推問題，其靈魂皆源自「牛頓第二運動定律」。在連續體空間中轉化為應力與位移的數學推斷，這是將理論化繁為簡的極致展現。
+                    </p>
+                </div>
+
+                <!-- 心得摘要三：留學啟發 -->
+                <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-globe-americas text-3xl text-cyan-400 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">國際視野與啟發</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        博士分享的留學經歷與實習建議點燃了對國外實驗室的興趣。透過投遞資歷進入自由研發環境的途徑，為未來的學術職涯打開了全新的想像空間。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 互動互動：火山噴發與流體辨識 (阿蘇火山專題) -->
+        <section class="mb-32">
+            <h2 class="text-3xl font-bold text-center mb-12">阿蘇火山：超臨界流體辨識模擬</h2>
+            <div id="volcano-area" class="h-[400px] rounded-[3rem] shadow-2xl flex flex-col items-center justify-center p-10" data-aos="zoom-in" onclick="eruptVolcano()">
+                <div class="volcano-mountain"></div>
+                <div class="crater-glow"></div>
+                
+                <div class="relative z-20 text-center">
+                    <h4 class="text-2xl font-black text-white mb-4">點擊火山進行觀測實驗</h4>
+                    <p class="text-yellow-400 font-mono text-sm">[ STATUS: MONITORING MAGMA RESERVOIR ]</p>
+                </div>
+                
+                <div class="absolute top-10 right-10 glass-dark p-4 rounded-2xl text-xs max-w-[200px]">
+                    <p class="text-orange-400 font-bold mb-2">博士研究點：</p>
+                    從層析影像中辨識超臨界流體與減壓相變作用，分析地震與火山噴發的關聯。
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 理論核心：正演問題與逆推問題 (Forward vs Inverse) -->
+        <section class="mb-32">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="h-12 w-2 bg-yellow-500"></div>
+                <h2 class="text-4xl font-bold">層析演算法的邏輯架構</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-6" data-aos="fade-right">
+                    <div class="formula-card p-6 rounded-2xl">
+                        <h4 class="font-black text-yellow-400 mb-2">FORWARD PROBLEM 正演問題</h4>
+                        <p class="text-sm text-slate-300">給定「模型（地下構造）」，利用物理定律推算出「預測資料（波形、到時）」。這是模擬地震波如何傳遞的過程。</p>
+                        <code class="block mt-4 text-cyan-400 font-mono">Model → (Physics: F=ma) → Data</code>
+                    </div>
+                    <div class="formula-card p-6 rounded-2xl border-orange-500 bg-orange-500/5">
+                        <h4 class="font-black text-orange-500 mb-2">INVERSE PROBLEM 逆推問題</h4>
+                        <p class="text-sm text-slate-300">從「觀測資料（地震紀錄）」反過來推求「模型參數」。這是一個「病態問題」，因為可能有多種模型都能解釋同一組資料。</p>
+                        <code class="block mt-4 text-orange-400 font-mono">Data → (Optimization) → Model</code>
+                    </div>
+                </div>
+
+                <div class="glass-dark p-10 rounded-[2.5rem] flex items-center justify-center border-dashed border-2 border-slate-700" data-aos="fade-left">
+                    <div class="text-center">
+                        <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Challenge of FWI</p>
+                        <h3 class="text-2xl font-bold text-gradient-fire mb-6">全波形逆推 (FWI) 的挑戰</h3>
+                        <ul class="text-left text-sm space-y-3 text-slate-400">
+                            <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>Cycle-skipping (週期跳躍) 偽影</li>
+                            <li><i class="fas fa-microchip text-orange-500 mr-2"></i>耗費巨大的計算資源 (需要多卡 GPU)</li>
+                            <li><i class="fas fa-chart-line text-orange-500 mr-2"></i>模型Covariance 矩陣的定義難度</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 其他成果：Prompt 與 GitHub -->
+        <section class="grid md:grid-cols-2 gap-8">
+            <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fab fa-blogger text-orange-500"></i> Prompt 分享
+                </h3>
+                <p class="text-sm text-slate-400 mb-6">本週深入探討如何下達優質 Prompt 來處理地物數據，並將成果記錄於 Google Blogger。</p>
+                <a href="https://oceanicdayi.blogspot.com/2025/09/blog-post_30.html" target="_blank" class="inline-block px-6 py-3 bg-white text-black rounded-full font-bold text-sm hover:bg-yellow-400 transition-all">前往閱讀筆記</a>
+            </div>
+
+            <div class="glass-dark p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fab fa-github text-white"></i> GitHub 實務
+                </h3>
+                <p class="text-sm text-slate-400 mb-6">持續深化作業三的 GitHub 操作，包括分支管理與 Pull Request 協作細節。</p>
+                <a href="#" class="inline-block px-6 py-3 bg-slate-800 text-white rounded-full font-bold text-sm hover:bg-slate-700 transition-all">查看 Repo 更新</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-20 border-t border-white/5 text-center">
+        <p class="text-slate-600 text-xs">U11310028 | 地球物理課程學習成果展</p>
+        <p class="text-slate-700 text-[10px] mt-2 uppercase tracking-widest">Special thanks to Dr. Li-Yu Kan</p>
+    </footer>
+
+    <script>
+        AOS.init();
+
+        function eruptVolcano() {
+            // 火山噴發特效
+            const duration = 2 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: 0.5, y: 0.65 },
+                    colors: ['#ff0000', '#ff4d00', '#ffc300', '#333'],
+                    gravity: 1.5,
+                    scalar: 0.8
+                }));
+            }, 250);
+
+            // 觸發文字更新
+            const info = document.querySelector('#volcano-area h4');
+            info.innerText = "ERUPTION DETECTED!";
+            info.style.color = "#ff4d00";
+            setTimeout(() => {
+                info.innerText = "點擊火山進行觀測實驗";
+                info.style.color = "#ffffff";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
