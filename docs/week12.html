@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W12 地球的熱分布與地熱能 | 地球物理學筆記</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent: #fb923c; /* 地熱橘 */
+            --hot: #ef4444;    /* 核心紅 */
+            --tech: #22d3ee;   /* 科技藍 */
+            --text: #e2e8f0;
+            --sub-text: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        nav {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .header-section {
+            border-left: 4px solid var(--hot);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .week-tag { background: var(--hot); color: #fff; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        h2 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* 熱能比例視覺化 */
+        .energy-split {
+            display: flex;
+            gap: 10px;
+            height: 30px;
+            margin: 20px 0;
+            border-radius: 5px;
+            overflow: hidden;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .sun { background: var(--accent); color: #000; width: 99.97%; display: flex; align-items: center; justify-content: center; }
+        .geo { background: var(--hot); color: #fff; width: 0.03%; }
+
+        /* 核心表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            border: 1px solid #334155;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background: #262626; color: var(--accent); }
+
+        /* 重要公式區 */
+        .formula-box {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            text-align: center;
+            font-family: "Cambria Math", serif;
+            font-size: 1.1rem;
+            margin: 20px 0;
+        }
+
+        /* 期末公告區 */
+        .final-project-card {
+            background: linear-gradient(135deg, #450a0a 0%, #1a1a1a 100%);
+            border: 2px solid var(--hot);
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .action-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">← 返回課程總覽</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 2024 地球物理學成果</div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <span class="week-tag">WEEK 12</span>
+        <h1>地球的熱分布：地底深處的引擎</h1>
+        <p style="color: var(--sub-text);">從太陽輻射能量收支到地函對流的熱力學基礎</p>
+    </div>
+
+    <!-- 能量收支區 -->
+    <div class="content-card">
+        <h2>⚖️ 地球能量收支預算</h2>
+        <p>地球表面的熱主要來自太陽，但驅動地質構造運動的則是來自內部的地熱。兩者比例極其懸殊：</p>
+        <div class="energy-split">
+            <div class="sun">太陽輻射 (約 99.97%)</div>
+            <div class="geo"></div>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--sub-text);">
+            * 內部地熱流量僅佔太陽輻射的 <strong>1/4000</strong>。但這微小的能量卻支撐了板塊漂移、地震與火山噴發。
+        </p>
+    </div>
+
+    <!-- 熱力學基礎 -->
+    <div class="content-card">
+        <h2>🔥 熱力學與生熱率</h2>
+        <p>地球內部的熱主要來自兩個來源：<strong>地球形成時的餘熱</strong> 以及 <strong>放射性同位素 (U, Th, K) 的衰變生熱</strong>。</p>
+        
+        <div class="formula-box">
+            ΔQ = cᵖ m ΔT (比熱公式) <br>
+            ΔQ = ΔU + ΔW (熱力學第一定律)
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>岩石類型</th>
+                    <th>主要生熱貢獻 (U, Th, K)</th>
+                    <th>相對生熱率</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>花崗岩 (Granite)</td>
+                    <td>最高 (大陸地殼主要組成)</td>
+                    <td>≈ 101</td>
+                </tr>
+                <tr>
+                    <td>地函岩石 (Mantle)</td>
+                    <td>極低</td>
+                    <td>≈ 0.49</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 海洋與大陸對比 -->
+    <div class="content-card">
+        <h2>🌍 熱流來源：大陸 vs. 海洋</h2>
+        <p>有趣的是，大陸與海洋的熱流來源完全不同：</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>熱量來源</th>
+                    <th>大陸 (Continents)</th>
+                    <th>海洋 (Oceans)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>岩石圈冷卻 (Cooling)</td>
+                    <td>20%</td>
+                    <td><strong style="color: var(--hot);">85% (主導)</strong></td>
+                </tr>
+                <tr>
+                    <td>放射性生熱 (Radiogenic)</td>
+                    <td><strong style="color: var(--accent);">55% (主導)</strong></td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>深部地函熱流</td>
+                    <td>25%</td>
+                    <td>10%</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>結論：</strong> 海洋的熱流主要反映了新生地殼的冷卻過程；而大陸的熱流則主要來自上地殼放射性元素的熱產量。</p>
+    </div>
+
+    <!-- 期末專題公告 -->
+    <div class="content-card final-project-card">
+        <h2>🚩 期末專題報告說明</h2>
+        <p>進入學期尾聲，期末專題報告正式啟動。我們將結合學期所學的震測、重力、磁學與地熱知識，進行綜合性的地球物理專題研究。</p>
+        <p><strong>重點參考資源：</strong></p>
+        <ul style="color: var(--sub-text);">
+            <li>GitHub 實作範例：地球熱模擬數據處理</li>
+            <li>熱分布計算工具應用</li>
+        </ul>
+        <div style="text-align: center;">
+            <a href="https://github.com/oceanicdayi/Earth_Heat" target="_blank" class="action-btn">📂 存取地球熱實作倉庫</a>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
+</footer>
+
+</body>
+</html>
