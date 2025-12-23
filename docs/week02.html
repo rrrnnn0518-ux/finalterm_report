@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 02 | 折射震測邏輯與數位沙盒</title>
+    <title>Week 02 | 折射震測邏輯與數位成果展</title>
     
-    <!-- 外部庫：Tailwind CSS, MathJax, AOS 動畫 -->
+    <!-- 外部庫：Tailwind CSS, MathJax, AOS 動畫, FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <style>
@@ -24,17 +25,26 @@
         }
         .accent-gold { color: #fbbf24; }
         .bg-gold { background-color: #fbbf24; }
-        .gradient-border {
-            border-left: 4px solid;
-            border-image: linear-gradient(to bottom, #fbbf24, #22d3ee) 1;
-        }
-        /* 簡單的波脈動動畫 */
+        .border-gold { border-color: #fbbf24; }
+        .text-cyan { color: #22d3ee; }
+        
         @keyframes pulse-wave {
             0% { transform: scale(1); opacity: 0.5; }
             50% { transform: scale(1.05); opacity: 1; }
             100% { transform: scale(1); opacity: 0.5; }
         }
         .wave-anim { animation: pulse-wave 3s infinite ease-in-out; }
+
+        /* 作業展示卡片特殊樣式 */
+        .hw-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 4px solid transparent;
+        }
+        .hw-card:hover {
+            transform: translateY(-10px);
+            border-bottom: 4px solid #fbbf24;
+            background: rgba(45, 55, 72, 0.9);
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -44,87 +54,86 @@
         <div class="text-xl font-black tracking-tighter text-white">
             <span class="text-yellow-400">GEO</span>LOGIC <span class="text-cyan-400">02</span>
         </div>
-        <a href="index.html" class="text-sm font-bold hover:text-yellow-400 transition-colors">← 返回目錄</a>
+        <div class="flex gap-6">
+            <a href="#hw-section" class="text-xs font-bold hover:text-yellow-400 transition-colors uppercase tracking-widest">學習成果展示</a>
+            <a href="index.html" class="text-xs font-bold hover:text-yellow-400 transition-colors uppercase tracking-widest">← 返回目錄</a>
+        </div>
     </nav>
 
     <!-- 英雄區塊 -->
     <header class="h-[50vh] flex flex-col justify-center items-center text-center px-4 pt-16 bg-gradient-to-b from-blue-900/20 to-transparent">
         <h1 class="text-6xl font-black mb-4 tracking-tight" data-aos="zoom-in">折射震測實驗室</h1>
         <p class="text-xl text-slate-400 wave-anim" data-aos="fade-up" data-aos-delay="200">
-            從 Snell's Law 到數位波形解析的邏輯重構
+            從理論推導到數位實作的深度整合
         </p>
     </header>
 
     <main class="container mx-auto px-6 max-w-5xl pb-20">
 
         <!-- 1. 物理邏輯區：走時公式推導 -->
-        <section class="mb-16">
+        <section class="mb-20">
             <div class="flex items-center gap-4 mb-8">
                 <div class="h-10 w-2 bg-yellow-400"></div>
                 <h2 class="text-3xl font-bold">臨界折射幾何邏輯</h2>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                <!-- 推導文字敘述 -->
                 <div class="glass p-8 rounded-3xl" data-aos="fade-right">
                     <h3 class="text-xl font-bold mb-4 text-cyan-400 italic">為什麼會有折射波？</h3>
                     <p class="text-slate-300 mb-6 leading-relaxed">
-                        當地震波遇到波速較快的下層介質 (\(V_2 > V_1\))，且入射角達到臨界角 \(\theta_c\) 時，波會沿著交界面行進。這段路徑我們稱為「頭波 (Head Wave)」。
+                        當地震波遇到波速較快的下層介質 (\(V_2 > V_1\))，且入射角達到臨界角 \(\theta_c\) 時，波會沿著交界面行進。
                     </p>
                     <div class="space-y-4">
-                        <details class="group border-b border-white/10 pb-4 cursor-pointer">
-                            <summary class="font-bold text-yellow-400">階段一：路徑組成</summary>
-                            <p class="pt-2 text-sm text-slate-400">總路徑由三段組成：斜向入地、界面滑行、斜向回表。根據幾何關係，總走時 \(T_x\) 是這三段位移與速度的比值總和。</p>
+                        <details class="group border-b border-white/10 pb-4 cursor-pointer" open>
+                            <summary class="font-bold text-yellow-400">階段一：路徑幾何關係</summary>
+                            <p class="pt-2 text-sm text-slate-400">總走時 \(T_x\) 由三部分組成：入射路徑、界面滑行路徑及回射路徑。透過 Snell's Law 定義的臨界角關係，我們可以將幾何距離轉化為時間變數。</p>
                         </details>
                         <details class="group border-b border-white/10 pb-4 cursor-pointer">
-                            <summary class="font-bold text-yellow-400">階段二：代數簡化</summary>
-                            <p class="pt-2 text-sm text-slate-400">利用 \(\sin\theta_c = V_1/V_2\) 進行代換，將三角函數轉化為純速度與厚度的代數式，簡化複雜的計算過程。</p>
+                            <summary class="font-bold text-yellow-400">階段二：Xcr 轉折點定義</summary>
+                            <p class="pt-2 text-sm text-slate-400">當直達波與折射波同時到達地表觀測站時，該距離即為轉折距離 (Crossover Distance)。</p>
                         </details>
                     </div>
                 </div>
 
-                <!-- 數位視覺化圖表 -->
                 <div class="glass p-8 rounded-3xl flex flex-col justify-center items-center text-center border-dashed border-2 border-white/10" data-aos="fade-left">
                     <div class="mb-6 p-6 bg-slate-900 rounded-2xl w-full">
-                        <p class="text-xs text-slate-500 uppercase mb-2">Final Formula</p>
+                        <p class="text-xs text-slate-500 uppercase mb-2">Final Travel-Time Equation</p>
                         <div class="text-2xl font-mono text-yellow-400">
                             \[ T_x = \frac{x}{V_2} + \frac{2h\cos\theta_c}{V_1} \]
                         </div>
                     </div>
-                    <p class="text-sm text-slate-500 italic">
-                        "這條公式是折射法的大腦，它定義了時間與距離的線性關係。"
-                    </p>
+                    <p class="text-sm text-slate-500 italic">"這條公式是折射震測的基礎，能幫助我們逆推地底的深度結構。"</p>
                 </div>
             </div>
         </section>
 
         <!-- 2. 互動實驗室：Xcr 即時模擬器 -->
-        <section class="mb-16 py-12 px-8 bg-yellow-400 rounded-[3rem] text-slate-900" data-aos="zoom-in">
+        <section class="mb-24 py-12 px-8 bg-yellow-400 rounded-[3rem] text-slate-900 shadow-2xl" data-aos="zoom-in">
             <div class="max-w-3xl mx-auto">
                 <div class="text-center mb-10">
-                    <h2 class="text-4xl font-black mb-2 italic">Seismic Sandbox</h2>
-                    <p class="font-bold opacity-70">輸入數據，即時推算地層關鍵指標</p>
+                    <h2 class="text-4xl font-black mb-2 italic"><i class="fas fa-microchip mr-3"></i>Seismic Sandbox</h2>
+                    <p class="font-bold opacity-70">即時演算：輸入參數獲取物理指標</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="flex flex-col">
                         <label class="text-xs font-black uppercase mb-1">上層波速 V1 (m/s)</label>
-                        <input type="number" id="v1" value="1500" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold focus:ring-4 ring-cyan-400 outline-none">
+                        <input type="number" id="v1" value="430" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold outline-none">
                     </div>
                     <div class="flex flex-col">
                         <label class="text-xs font-black uppercase mb-1">下層波速 V2 (m/s)</label>
-                        <input type="number" id="v2" value="3000" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold focus:ring-4 ring-cyan-400 outline-none">
+                        <input type="number" id="v2" value="1037" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold outline-none">
                     </div>
                     <div class="flex flex-col">
-                        <label class="text-xs font-black uppercase mb-1">介面厚度 h (m)</label>
-                        <input type="number" id="depth" value="10" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold focus:ring-4 ring-cyan-400 outline-none">
+                        <label class="text-xs font-black uppercase mb-1">地層厚度 h (m)</label>
+                        <input type="number" id="depth" value="4.5" class="p-4 rounded-xl bg-white border-2 border-slate-900 font-bold outline-none">
                     </div>
                 </div>
 
-                <button onclick="calculateXcr()" class="w-full py-4 bg-slate-900 text-white rounded-xl font-black hover:bg-cyan-500 transition-all shadow-xl">RUN LOGIC SIMULATION</button>
+                <button onclick="calculateXcr()" class="w-full py-4 bg-slate-900 text-white rounded-xl font-black hover:bg-cyan-500 transition-all shadow-lg active:scale-95">RUN SIMULATION</button>
 
                 <div id="result-box" class="mt-8 grid grid-cols-2 gap-4 hidden">
-                    <div class="bg-white/50 p-6 rounded-2xl text-center">
+                    <div class="bg-white/60 p-6 rounded-2xl text-center">
                         <span class="text-xs font-bold block mb-1 opacity-60">臨界角 (θc)</span>
                         <span id="res-theta" class="text-3xl font-black">--</span>°
                     </div>
@@ -136,71 +145,87 @@
             </div>
         </section>
 
-        <!-- 3. ObsPy 與流程實作 -->
-        <section class="mb-16">
-            <div class="flex items-center gap-4 mb-8">
+        <!-- 3. 作業成果展示區 (HW2 & HW3) -->
+        <section id="hw-section" class="mb-20">
+            <div class="flex items-center gap-4 mb-10">
                 <div class="h-10 w-2 bg-cyan-400"></div>
-                <h2 class="text-3xl font-bold">數位工作流實踐</h2>
+                <h2 class="text-3xl font-bold">學期成果展示中心</h2>
             </div>
 
-            <div class="glass p-8 rounded-3xl overflow-hidden relative" data-aos="fade-up">
-                <div class="flex flex-col md:flex-row gap-10">
-                    <div class="flex-1">
-                        <h3 class="text-xl font-bold mb-4 accent-gold flex items-center gap-2">
-                            <i class="fas fa-terminal"></i> ObsPy 雲端抓取
-                        </h3>
-                        <p class="text-slate-400 text-sm mb-6">
-                            我們在 GitHub Codespace 環境下，利用 Python 套件 ObsPy 連結 IRIS 資料庫，並抓取 NACB 台站的即時地震資料。這代表了傳統地質觀測與現代雲端運算的完美整合。
-                        </p>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 text-xs font-mono text-cyan-400">
-                                <span class="w-4 h-4 rounded-full bg-cyan-400/20 flex items-center justify-center">✓</span>
-                                FDSN Client Authentication: IRIS
-                            </div>
-                            <div class="flex items-center gap-3 text-xs font-mono text-cyan-400">
-                                <span class="w-4 h-4 rounded-full bg-cyan-400/20 flex items-center justify-center">✓</span>
-                                Time Window: 2025-10-07 | 120s Duration
-                            </div>
-                        </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 作業二 -->
+                <div class="hw-card glass p-8 rounded-3xl flex flex-col" data-aos="fade-up">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-yellow-400 text-slate-900 font-black px-4 py-1 rounded-full text-xs">HW 02</div>
+                        <i class="fab fa-blogger text-3xl text-orange-400"></i>
                     </div>
-                    
-                    <div class="flex-1 bg-black/40 p-6 rounded-2xl border border-white/5">
-                        <p class="text-[10px] text-slate-500 font-mono mb-4 uppercase tracking-widest">Digital Output Showcase</p>
-                        <!-- 這裡用文字模擬波形圖感，或加入一張真實波形截圖 -->
-                        <div class="h-32 w-full flex items-center justify-center relative">
-                            <svg viewBox="0 0 400 100" class="w-full h-full stroke-cyan-500 stroke-2 fill-none">
-                                <path d="M0,50 L20,50 L30,20 L40,80 L50,10 L60,90 L70,40 L80,60 L90,50 L400,50" />
-                            </svg>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent"></div>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-white/10 text-[10px] font-mono text-slate-500">
-                            Station: NACB | Network: TW | Channel: BHZ
-                        </div>
+                    <h3 class="text-2xl font-bold mb-4">教授視角的創意網頁</h3>
+                    <p class="text-slate-400 text-sm mb-6 flex-grow">
+                        透過 AI 模擬教授語氣，設計出引發學習興趣的靜態頁面。實驗重點在於如何下達精確的 Prompt，讓技術內容變得有趣且易懂。
+                    </p>
+                    <div class="bg-slate-800/50 p-4 rounded-xl mb-6 border border-white/5">
+                        <p class="text-[10px] uppercase text-yellow-400 font-bold mb-1">Used Prompt Snippet</p>
+                        <p class="text-xs italic text-slate-400">「你是一個地球物理大學教授，你想要讓同學知悉上課內容，並對課程產生期待...」</p>
                     </div>
+                    <a href="https://rrrnnn0518.blogspot.com/2025/09/blog-post_23.html" target="_blank" class="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-center hover:bg-yellow-400 transition-colors">
+                        前往 Blogger 展示 <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- 作業三 -->
+                <div class="hw-card glass p-8 rounded-3xl flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-cyan-400 text-slate-900 font-black px-4 py-1 rounded-full text-xs">HW 03</div>
+                        <i class="fab fa-github text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">ObsPy 與雲端協作實務</h3>
+                    <p class="text-slate-400 text-sm mb-6 flex-grow">
+                        在 GitHub Codespace 環境下撰寫 ObsPy 程式，抓取全球 FDSN 地震資料。並完整實踐 Fork、Commit 到 Pull Request 的專業開發流程。
+                    </p>
+                    <div class="flex gap-2 mb-6">
+                        <span class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-white/10 text-cyan-400 font-mono">#ObsPy</span>
+                        <span class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-white/10 text-cyan-400 font-mono">#PyGMT</span>
+                        <span class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-white/10 text-cyan-400 font-mono">#PR_Flow</span>
+                    </div>
+                    <a href="https://huggingface.co/spaces/cwadayi/Geophysics_day1" target="_blank" class="w-full py-3 bg-cyan-500 text-slate-900 rounded-xl font-bold text-center hover:bg-white transition-colors">
+                        查看 GitHub PR 詳情 <i class="fas fa-code-branch ml-2"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- 4. GitHub PR 協作概念 -->
-        <section class="text-center" data-aos="zoom-in-up">
-            <h2 class="text-2xl font-bold mb-8">專業開發流程</h2>
-            <div class="flex justify-center gap-4 flex-wrap">
-                <div class="glass px-6 py-4 rounded-2xl flex items-center gap-3 border-b-2 border-blue-500">
-                    <span class="font-black text-blue-500">01</span>
-                    <span class="text-sm font-bold uppercase tracking-wider">Fork Repository</span>
-                </div>
-                <div class="glass px-6 py-4 rounded-2xl flex items-center gap-3 border-b-2 border-cyan-500">
-                    <span class="font-black text-cyan-500">02</span>
-                    <span class="text-sm font-bold uppercase tracking-wider">Codespace Dev</span>
-                </div>
-                <div class="glass px-6 py-4 rounded-2xl flex items-center gap-3 border-b-2 border-yellow-500">
-                    <span class="font-black text-yellow-400">03</span>
-                    <span class="text-sm font-bold uppercase tracking-wider">Pull Request</span>
+        <!-- 4. 數位工作流實踐 (原內容保留並優化) -->
+        <section class="mb-16">
+            <div class="glass p-8 rounded-3xl overflow-hidden" data-aos="fade-up">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-terminal text-cyan-400"></i> 技術實作細節
+                </h3>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            使用 <code>st = client.get_waveforms()</code> 連結 IRIS 資料庫，即時獲取台站資料。這種數位化採集是現代地球物理探勘的核心競爭力。
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-xs font-mono text-cyan-400">
+                                <span class="w-4 h-4 rounded-full bg-cyan-400/20 flex items-center justify-center">✓</span>
+                                ObsPy 震譜訊號處理
+                            </div>
+                            <div class="flex items-center gap-3 text-xs font-mono text-cyan-400">
+                                <span class="w-4 h-4 rounded-full bg-cyan-400/20 flex items-center justify-center">✓</span>
+                                GitHub PR 協作提交
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-2xl border border-white/10 relative">
+                         <div class="h-32 w-full flex items-center justify-center">
+                            <svg viewBox="0 0 400 100" class="w-full h-full stroke-cyan-500 stroke-2 fill-none">
+                                <path d="M0,50 L40,50 L50,20 L60,80 L70,10 L80,90 L90,40 L100,60 L110,50 L400,50" />
+                            </svg>
+                        </div>
+                        <p class="text-[10px] text-center text-slate-600 mt-2 font-mono uppercase tracking-widest">Station: NACB | 120s Duration</p>
+                    </div>
                 </div>
             </div>
-            <p class="mt-8 text-slate-500 text-sm max-w-lg mx-auto">
-                作業透過建立分支與 PR (Pull Request) 提交。這種標準的軟體開發流程，確保了實驗數據與程式碼的透明度與可複寫性。
-            </p>
         </section>
 
     </main>
@@ -223,12 +248,9 @@
                 return;
             }
 
-            // 臨界角 sin(theta) = v1 / v2
             const sinTheta = v1 / v2;
             const thetaRad = Math.asin(sinTheta);
             const thetaDeg = (thetaRad * 180 / Math.PI).toFixed(2);
-
-            // Xcr = 2h * sqrt((v2+v1)/(v2-v1))
             const xcr = (2 * h * Math.sqrt((v2 + v1) / (v2 - v1))).toFixed(2);
 
             document.getElementById('res-theta').innerText = thetaDeg;
