@@ -8,8 +8,8 @@
         :root {
             --bg: #0f0f0f;
             --card-bg: #1a1a1a;
-            --accent: #fbbf24; /* 震測金色 */
-            --tech: #22d3ee;   /* 科技藍 */
+            --accent: #fbbf24; /* 震測波金色 */
+            --tech: #22d3ee;   /* 資料科學藍 */
             --text: #e2e8f0;
             --sub-text: #94a3b8;
         }
@@ -20,7 +20,6 @@
             color: var(--text);
             margin: 0;
             line-height: 1.7;
-            overflow-x: hidden;
         }
 
         nav {
@@ -35,117 +34,124 @@
             z-index: 1000;
         }
 
-        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
         .header-section {
-            border-left: 4px solid var(--tech);
+            border-left: 4px solid var(--accent);
             padding-left: 20px;
             margin-bottom: 40px;
         }
 
         h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
-        .week-tag { background: var(--tech); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+        .week-tag { background: var(--accent); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
 
-        /* --- 核心互動特效：地震層析掃描器 --- */
-        .seismic-tomography-box {
+        /* --- 新增：地震層析掃描特效區塊 --- */
+        .seismic-scan-visual {
             width: 100%;
-            height: 300px;
+            height: 280px;
             background: #000;
-            border-radius: 16px;
+            border-radius: 12px;
             margin: 30px 0;
             position: relative;
             overflow: hidden;
             border: 1px solid #334155;
-            box-shadow: 0 0 30px rgba(34, 211, 238, 0.1);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
         }
 
-        /* 網格背景 */
-        .grid-bg {
+        .scan-grid {
             position: absolute;
             width: 100%; height: 100%;
             background-image: linear-gradient(#1e293b 1px, transparent 1px),
                               linear-gradient(90deg, #1e293b 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.3;
+            background-size: 50px 50px;
+            opacity: 0.2;
         }
 
-        /* 掃描線動畫 */
         .scan-line {
             position: absolute;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+            height: 3px;
+            background: var(--accent);
             box-shadow: 0 0 15px var(--accent);
             top: 0;
-            animation: scan 4s linear infinite;
-            z-index: 5;
+            animation: scanMove 4s linear infinite;
+            z-index: 10;
         }
 
-        @keyframes scan {
+        @keyframes scanMove {
             0% { top: 0; }
             100% { top: 100%; }
         }
 
-        /* 震測波形線條容器 */
-        .waves-container {
+        .wave-lines-container {
             position: absolute;
             width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
-        .seismic-trace {
+        .wave-svg {
             width: 100%;
-            height: 2px;
-            background: rgba(34, 211, 238, 0.2);
-            position: relative;
-        }
-
-        .wave-path {
-            position: absolute;
-            top: -10px;
-            width: 100%;
-            height: 20px;
+            height: 30px;
             stroke: var(--tech);
             stroke-width: 1.5;
             fill: none;
-            opacity: 0.8;
+            opacity: 0.6;
         }
 
-        /* --- 內容卡片樣式 --- */
+        .scan-status {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            color: var(--tech);
+            font-family: monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        /* ------------------------------ */
+
         .content-card {
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
             border: 1px solid #334155;
         }
 
-        h2 { color: var(--accent); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        h2 { color: var(--tech); border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 0; }
 
-        .concept-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            background: rgba(251, 191, 36, 0.1);
-            color: var(--accent);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin: 5px;
-            border: 1px solid var(--accent);
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--sub-text);
+            font-size: 0.9rem;
         }
-
-        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="index.html">← 返回成果展主頁</a>
-    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 專題演講筆記</div>
+    <a href="index.html">← 返回課程總覽</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 專家演講筆記</div>
 </nav>
 
 <div class="container">
@@ -155,48 +161,36 @@
         <p style="color: var(--sub-text);">演講者：甘禮有 博士 (Dr. Gan Liyou)</p>
     </div>
 
-    <!-- 震測層析特效區塊 -->
-    <div class="seismic-tomography-box">
-        <div class="grid-bg"></div>
+    <!-- 這是修改後的小區塊：地震相關特效 -->
+    <div class="seismic-scan-visual">
+        <div class="scan-grid"></div>
         <div class="scan-line"></div>
-        <div class="waves-container" id="waveContainer">
-            <!-- 由 JS 產生動態震測波 -->
+        <div class="wave-lines-container" id="waves">
+            <!-- 由 JavaScript 產生波形 -->
         </div>
-        <div style="position: absolute; bottom: 10px; right: 20px; color: var(--tech); font-family: monospace; font-size: 0.7rem; letter-spacing: 2px;">
-            SYSTEM: TOMOGRAPHY SCANNING...
-        </div>
-    </div>
-
-    <div class="content-card">
-        <h2>📌 演講核心摘要</h2>
-        <p>甘博士本次分享的主題圍繞在<b>地震層析成像 (Seismic Tomography)</b> 技術的理論應用，並以日本著名的阿蘇火山 (Aso Volcano) 為例，展示如何利用地震波速度結構來解構地底的岩漿庫分佈。</p>
-        
-        <div style="margin-top: 20px;">
-            <span class="concept-tag">正演問題 (Forward Problem)</span>
-            <span class="concept-tag">逆推問題 (Inverse Problem)</span>
-            <span class="concept-tag">波速異常分析</span>
-            <span class="concept-tag">岩漿路徑追蹤</span>
+        <div class="scan-status">
+            >> DATA SCANNING: INVERSE MODELING...
         </div>
     </div>
 
     <div class="content-card">
-        <h2>🧠 重點筆記與思考</h2>
-        <p><b>1. 地底的「數位斷層掃描」：</b></p>
-        <p>層析成像的原理類似醫學用的 CT Scan，透過佈署在不同位置的接收器，紀錄地震波穿過岩層的時間差。透過計算不同路徑的「走時殘差」，我們可以反推出地底哪些位置波速較慢（可能存在高溫岩漿或流體）。</p>
-        
-        <p><b>2. 數學邏輯：</b></p>
+        <h2>📌 演講摘要</h2>
+        <p>本次演講深入探討了地震波層析成像技術的原理及其在火山結構研究中的應用。重點介紹了：</p>
         <ul>
-            <li><b>正演：</b>給定一個模型，計算震波該怎麼跑。</li>
-            <li><b>逆推：</b>拿觀測到的結果，去反推地底模型長什麼樣子。</li>
+            <li><strong>正演 (Forward Problem)：</strong> 根據已知模型計算預期觀測數據。</li>
+            <li><strong>逆推 (Inverse Problem)：</strong> 根據觀測數據推斷地下介質模型。</li>
+            <li><strong>地震層析成像 (Tomography)：</strong> 利用地震波穿過地下介質的走時殘差，反演地下的波速結構。</li>
         </ul>
-
-        <p><b>3. 阿蘇火山應用：</b></p>
-        <p>透過層析成像，研究團隊精確標定出了阿蘇火山下方的低速帶，這為預測火山活動提供了重要的地質物理證據。</p>
     </div>
 
-    <div class="content-card" style="border-top: 4px solid var(--accent);">
-        <h2>💡 學習感悟</h2>
-        <p>這次演講讓我認識到「層析成像」不僅是純粹的數學模型，更是我們探測地球內部的最強大「探針」。博士分享的研究成果展示了如何將枯燥的數位信號轉化為生動的地底結構圖，這對於我們理解自然災害的根源具有重大意義。</p>
+    <div class="content-card">
+        <h2>💡 層析成像 (Tomography) 概論</h2>
+        <p>層析成像技術不僅應用於醫學上的 CT 掃描，在地球物理中更是探測地殼結構的利器。透過數以萬計的地震射線，我們可以將地底下的波速「影像化」，辨識出高溫岩漿庫或地殼異常體。</p>
+    </div>
+
+    <div class="content-card">
+        <h2>🌋 甘博士的研究亮點</h2>
+        <p>甘博士分享了關於日本阿蘇火山 (Aso Volcano) 的最新研究成果。透過層析成像反演出的地殼速度結構，清晰顯示了火山下方的岩漿供應路徑與低速帶分佈，這對預測火山活動具有極高參考價值。</p>
     </div>
 
 </div>
@@ -206,36 +200,31 @@
 </footer>
 
 <script>
-    // 生成動態震測波形的簡易腳本
-    const container = document.getElementById('waveContainer');
-    const lineCount = 6; // 顯示 6 條測站線
+    // 產生動態震波線條的邏輯
+    const waveBox = document.getElementById('waves');
+    const rowCount = 5;
 
-    for (let i = 0; i < lineCount; i++) {
-        const trace = document.createElement('div');
-        trace.className = 'seismic-trace';
-        
+    for (let i = 0; i < rowCount; i++) {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("class", "wave-path");
-        svg.setAttribute("viewBox", "0 0 800 20");
-        
+        svg.setAttribute("class", "wave-svg");
+        svg.setAttribute("viewBox", "0 0 800 30");
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         svg.appendChild(path);
-        trace.appendChild(svg);
-        container.appendChild(trace);
+        waveBox.appendChild(svg);
 
-        // 建立動畫函數
-        function updateWave() {
-            let d = "M 0 10";
+        function animate() {
+            let d = "M 0 15";
             for (let x = 0; x <= 800; x += 10) {
-                // 模擬隨機微震數據，中間段落有較大震幅
-                let noise = (Math.random() - 0.5) * 5;
-                let burst = (x > 300 && x < 500) ? (Math.random() - 0.5) * 15 : 0;
-                d += ` L ${x} ${10 + noise + burst}`;
+                // 基礎雜訊
+                let y = 15 + (Math.random() - 0.5) * 5;
+                // 隨機出現較大的「震波脈衝」
+                if (Math.random() > 0.95) y += (Math.random() - 0.5) * 20;
+                d += ` L ${x} ${y}`;
             }
             path.setAttribute("d", d);
-            setTimeout(() => requestAnimationFrame(updateWave), 100 + Math.random() * 200);
+            setTimeout(() => requestAnimationFrame(animate), 150 + Math.random() * 100);
         }
-        updateWave();
+        animate();
     }
 </script>
 
