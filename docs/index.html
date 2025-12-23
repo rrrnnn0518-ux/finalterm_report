@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地球物理學課程彙整 | Geophysics Journey</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent: #ffcc00; /* 震測波金 */
+            --tech: #00e5ff;   /* 資料科學藍 */
+            --text: #ffffff;
+            --sub-text: #aaaaaa;
+        }
 
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        header h1 { font-size: 3rem; margin: 0; letter-spacing: 4px; color: var(--accent); }
+        header p { font-size: 1.2rem; color: var(--sub-text); margin-top: 10px; }
+
+        .container { max-width: 1000px; margin: -50px auto 50px; padding: 0 20px; }
+
+        .course-grid { display: flex; flex-direction: column; gap: 20px; }
+
+        .week-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            align-items: center;
+            border-left: 4px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .week-card:hover {
+            border-left: 4px solid var(--accent);
+            transform: translateX(10px);
+            background: #222;
+        }
+
+        .date-box { text-align: center; border-right: 1px solid #333; padding-right: 15px; }
+        .date-box .week { font-size: 0.8rem; color: var(--accent); font-weight: bold; }
+        .date-box .date { font-size: 1.1rem; font-weight: bold; }
+
+        .content-box { padding: 0 25px; }
+        .content-box h3 { margin: 0 0 10px 0; font-size: 1.3rem; }
+        
+        .tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; font-weight: bold; }
+        .tag.knowledge { background: rgba(255, 204, 0, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .tag.skills { background: rgba(0, 229, 255, 0.1); color: var(--tech); border: 1px solid var(--tech); }
+
+        .action-btn {
+            background: var(--accent);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover { background: #fff; transform: scale(1.05); }
+
+        /* 特殊樣式：Week 3 */
+        .week-card.active { border-left: 4px solid var(--accent); background: rgba(255,204,0,0.05); }
+
+        .footer { text-align: center; padding: 40px; color: #555; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .week-card { grid-template-columns: 1fr; gap: 15px; }
+            .date-box { border-right: none; border-bottom: 1px solid #333; padding-bottom: 10px; text-align: left; }
+            .content-box { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>地球物理學：從地殼到數位</h1>
+    <p>Geophysics & Data Science Course 2024</p>
+    <a href="https://huggingface.co/spaces/cwadayi/Geophysics_class" target="_blank" style="color:var(--tech); text-decoration:none; margin-top:15px; font-size:0.9rem;">🔗 進入互動教學空間</a>
+</header>
+
+<div class="container">
+    <div class="course-grid">
+        <!-- Week 1 -->
+        <div class="week-card">
+            <div class="date-box"><div class="week">WEEK 01</div><div class="date">09/10</div></div>
+            <div class="content-box">
+                <h3>課程介紹與數位環境建置</h3>
+                <div class="tags">
+                    <span class="tag knowledge">地物概要</span>
+                    <span class="tag skills">Python / GitHub / Dify</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="week-card">
+            <div class="date-box"><div class="week">WEEK 02</div><div class="date">09/17</div></div>
+            <div class="content-box">
+                <h3>折射探勘學理論基礎</h3>
+                <div class="tags">
+                    <span class="tag knowledge">折射探勘</span>
+                    <span class="tag skills">PyGMT / ObsPy / Streamlit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 3: 重點跳轉按鈕 -->
+        <div class="week-card active">
+            <div class="date-box"><div class="week">WEEK 03</div><div class="date">09/24</div></div>
+            <div class="content-box">
+                <h3>校園野外實驗 (折射震測)</h3>
+                <div class="tags">
+                    <span class="tag knowledge">現場觀測</span>
+                    <span class="tag skills">儀器架設 / 實地數據採集</span>
+                </div>
+            </div>
+            <div>
+                <a href="report.html" class="action-btn">查看實驗報告 →</a>
+            </div>
+        </div>
+
+        <!-- Week 8 -->
+        <div class="week-card">
+            <div class="date-box"><div class="week">WEEK 08</div><div class="date">10/29</div></div>
+            <div class="content-box">
+                <h3>期中成果驗收</h3>
+                <div class="tags"><span class="tag knowledge">Midterm Exam</span></div>
+            </div>
+        </div>
+
+        <!-- Week 14-15 -->
+        <div class="week-card">
+            <div class="date-box"><div class="week">W14-15</div><div class="date">12/10-17</div></div>
+            <div class="content-box">
+                <h3>地物專題：AI 與實際應用</h3>
+                <div class="tags">
+                    <span class="tag knowledge">火山與地震 / AI 地震監測</span>
+                    <span class="tag skills">深度學習</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 16 -->
+        <div class="week-card">
+            <div class="date-box"><div class="week">WEEK 16</div><div class="date">12/24</div></div>
+            <div class="content-box">
+                <h3>期末專題發表</h3>
+                <div class="tags"><span class="tag skills">Final Project Exhibition</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>製作者：林靖融 | 地球物理課程實作報告</p>
+</div>
+
+</body>
+</html>
