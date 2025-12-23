@@ -8,7 +8,7 @@
         :root {
             --bg: #0f0f0f;
             --card-bg: #1a1a1a;
-            --accent: #fbbf24; /* 震測波金 */
+            --accent: #fbbf24; /* 震測波金色 */
             --tech: #22d3ee;   /* 資料科學藍 */
             --text: #e2e8f0;
             --sub-text: #94a3b8;
@@ -186,13 +186,12 @@
 
 <script>
     // --- 課程資料資料庫 ---
-    // 以後只需要在這裡增加一筆資料，網頁就會自動畫出新的一行
     const courseData = [
         { 
             week: "01", 
             date: "09/10", 
             title: "課程導引與數位環境建置", 
-            geo: "地球物理學範疇、地底健康檢查比喻", 
+            geo: "地球物理概要、地底 X 光比喻", 
             tech: "GitHub, Hugging Face, AI 協作, Blogger", 
             link: "week01.html", 
             btnText: "查看詳情與互動 →" 
@@ -201,7 +200,7 @@
             week: "02", 
             date: "09/17", 
             title: "折射探勘學與數位實作", 
-            geo: "Snell's Law、臨界折射幾何推導", 
+            geo: "Snell's Law、臨界折射公式推導", 
             tech: "ObsPy 資料抓取、Codespace 實作範例", 
             link: "week02.html", 
             btnText: "查看詳情與推導 →" 
@@ -210,8 +209,8 @@
             week: "03", 
             date: "09/24", 
             title: "校園野外實驗 (折射震測)", 
-            geo: "實地數據採集、地層厚度逆推", 
-            tech: "24 Channel 接收器、波形判讀分析", 
+            geo: "實地數據採集、人工標定初至波", 
+            tech: "24 Channel 接收器佈置、波形判讀", 
             link: "report.html", 
             btnText: "查看實驗報告 →" 
         },
@@ -220,11 +219,19 @@
             date: "10/01", 
             title: "地球物理專題演講", 
             geo: "甘禮有博士：層析成像與阿蘇火山研究", 
-            tech: "正演與逆推問題、Prompt 工程", 
+            tech: "正演(Forward)與逆推(Inverse)問題", 
             link: "week04.html", 
-            btnText: "進入專題網頁 →" 
+            btnText: "進入演講專題 →" 
         },
-        { week: "05", date: "10/08", title: "折射探勘進階應用", geo: "臨界折射波深度解析", tech: "Hugging Face Space 互動佈署", link: "" },
+        { 
+            week: "05", 
+            date: "10/08", 
+            title: "數位地物實作與層析概論", 
+            geo: "Tomography 層析成像理論、期中重點", 
+            tech: "ObsPy 自動化抓取、震波模擬小工具", 
+            link: "week05.html", 
+            btnText: "進入數位實驗室 →" 
+        },
         { week: "06", date: "10/15", title: "重力探勘學 (I)", geo: "重力場理論、地下密度差異", tech: "Google Colab 數據分析", link: "" },
         { week: "07", date: "10/22", title: "重力探勘學 (II)", geo: "地殼密度建模與異常分析", tech: "Gemini API, Dify 應用", link: "" },
         { week: "08", date: "10/29", title: "期中成果驗收", geo: "理論與計算能力檢測", tech: "Midterm Examination", link: "" },
@@ -233,9 +240,9 @@
         { week: "11", date: "11/19", title: "板塊構造與地磁 (I)", geo: "地磁場原理、海床擴張實證", tech: "obspy 震譜訊號處理", link: "" },
         { week: "12", date: "11/26", title: "板塊構造與地磁 (II)", geo: "古地磁學與磁偏角觀測", tech: "數位濾波技術實作", link: "" },
         { week: "13", date: "12/03", title: "板塊構造與地熱", geo: "地溫梯度、再生能源探勘", tech: "AI 工作流優化整合", link: "" },
-        { week: "14", date: "12/10", title: "專題演講：黃有志博士", geo: "阿蘇火山與地震觀測", tech: "實務監測資料分析", link: "" },
+        { week: "14", date: "12/10", title: "專題演講：黃有志博士", geo: "阿蘇火山與嘉南地震觀測", tech: "實務監測資料分析", link: "" },
         { week: "15", date: "12/17", title: "專題演講：廖勿渝博士", geo: "AI 遇上地震學：全自動監測", tech: "深度學習模型應用", link: "" },
-        { week: "16", date: "12/24", title: "期末專題發表", geo: "綜合研究成果簡報", tech: "Final Project 展示", link: "" },
+        { week: "16", date: "12/24", title: "期末專案發表", geo: "綜合研究成果簡報", tech: "Final Project 展示", link: "" },
         { week: "17", date: "12/31", title: "參訪：中油大樓", geo: "業界探勘實務現場考察", tech: "業界技術銜接學習", link: "" },
         { week: "18", date: "01/07", title: "參訪：地質調查所", geo: "國家級地質觀測與資料庫", tech: "實地考察與資料應用", link: "" }
     ];
