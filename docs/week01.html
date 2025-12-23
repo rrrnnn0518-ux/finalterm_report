@@ -3,192 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 01 | 地球物理概論與數位導引</title>
+    <title>第一週：數位導引與地球物理概論</title>
     <!-- 引入動畫與圖示 -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
         :root {
-            --primary: #0077b6; /* 科技深藍 */
-            --secondary: #00b4d8; /* 天空藍 */
-            --accent: #FFD700; /* 金色能量 */
-            --bg: #fdfdfd;
-            --text: #2c3e50;
-            --card-bg: #ffffff;
+            --primary: #005f73;
+            --secondary: #0a9396;
+            --accent: #ee9b00;
+            --light: #f8f9fa;
+            --dark: #222222;
         }
 
-        * { box-sizing: border-box; scroll-behavior: smooth; }
         body {
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            background-color: var(--bg); color: var(--text);
-            margin: 0; line-height: 1.7;
+            background-color: #ffffff; color: var(--dark);
+            margin: 0; line-height: 1.7; overflow-x: hidden;
         }
 
         /* 導覽列 */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--primary); display: flex;
-            justify-content: space-between; padding: 15px 40px; align-items: center;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px);
+            border-bottom: 1px solid #ddd; padding: 15px 50px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        nav a { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-        nav .logo { font-size: 1.2rem; color: var(--text); }
+        nav a { color: var(--primary); text-decoration: none; font-weight: bold; }
 
-        /* Hero 區塊 */
+        /* Bright Hero Section */
         .hero {
-            height: 50vh; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            height: 45vh;
+            background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; clip-path: ellipse(150% 100% at 50% 0%);
+            text-align: center; border-bottom: 5px solid var(--secondary);
         }
-        .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 5px; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
+        .hero h1 { font-size: 3rem; color: var(--primary); margin: 0; }
+        .hero p { font-size: 1.2rem; color: #666; margin-top: 10px; }
 
-        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
-        .section-title { font-size: 2.5rem; color: var(--primary); text-align: center; margin-bottom: 50px; }
+        section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+        
+        /* 學習重點區塊 */
+        .focus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .focus-card {
+            background: var(--light); padding: 30px; border-radius: 20px;
+            border-top: 5px solid var(--secondary); transition: 0.3s;
+        }
+        .focus-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .focus-card i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
 
-        /* 地球物理教師的開場白 */
-        .teacher-intro {
-            background: #eef2f3; padding: 40px; border-radius: 20px;
-            border-left: 8px solid var(--primary); position: relative;
+        /* 地球物理 X 光比喻 */
+        .concept-box {
+            background: var(--primary); color: white; padding: 40px; border-radius: 30px;
+            margin: 40px 0; display: flex; align-items: center; gap: 30px;
         }
-        .teacher-intro::before {
-            content: "\f51b"; font-family: "Font Awesome 6 Free"; font-weight: 900;
-            position: absolute; right: 30px; top: 30px; font-size: 4rem; color: rgba(0,0,0,0.05);
-        }
+        .concept-icon { font-size: 5rem; opacity: 0.3; }
 
-        /* 知識卡片排版 */
-        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
-        .k-card {
-            background: var(--card-bg); padding: 30px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 5px solid var(--secondary);
-            transition: 0.3s; cursor: pointer;
-        }
-        .k-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-top-color: var(--accent); }
-        .k-card i { font-size: 2.5rem; color: var(--secondary); margin-bottom: 20px; }
-        .k-card h3 { margin: 0 0 10px 0; color: var(--primary); }
-
-        /* 互動小工具：方法選擇器 */
-        .method-picker { background: #f9f9f9; padding: 40px; border-radius: 30px; text-align: center; border: 2px dashed #ddd; }
-        .choice-btn {
-            background: white; border: 2px solid var(--primary); color: var(--primary);
-            padding: 10px 20px; border-radius: 50px; margin: 5px; cursor: pointer;
-            font-weight: bold; transition: 0.3s;
-        }
-        .choice-btn:hover { background: var(--primary); color: white; }
-        #method-result { margin-top: 30px; min-height: 80px; font-size: 1.1rem; color: var(--primary); font-weight: bold; }
-
-        /* 作業展示 */
-        .hw-box {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-            background: white; border-radius: 30px; overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1); border: 1px solid #eee;
-        }
-        .hw-content { padding: 60px; }
-        .hw-image {
-            background: url('https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source4.png?raw=true') center;
-            background-size: cover; min-height: 300px;
-        }
-        .badge { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; }
-
-        .btn-link {
-            display: inline-block; margin-top: 30px; padding: 15px 35px;
-            background: var(--primary); color: white; text-decoration: none;
-            border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,119,182,0.3);
+        /* 數位工具箱 */
+        .tool-box { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        .tool-item {
+            background: #fff; border: 1px solid #ddd; padding: 10px 20px;
+            border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            font-weight: bold; font-size: 0.9rem; color: var(--primary);
         }
 
-        footer { text-align: center; padding: 60px; opacity: 0.5; }
+        /* 互動小工具 */
+        .interactive-section { background: #f0f4f8; padding: 40px; border-radius: 30px; text-align: center; }
+        .method-btn {
+            background: white; border: 2px solid var(--secondary); padding: 10px 20px;
+            border-radius: 50px; cursor: pointer; margin: 5px; font-weight: bold; transition: 0.2s;
+        }
+        .method-btn:hover { background: var(--secondary); color: white; }
+        #method-info { margin-top: 25px; font-weight: bold; color: var(--primary); min-height: 50px; }
 
-        @media (max-width: 800px) { .hw-box { grid-template-columns: 1fr; } .hero h1 { font-size: 2.5rem; } }
+        /* 成果展示按鈕 */
+        .btn-showcase {
+            display: inline-block; padding: 18px 40px; background: var(--accent);
+            color: white; text-decoration: none; border-radius: 50px;
+            font-weight: 900; font-size: 1.1rem; margin-top: 30px;
+            box-shadow: 0 10px 20px rgba(238, 155, 0, 0.3);
+        }
+
+        footer { text-align: center; padding: 60px; color: #999; }
+
+        @media (max-width: 600px) { .concept-box { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo"><strong>Geophysics</strong> 2024</div>
-    <a href="index.html">← 回到主頁面</a>
+    <a href="index.html">← 返回主目錄</a>
+    <div style="font-weight: bold; color: var(--secondary);">林靖融 | 0910 學習成果</div>
 </nav>
 
 <div class="hero">
-    <h1 data-aos="fade-down">第一週：地球物理航向</h1>
-    <p data-aos="fade-up" data-aos-delay="300">數位工具 × 地物概論 × AI 輔助學習</p>
+    <h1 data-aos="zoom-in">第一週：數位轉型與地物啟航</h1>
+    <p data-aos="fade-up" data-aos-delay="300">從申請帳號到佈署 AI 應用程式的完整實踐</p>
 </div>
 
-<!-- 教師引導 -->
 <section>
-    <div class="teacher-intro" data-aos="fade-right">
-        <h2>👋 哈囉，地物新同學！</h2>
-        <p>歡迎來到這堂課。你可以把地球物理學想像成是 **「地球的專屬 X 光」**。我們不需要挖掘，只需要透過震動、重力、磁場與電流，就能看透地心。這是一門結合物理理論與頂尖數位科技的學科，也是我們這學期冒險的起點！</p>
+    <!-- 核心學習內容 -->
+    <div class="focus-grid">
+        <div class="focus-card" data-aos="fade-right">
+            <i class="fas fa-microchip"></i>
+            <h3>數位工具的掌握</h3>
+            <p>本週不僅是導論，更是數位環境的建置。我學會了使用：</p>
+            <div class="tool-box">
+                <div class="tool-item"><i class="fab fa-github"></i> GitHub Codespace</div>
+                <div class="tool-item"><i class="fas fa-rocket"></i> Hugging Face Space</div>
+                <div class="tool-item"><i class="fas fa-robot"></i> AI Assistants (Gemini/GPT)</div>
+                <div class="tool-item"><i class="fas fa-blog"></i> Google Blogger</div>
+            </div>
+        </div>
+        <div class="focus-card" data-aos="fade-left">
+            <i class="fas fa-brain"></i>
+            <h3>AI 協作思維</h3>
+            <p>這堂課打破了傳統學習方式，老師教導我們如何利用 **AI 輔助理解複雜課本內容**，並將知識轉化為互動式的應用程式，這是我從未有過的數位體驗。</p>
+        </div>
     </div>
 
-    <!-- 知識範疇卡片 -->
-    <div class="knowledge-grid">
-        <div class="k-card" data-aos="fade-up" data-aos-delay="100">
-            <i class="fas fa-wave-square"></i>
-            <h3>震測探勘</h3>
-            <p>像在幫地層拍超音波，利用彈性波找尋石油與斷層構造。</p>
-        </div>
-        <div class="k-card" data-aos="fade-up" data-aos-delay="200">
-            <i class="fas fa-balance-scale"></i>
-            <h3>重力探勘</h3>
-            <p>探測地下密度差異，精確定位地底礦產與大型洞穴。</p>
-        </div>
-        <div class="k-card" data-aos="fade-up" data-aos-delay="300">
-            <i class="fas fa-magnet"></i>
-            <h3>磁法探勘</h3>
-            <p>追蹤岩石中的磁性記憶，研究板塊漂移與沈船探測。</p>
-        </div>
-        <div class="k-card" data-aos="fade-up" data-aos-delay="400">
-            <i class="fas fa-bolt"></i>
-            <h3>電性與熱能</h3>
-            <p>尋找寶貴的地下水源與清潔的地熱能源。</p>
+    <!-- 地物理論摘要 -->
+    <div class="concept-box" data-aos="flip-up">
+        <div class="concept-icon"><i class="fas fa-vial"></i></div>
+        <div>
+            <h2>地球物理：大地的 X 光片</h2>
+            <p>這是我學習到的核心：地球物理學是利用物理方法（震波、重力、磁場）來對地球進行「非破壞性檢測」。它可以應用在 **資源探勘、捷運工程安全、斷層監測** 以及 **考古研究**。我們學會了如何從地表去洞察地底的秘密。</p>
         </div>
     </div>
 </section>
 
-<!-- 方法互動小遊戲 -->
-<section style="background: #fff;">
-    <h2 class="section-title">這項工作該用什麼「法」？</h2>
-    <div class="method-picker" data-aos="zoom-in">
-        <p>上台報告互動：點擊一個工作案例，看看我們要動用哪項地球物理法！</p>
-        <button class="choice-btn" onclick="pickMethod('石油')">尋找深海石油</button>
-        <button class="choice-btn" onclick="pickMethod('水源')">在沙漠找水源</button>
-        <button class="choice-btn" onclick="pickMethod('斷層')">捷運施工前的斷層分析</button>
-        <button class="choice-btn" onclick="pickMethod('磁鐵')">尋找海底沉船</button>
-        <div id="method-result">等待選擇...</div>
+<!-- 互動教學展示 (針對第一週概論) -->
+<section class="interactive-section">
+    <h2 style="color:var(--primary)">地物知識選單：這項技術能做什麼？</h2>
+    <p>（上台展示：點擊下方技術，我將展示這項技術與生活的關聯）</p>
+    <div data-aos="fade-up">
+        <button class="method-btn" onclick="showInfo('seismic')">震測法</button>
+        <button class="method-btn" onclick="showInfo('gravity')">重力法</button>
+        <button class="method-btn" onclick="showInfo('magnetic')">磁力法</button>
+        <button class="method-btn" onclick="showInfo('electric')">電阻率法</button>
     </div>
+    <div id="method-info">點擊上方按鈕開始展示...</div>
 </section>
 
-<!-- 作業一展示區 -->
-<section>
-    <h2 class="section-title">作業一成果展示</h2>
-    <div class="hw-box" data-aos="fade-up">
-        <div class="hw-content">
-            <span class="badge">HW 01 : 互動式地物 App</span>
-            <h2>地球物理概論說明文件</h2>
-            <p>這項作業結合了 **AI 知識摘要** 與 **Gradio 佈署技術**。我們根據課本目錄章節，利用 AI 工具產生淺顯易懂的教學文件，並製作成互動式應用程式。</p>
-            <p><strong>學會的技能：</strong> GitHub Codespace、Hugging Face Space 佈署、AI 提問優化。</p>
-            
-            <a href="https://huggingface.co/spaces/rrnn0518/intro_geophisics" target="_blank" class="btn-link">查看 Hugging Face 展示 →</a>
-            <a href="https://rrrnnn0518.blogspot.com/" target="_blank" style="margin-left:20px; color:var(--primary); font-weight:bold;">前往 Blogger 筆記</a>
-        </div>
-        <div class="hw-image"></div>
+<!-- 作業成果鏈結 -->
+<section style="text-align: center;">
+    <h2 style="color:var(--primary)">作業一：地物概論互動 App</h2>
+    <p>我參考了地球物理課本目錄，利用 AI 產出說明文件，並成功佈署在 Hugging Face Space。</p>
+    <div data-aos="zoom-in">
+        <a href="https://huggingface.co/spaces/rrnn0518/intro_geophisics" target="_blank" class="btn-showcase">
+            <i class="fas fa-external-link-alt"></i> 點此開啟我的互動 App 展示
+        </a>
     </div>
+    <p style="margin-top: 20px;">
+        <a href="https://rrrnnn0518.blogspot.com/" target="_blank" style="color:var(--secondary); font-weight:bold; text-decoration:none;">
+            <i class="fab fa-blogger"></i> 閱讀我的 Blogger 學習筆記 ➜
+        </a>
+    </p>
 </section>
 
 <footer>
-    <p>林靖融 | 地球物理學學期成果展示 | 指導老師：地物教學組</p>
+    <p>林靖融 | 2024 期末成果展示 | 數位工具 × 地球物理</p>
 </footer>
 
 <script>
-    AOS.init({ duration: 1200, once: true });
+    AOS.init({ duration: 1000, once: true });
 
-    function pickMethod(type) {
-        const result = document.getElementById('method-result');
-        if(type === '石油') result.innerHTML = "🎯 建議使用：<span style='color:var(--secondary)'>震測法</span>！波的反射最能看清深層油氣藏。";
-        if(type === '水源') result.innerHTML = "🎯 建議使用：<span style='color:var(--secondary)'>電阻率法</span>！地下水導電性高，一測就現形。";
-        if(type === '斷層') result.innerHTML = "🎯 建議使用：<span style='color:var(--secondary)'>折射震測法</span>！適合淺層地質結構分析。";
-        if(type === '磁鐵') result.innerHTML = "🎯 建議使用：<span style='color:var(--secondary)'>地磁法</span>！金屬船體會造成明顯磁場異常。";
+    function showInfo(type) {
+        const info = document.getElementById('method-info');
+        const contents = {
+            'seismic': '🎯 震測法：主要用於尋找地底石油、天然氣，以及捷運/大樓施工前的斷層分析。',
+            'gravity': '🎯 重力法：用於探測地下密度不均、尋找金屬礦產，甚至可以監測地下水位的變化。',
+            'magnetic': '🎯 磁力法：幫助我們在海底尋找沈船，或研究地磁極翻轉的歷史軌跡。',
+            'electric': '🎯 電阻率法：工程中最常用來尋找地下水源、監測土壤汙染範圍。'
+        };
+        info.style.opacity = 0;
+        setTimeout(() => {
+            info.innerHTML = contents[type];
+            info.style.opacity = 1;
+        }, 200);
     }
 </script>
 
