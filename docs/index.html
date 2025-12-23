@@ -144,6 +144,7 @@
             transition: 0.3s;
             box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
             text-align: center;
+            min-width: 140px;
         }
 
         .action-btn:hover { 
@@ -201,7 +202,6 @@
 
 <script>
     // --- 課程資料資料庫 ---
-    // 提示：若要新增子網頁，請在 link 欄位填入檔名 (如 week06.html)
     const courseData = [
         { 
             week: "01", 
@@ -254,10 +254,18 @@
             title: "重力探勘學 (I)", 
             geo: "重力場理論、地下密度差異", 
             tech: "Google Colab 數據分析", 
-            link: "week06.html", // 已連結
+            link: "week06.html", 
             btnText: "進入重力實驗室 →" 
         },
-        { week: "07", date: "10/22", title: "重力探勘學 (II)", geo: "地殼密度建模與異常分析", tech: "Gemini API, Dify 應用", link: "" },
+        { 
+            week: "07", 
+            date: "10/22", 
+            title: "AI 賦能與重力探勘 (II)", 
+            geo: "期中考點彙整、地殼密度建模", 
+            tech: "Dify 工作流、Gemini API、Notion 整合", 
+            link: "week07.html", 
+            btnText: "啟動 AI 助手 →" 
+        },
         { week: "08", date: "10/29", title: "期中成果驗收", geo: "理論與計算能力檢測", tech: "Midterm Examination", link: "" },
         { week: "09", date: "11/05", title: "板塊構造與地震 (I)", geo: "全球構造理論、地震波傳遞", tech: "pygmt 震央圖繪製", link: "" },
         { week: "10", date: "11/12", title: "板塊構造與地震 (II)", geo: "地震機制與板塊動力學", tech: "pygmt 視覺化進階", link: "" },
@@ -278,13 +286,10 @@
         const card = document.createElement('div');
         card.className = 'card';
         
-        // 判斷是否具備連結
         let buttonHTML = "";
         if (item.link && item.link !== "") {
-            // 有連結：顯示金色按鈕
             buttonHTML = `<a href="${item.link}" class="action-btn">${item.btnText || '查看詳情 →'}</a>`;
         } else {
-            // 無連結：顯示深灰色「內容整理中」
             buttonHTML = `<span class="action-btn btn-disabled">內容整理中...</span>`;
         }
         
