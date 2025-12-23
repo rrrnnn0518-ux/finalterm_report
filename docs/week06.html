@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 06 | 重力探勘：地殼密度的無聲對話</title>
+    <!-- 外部庫：AOS 動畫, FontAwesome -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono&family=Noto+Sans+TC:wght@300;500;900&display=swap');
+
+        :root {
+            --bg: #001219;
+            --surface: #00212e;
+            --accent: #E9D8A6; /* 鈦金色 */
+            --highlight: #94D2BD; /* 淺青色 */
+            --tech-blue: #005F73;
+            --text: #E0E0E0;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg); color: var(--text);
+            margin: 0; line-height: 1.8; overflow-x: hidden;
+        }
+
+        /* 導覽列 */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(0, 18, 25, 0.85); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--tech-blue); display: flex;
+            justify-content: space-between; padding: 15px 40px; align-items: center;
+        }
+        nav a { color: var(--highlight); text-decoration: none; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; }
+        nav .brand { font-family: 'Space Mono', monospace; color: var(--accent); font-size: 1.1rem; }
+
+        /* Hero Section */
+        .hero {
+            height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: radial-gradient(circle at center, #005f73 0%, #001219 100%);
+            text-align: center; position: relative; border-bottom: 2px solid var(--accent);
+        }
+        .hero h1 { font-size: 3.5rem; color: var(--accent); margin: 0; font-weight: 900; letter-spacing: 5px; }
+        .hero p { color: var(--highlight); font-family: 'Space Mono', monospace; margin-top: 10px; }
+
+        section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+        .section-title { font-size: 2.2rem; color: var(--accent); margin-bottom: 50px; display: flex; align-items: center; gap: 20px; }
+        .section-title::after { content: ""; flex-grow: 1; height: 1px; background: var(--tech-blue); }
+
+        /* 核心理論卡片 */
+        .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .theory-card {
+            background: var(--surface); padding: 35px; border-radius: 20px;
+            border: 1px solid rgba(148, 210, 189, 0.1); transition: 0.4s;
+            position: relative; overflow: hidden;
+        }
+        .theory-card:hover { border-color: var(--accent); transform: translateY(-10px); background: #002d3d; }
+        .theory-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; opacity: 0.8; }
+        .theory-card h3 { color: var(--highlight); margin: 0 0 15px 0; }
+        .theory-card p { font-size: 0.95rem; color: #b0b0b0; }
+
+        /* 作業成果區：大圖展示與連結 */
+        .hw-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+        .hw-card {
+            background: var(--surface); border-radius: 25px; overflow: hidden;
+            border: 1px solid var(--tech-blue); transition: 0.3s;
+        }
+        .hw-card:hover { box-shadow: 0 0 30px rgba(148, 210, 189, 0.2); }
+        .hw-content { padding: 30px; }
+        .hw-badge { background: var(--tech-blue); color: var(--accent); padding: 4px 12px; border-radius: 5px; font-size: 0.7rem; font-weight: 900; }
+        .hw-btn {
+            display: inline-block; margin-top: 20px; padding: 12px 25px;
+            background: var(--accent); color: #001219; text-decoration: none;
+            border-radius: 10px; font-weight: bold; transition: 0.3s;
+        }
+        .hw-btn:hover { background: #fff; transform: scale(1.05); }
+
+        /* 互動重力感應器 */
+        .gravity-sim {
+            background: #000; height: 350px; border-radius: 30px; border: 2px dashed var(--tech-blue);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; cursor: pointer;
+        }
+        .gravity-ball {
+            width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, var(--accent), #9b8c5e);
+            border-radius: 50%; box-shadow: 0 0 40px rgba(233, 216, 166, 0.4);
+            position: relative; transition: 0.1s;
+        }
+
+        footer { text-align: center; padding: 80px; opacity: 0.4; font-size: 0.8rem; }
+
+        @media (max-width: 850px) { .hw-showcase { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="brand">GRAVITY_EXP_06</div>
+    <div>
+        <a href="index.html">← HOME</a>
+        <a href="#theory" style="margin-left:20px;">THEORY</a>
+        <a href="#lab" style="margin-left:20px;">DIGITAL LAB</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1 data-aos="fade-down">重力探勘與地殼異常</h1>
+    <p data-aos="fade-up" data-aos-delay="300">MEASURING THE UNSEEN MASS DISTRIBUTIONS</p>
+</div>
+
+<!-- 核心理論 -->
+<section id="theory">
+    <h2 class="section-title">核心重力理論摘要</h2>
+    <div class="theory-grid">
+        <!-- 自由空間 -->
+        <div class="theory-card" data-aos="fade-up">
+            <i class="fas fa-mountain"></i>
+            <h3>自由空間重力異常</h3>
+            <p><strong>Free-Air Anomaly (FAA)</strong><br>主要校正觀測點與參考橢球體之間的高度差異。我們在此學習到重力值隨距離平方反比下降的物理規律，但不考慮測站下方的岩石品質。</p>
+            <a href="https://oceanicdayi.blogspot.com/2025/10/1015-2.html" target="_blank" style="color:var(--accent); font-size: 0.8rem;">閱讀學習筆記 →</a>
+        </div>
+        <!-- 布蓋重力 -->
+        <div class="theory-card" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-layer-group"></i>
+            <h3>布蓋重力異常</h3>
+            <p><strong>Bouguer Anomaly (BA)</strong><br>這是重力探勘最關鍵的一步。除了高度外，進一步校正測站下方岩盤的質量吸引力。透過 BA，我們能真正看見地底「密度不均」的真相，例如尋找礦體或斷層結構。</p>
+            <a href="https://oceanicdayi.blogspot.com/2025/10/1015-3.html" target="_blank" style="color:var(--accent); font-size: 0.8rem;">閱讀學習筆記 →</a>
+        </div>
+        <!-- 數位互動 -->
+        <div class="theory-card" data-aos="fade-up" data-aos-delay="400">
+            <i class="fas fa-laptop-code"></i>
+            <h3>數位模擬應用</h3>
+            <p>透過課程提供的互動空間，我們學會了如何動態調整地層密度參數，即時觀測重力剖面圖的變化，將抽象的物理公式具現化。</p>
+            <a href="https://huggingface.co/spaces/cwadayi/Gravity" target="_blank" style="color:var(--accent); font-size: 0.8rem;">開啟官方模擬器 →</a>
+        </div>
+    </div>
+</section>
+
+<!-- 數位實作成果 (作業 7 & 8) -->
+<section id="lab" style="background: rgba(255,255,255,0.02); border-radius: 50px;">
+    <h2 class="section-title">作業實作成果展示</h2>
+    <div class="hw-showcase">
+        <!-- HW 07 -->
+        <div class="hw-card" data-aos="fade-right">
+            <div class="hw-content">
+                <span class="hw-badge">HW 07 | GITHUB PAGES</span>
+                <h3>重力測勘作業計算系統</h3>
+                <p style="font-size: 0.9rem; color: #aaa; margin: 15px 0;">
+                    本實作整合了 Python 邏輯運算與 GitHub 自動化部署。我建立了一個專屬 Repository，並將複雜的重力異常校正流程轉化為易於閱讀的網頁報告。
+                    <br><br><strong>收穫：</strong>掌握 Git 工作流、Repository 權限管理以及自動化網頁發佈。
+                </p>
+                <a href="https://rrrnnn0518-ux.github.io/rrrnnn0518-ux-gravity_calc_hw7/" target="_blank" class="hw-btn">開啟 GitHub Pages 展示</a>
+            </div>
+        </div>
+        <!-- HW 08 -->
+        <div class="hw-card" data-aos="fade-left">
+            <div class="hw-content">
+                <span class="hw-badge">HW 08 | GRADIO & HF</span>
+                <h3>Free Air Anomaly 互動程式</h3>
+                <p style="font-size: 0.9rem; color: #aaa; margin: 15px 0;">
+                    利用 Hugging Face Space 與 Gradio 框架，我開發了一個互動式教學工具。使用者可以動態輸入高度參數，即時理解自由空間重力異常的計算機制。
+                    <br><br><strong>收穫：</strong>學習前後端分離的互動程式設計，將物理理論轉化為 User-Friendly 的 UI。
+                </p>
+                <a href="https://huggingface.co/spaces/rrnn0518/freeair_gravity" target="_blank" class="hw-btn" style="background:var(--highlight)">進入 HF Space 互動展示</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 互動道具：重力場模擬器 -->
+<section>
+    <h2 class="section-title">重力場動態交互</h2>
+    <p class="text-center" style="color:var(--highlight); margin-bottom: 20px;">點擊下方空間模擬「重力脈衝」</p>
+    <div class="gravity-sim" id="sim-area" data-aos="zoom-in">
+        <div class="gravity-ball" id="ball"></div>
+        <p style="position:absolute; bottom:20px; font-size: 0.7rem; color: #555;">[ INTERACTIVE SIMULATION: CLICK TO DISTURB FIELD ]</p>
+    </div>
+</section>
+
+<footer>
+    <p>林靖融 | 地球物理課程 Week 06 成果彙整 | 2024</p>
+</footer>
+
+<script>
+    AOS.init({ duration: 1000, once: true });
+
+    // 互動小工具邏輯
+    const area = document.getElementById('sim-area');
+    const ball = document.getElementById('ball');
+
+    area.addEventListener('click', (e) => {
+        const rect = area.getBoundingClientRect();
+        const x = e.clientX - rect.left - 30; // 減去球半徑
+        const y = e.clientY - rect.top - 30;
+
+        ball.style.transition = "transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        ball.style.transform = `translate(${x - (rect.width/2 - 30)}px, ${y - (rect.height/2 - 30)}px)`;
+        
+        // 閃爍特效
+        area.style.borderColor = "var(--accent)";
+        setTimeout(() => area.style.borderColor = "var(--tech-blue)", 300);
+    });
+</script>
+
+</body>
+</html>
