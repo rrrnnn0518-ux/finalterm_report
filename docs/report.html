@@ -38,7 +38,7 @@
         nav a { color: #888; text-decoration: none; font-size: 0.8rem; margin: 0 15px; font-weight: bold; }
         nav a:hover { color: var(--accent); }
 
-        /* Hero Section - 已更換為 ss_source2 */
+        /* Hero Section - 背景為 ss_source2 */
         .hero {
             height: 60vh;
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.6)), 
@@ -52,36 +52,38 @@
         section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
         .section-title { font-size: 2.2rem; color: var(--accent); border-left: 6px solid var(--accent); padding-left: 20px; margin-bottom: 40px; }
 
-        /* 通用卡片樣式 */
+        /* 通用內容區塊 */
         .card-box { background: var(--surface); padding: 30px; border-radius: 15px; border: 1px solid #333; margin-bottom: 40px; }
         .formula { font-family: 'Courier New', monospace; color: var(--cyan); background: #000; padding: 15px; border-radius: 8px; display: inline-block; margin: 15px 0; border-left: 4px solid var(--cyan); }
 
-        /* 器材與數據排版 */
+        /* 器材區塊排版 */
         .equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        .equip-list { list-style: none; padding: 0; }
         .equip-item { background: #222; padding: 18px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid var(--accent); }
         .equip-item strong { color: var(--accent); display: block; }
-        .equip-img { width: 100%; border-radius: 15px; border: 1px solid #444; }
+        .equip-img { width: 100%; border-radius: 15px; border: 1px solid #444; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        /* 核心數據表格 */
-        .table-wrap { overflow-x: auto; margin: 30px 0; background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid var(--accent); }
+        /* 數據與視覺分析排版 */
+        .viz-full-width { width: 100%; margin-bottom: 40px; border-radius: 20px; border: 1px solid var(--accent); overflow: hidden; background: #000; }
+        .viz-full-width img { width: 100%; display: block; }
+        .viz-label { padding: 12px; text-align: center; background: var(--accent); color: #000; font-weight: bold; font-size: 0.9rem; }
+
+        /* 計算卡片 */
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 40px; }
+        .calc-card { background: #000; border-radius: 15px; padding: 25px; border: 1px solid #333; border-top: 3px solid var(--cyan); }
+        .calc-card h4 { color: var(--cyan); margin-top: 0; }
+        .math-result { font-size: 1.3rem; color: #fff; margin: 10px 0; font-family: serif; }
+
+        /* 表格樣式 */
+        .table-wrap { overflow-x: auto; margin: 30px 0; background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid #333; }
         table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th { background: #333; color: var(--accent); padding: 15px; border: 1px solid #444; }
         td { padding: 15px; border: 1px solid #444; text-align: center; }
         .highlight { color: var(--cyan); font-weight: bold; }
 
-        /* 計算細節區塊 */
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
-        .calc-card { background: #000; border-radius: 15px; padding: 25px; border: 1px solid #333; border-top: 3px solid var(--cyan); }
-        .calc-card h4 { color: var(--cyan); margin-top: 0; }
-        .math { font-size: 1.2rem; color: #fff; margin: 10px 0; font-family: serif; }
-
-        /* 單張波形展示圖 */
-        .wave-full { width: 100%; border-radius: 20px; border: 1px solid #444; margin: 20px 0; }
-
-        /* 結論與心得摘要 */
+        /* 結論摘要 */
         .summary-box { background: linear-gradient(135deg, #1e1e1e, #0a0a0a); padding: 40px; border-radius: 25px; border: 1px solid var(--accent); margin-top: 50px; }
         .summary-box h3 { color: var(--accent); margin-top: 0; font-size: 1.8rem; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        .summary-box ul { padding-left: 20px; line-height: 2.2; }
 
         footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.8rem; }
 
@@ -94,9 +96,9 @@
 
 <nav>
     <a href="index.html">HOME</a>
-    <a href="#theory">實驗原理</a>
+    <a href="#theory">理論原理</a>
     <a href="#equip">器材配置</a>
-    <a href="#analysis">計算過程</a>
+    <a href="#analysis">數據判讀</a>
     <a href="#summary">結論心得</a>
 </nav>
 
@@ -109,64 +111,63 @@
 <section id="theory">
     <h2 class="section-title">物理原理簡述</h2>
     <div class="card-box" data-aos="fade-up">
-        <p>本實驗利用地震波在不同介質交界面的 <span style="color:var(--accent)">臨界折射 (Critical Refraction)</span> 現象。當震源產生波後，部分波會依據 <b>Snell's Law</b> 產生折射，沿交界面以較快速度傳遞後回折至地表，被檢波器接收。</p>
+        <p>本實驗旨在透過分析地震波於地層介面的 <span style="color:var(--accent)">臨界折射現象</span>，逆推地下結構的速度分布。核心邏輯在於辨識「直達波」與「折射波」在走時曲線上的交點。</p>
         <div class="formula">h = (Xcr / 2) * √[(V2 - V1) / (V2 + V1)]</div>
-        <p>藉由標定直達波與折射波的轉折點 <span style="color:var(--cyan)">Xcr (Cross-over distance)</span>，我們得以逆推地層介面的深度 (h)。</p>
+        <p>藉由標定直達波與折射波的轉折點 <span style="color:var(--cyan)">Xcr (Cross-over distance)</span>，結合 V1、V2 斜率，即可精確計算地層介面的深度 (h)。</p>
     </div>
 </section>
 
-<!-- 2. 所需器材 -->
+<!-- 2. 器材配置 - 圖一換成 ss_source1 -->
 <section id="equip" style="background: rgba(255,255,255,0.02)">
     <h2 class="section-title">所需器材配置</h2>
     <div class="equip-grid">
         <div class="equip-list" data-aos="fade-right">
-            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>數位化地震訊號的主控核心，將類比轉數位。</li>
-            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>共 24 顆，以 2 公尺為間隔垂直埋設於地表。</li>
-            <li class="equip-item"><strong>橘色電纜線</strong>負責 24 測站訊號的高速數據傳輸。</li>
-            <li class="equip-item"><strong>精密皮尺 (50M)</strong>標定測線，確保間距準確性。</li>
-            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工激發震源，提供地層分析所需的彈性能量。</li>
+            <li class="equip-item"><strong>資料擷取系統 (黃盒)</strong>數位化地震訊號的主控核心。</li>
+            <li class="equip-item"><strong>Geophone 接收器 (紅色)</strong>共 24 顆。捕捉土壤物理震動。</li>
+            <li class="equip-item"><strong>橘色電纜線</strong>負責 24 測站的數據傳輸。</li>
+            <li class="equip-item"><strong>白色感應線</strong>紀錄震源激發的起點時間 (T0)。</li>
+            <li class="equip-item"><strong>鐵鎚與鐵板</strong>人工震源，產生實驗所需的地震波。</li>
+            <li class="equip-item"><strong>精密皮尺 (50M)</strong>標定測線，確保測站間距準確。</li>
         </div>
         <div data-aos="fade-left">
-            <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source3.png?raw=true" class="equip-img" alt="原始數據圖">
-            <div style="text-align:center; font-size:0.8rem; color:#666; margin-top:10px;">[ 全測段初至波紀錄原始圖 ]</div>
+            <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source1.png?raw=true" class="equip-img" alt="初測波形圖">
+            <div style="text-align:center; font-size:0.8rem; color:#666; margin-top:10px;">[ 圖一 ] 實驗初步數據採集波形概況</div>
         </div>
     </div>
 </section>
 
-<!-- 3. 計算過程 (新增區塊) -->
+<!-- 3. 數據判讀與視覺分析 - ss_source3 移動到這裡 -->
 <section id="analysis">
-    <h2 class="section-title">核心數據處理與計算</h2>
-    
-    <div class="card-box" data-aos="fade-up">
-        <p>為追求實驗精確度，我們進行了 <strong>第二次計算修正</strong>。排除了與群體數值差距較大的極端值後，得出了代表校園該區域地下構造的平均波速。</p>
-        
-        <div class="calc-grid">
-            <!-- 平均波速計算 -->
-            <div class="calc-card" data-aos="fade-up">
-                <h4><i class="fas fa-calculator"></i> 平均波速計算</h4>
-                <div class="math">V1<sub>avg</sub> = 430.125 m/s</div>
-                <p style="font-size:0.85rem; color:#888;">(代表地表表層風化土層)</p>
-                <div class="math">V2<sub>avg</sub> = 1036.75 m/s</div>
-                <p style="font-size:0.85rem; color:#888;">(代表下層緻密硬土或基岩面)</p>
-            </div>
-            
-            <!-- 臨界角計算 -->
-            <div class="calc-card" data-aos="fade-up" data-aos-delay="200">
-                <h4><i class="fas fa-angle-double-right"></i> 臨界角計算 (θc)</h4>
-                <p>公式：θc = arcsin(V1 / V2)</p>
-                <div class="math">θc = arcsin(430.1 / 1036.7)</div>
-                <div class="math" style="color:var(--accent);">θc ≈ 24.729°</div>
-                <p style="font-size:0.85rem; color:#888;">經所有炸點波速帶入計算，得出該介面平均臨界角為 24.73°。</p>
-            </div>
+    <h2 class="section-title">數據判讀與視覺分析</h2>
+
+    <!-- 全測段波形大圖 -->
+    <div class="viz-full-width" data-aos="zoom-in">
+        <img src="https://github.com/rrrnnn0518-ux/finalterm_report/blob/main/source/ss_source3.png?raw=true" alt="全測段原始紀錄">
+        <div class="viz-label">[ 全測段初至波紀錄原始圖 ]</div>
+    </div>
+
+    <!-- 計算細節 -->
+    <div class="calc-grid">
+        <div class="calc-card" data-aos="fade-up">
+            <h4><i class="fas fa-calculator"></i> 平均波速計算 (第二次修正)</h4>
+            <div class="math-result">V1<sub>avg</sub> ≈ 430.1 m/s</div>
+            <div class="math-result">V2<sub>avg</sub> ≈ 1036.8 m/s</div>
+            <p style="font-size:0.8rem; color:#888;">* 排除異常極端值後的修正數據</p>
+        </div>
+        <div class="calc-card" data-aos="fade-up" data-aos-delay="200">
+            <h4><i class="fas fa-drafting-compass"></i> 臨界角推導 (θc)</h4>
+            <p>θc = arcsin(V1 / V2)</p>
+            <div class="math-result" style="color:var(--accent)">θc ≈ 24.73°</div>
+            <p style="font-size:0.8rem; color:#888;">本測段地下物理介面之平均臨界角</p>
         </div>
     </div>
 
-    <!-- 數據表 -->
+    <!-- 數據匯總表 -->
     <div class="table-wrap" data-aos="fade-up">
-        <table style="font-size: 0.9rem;">
+        <table>
             <thead>
                 <tr>
-                    <th>炸點距離(m)</th><th>0</th><th>6</th><th>12</th><th>18</th><th>24</th><th>30</th><th>36</th><th>42</th><th>46</th><th>平均</th>
+                    <th>炸點距離 (m)</th><th>0</th><th>6</th><th>12</th><th>18</th><th>24</th><th>30</th><th>36</th><th>42</th><th>46</th><th>平均</th>
                 </tr>
             </thead>
             <tbody>
@@ -179,8 +180,8 @@
                     <td>1067</td><td>1012</td><td>1085</td><td>985</td><td>1185</td><td>1100</td><td>1066</td><td>1005</td><td>974</td><td class="highlight">1036.8</td>
                 </tr>
                 <tr>
-                    <td><strong>臨界角 (°)</strong></td>
-                    <td>24.0</td><td>24.7</td><td>25.3</td><td>25.6</td><td>31.4</td><td>23.0</td><td>23.5</td><td>25.1</td><td>24.8</td><td class="highlight">24.73</td>
+                    <td><strong>厚度 h (m)</strong></td>
+                    <td>4.55</td><td>4.48</td><td>4.43</td><td>2.51</td><td>3.83</td><td>4.30</td><td>3.93</td><td>3.49</td><td>3.83</td><td class="highlight">3.99</td>
                 </tr>
             </tbody>
         </table>
@@ -192,16 +193,16 @@
     <div class="summary-box" data-aos="fade-up">
         <h3><i class="fas fa-poll-h" style="margin-right:15px;"></i>結論摘要</h3>
         <ul>
-            <li><strong>波速分層顯著：</strong> 第二次精確修正後，V1 (430m/s) 與 V2 (1037m/s) 存在明顯跳躍，顯示地下存有清晰物理介面。</li>
-            <li><strong>地層深度預測：</strong> 經由走時數據與公式計算，該區地下 <strong>3.5m 至 4.5m</strong> 處存在一明顯的速度不連續面。</li>
-            <li><strong>物理性質驗證：</strong> 計算出的平均臨界角為 <strong>24.73°</strong>，其角度之穩定性進一步驗證了數據判讀的可靠性。</li>
+            <li><strong>波速特徵：</strong>修正後的數據顯示該區表層 (V1) 與深層 (V2) 存在極大速度差異，代表地表鬆散土層與緻密地層的物理交界。</li>
+            <li><strong>深度建模：</strong>地下速度不連續面深度約為 <strong>3.5m 至 4.5m</strong>。</li>
+            <li><strong>環境探討：</strong>觀測中發現接收器與地面的耦合度（垂直度）以及馬路震動雜訊是影響初至點標定精確性的主因。</li>
         </ul>
     </div>
 
     <!-- 個人心得 (林靖融) -->
     <div class="summary-box" style="margin-top:30px; border-color:var(--cyan)" data-aos="fade-up">
         <h3><i class="fas fa-user-edit" style="margin-right:15px;"></i>組員心得：林靖融</h3>
-        <p style="font-style:italic">「這次的震測實驗是我第一次做地震物理相關的實驗。之前大多是在書籍資料中理解理論，實際的操作讓我發現很多變數：例如馬路邊車子的震動會直接影響接收器。實際標定初至點與繪製斜率圖後，原本抽象的公式變得具象，也讓我對專業檢波器的串接功能有更深認識，是非常充實的實作課程。」</p>
+        <p style="font-style:italic">「這次的震測實驗是我第一次做地震物理相關的實驗。之前大多是在書籍資料中理解理論，而實際的操作讓我發現很多變數：例如馬路邊車子的震動會直接影響接收器。標定初至波並將數據套入公式的過程，讓我對地底結構的探測有了實感的體悟，是非常有收穫的課程內容。」</p>
     </div>
 </section>
 
