@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W14 專家演講：從阿蘇火山到嘉南地震 | 地球物理學筆記</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --lava: #ff4500;    /* 熔岩橘紅 */
+            --glow: #ff7f50;    /* 餘暉橘 */
+            --accent: #fbbf24; /* 金色 */
+            --text: #e2e8f0;
+            --sub-text: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* 緩慢流動的岩漿特效（側邊欄） */
+        .lava-flow {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(180deg, #300 0%, #f00 20%, #ff4500 50%, #f00 80%, #300 100%);
+            background-size: 100% 200%;
+            animation: flow 8s linear infinite;
+            box-shadow: -5px 0 20px rgba(255, 69, 0, 0.4);
+            z-index: 1001;
+        }
+
+        @keyframes flow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 200%; }
+        }
+
+        nav {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .header-section {
+            border-left: 4px solid var(--lava);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
+        .week-tag { background: var(--lava); color: #fff; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        h2 { color: var(--glow); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* 心得高亮區塊 */
+        .reflection-box {
+            background: rgba(255, 69, 0, 0.05);
+            border: 1px dashed var(--lava);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .reflection-box b { color: var(--lava); }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .compare-item {
+            background: #262626;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .compare-item h4 { margin: 0 0 10px 0; color: var(--accent); }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #222;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            margin: 15px 0;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="lava-flow"></div>
+
+<nav>
+    <a href="index.html">← 返回課程總覽</a>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 專家演講筆記</div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <span class="week-tag">WEEK 14</span>
+        <h1>專題演講：黃有志博士</h1>
+        <p style="color: var(--sub-text);">從阿蘇火山、熊本地震到嘉南地震觀測：地球物理學的實際應用</p>
+    </div>
+
+    <!-- 演講摘要 -->
+    <div class="content-card">
+        <h2>📌 演講內容摘要</h2>
+        <p>黃有志博士透過其旅日研究的深厚背景，分享了在日本京都大學火山研究中心的第一手觀察。講座涵蓋了火山監測、大地震的災後啟示，以及台灣嘉南地區目前的地震威脅評估。</p>
+        <ul>
+            <li><b>火山分佈與監測：</b> 介紹阿蘇火山的完整破火口結構與多樣化的噴發形式。</li>
+            <li><b>熊本地震啟示：</b> 主震與前震序列的特徵，以及地震誘發火山活動的可能性。</li>
+            <li><b>台灣現地研究：</b> 針對嘉南地區複雜地質構造（如梅山斷層）的精密地震觀測。</li>
+        </ul>
+    </div>
+
+    <!-- 心得精華區：針對學生心得特別製作 -->
+    <div class="content-card">
+        <h2>💡 個人心得精華：日本研究的震撼</h2>
+        <div class="reflection-box">
+            博士提到的 <b>「媒體直升機即時拍攝」</b> 讓我印象極深，這展現了日本社會對防災的高度重視。對於想去日本深造的我來說，博士分享如何透過主動寫信爭取研究機會，提供了非常實務的職涯引導。
+        </div>
+
+        <h3>🌋 關於火山：具象化的恐懼與科學</h3>
+        <p>演講讓我對火山災害有了更具象的理解。特別是關於 <b>大屯火山群</b> 的省思：</p>
+        <div class="compare-grid">
+            <div class="compare-item">
+                <h4>教科書的想像</h4>
+                <p style="font-size: 0.85rem;">直觀認為是大規模岩漿熔岩流噴發，造成全面毀滅性災害。</p>
+            </div>
+            <div class="compare-item">
+                <h4>博士的科學觀點</h4>
+                <p style="font-size: 0.85rem;">大屯山目前更需提防 <b>「水蒸氣式噴發」</b>。高溫氣體累積在脆弱地層，預測難度高且局部破壞力大。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 地震與斷層比較 -->
+    <div class="content-card">
+        <h2>📉 嘉南地震與熊本地震的對照</h2>
+        <p>演講中提及 <b>梅山斷層</b> 的週期約為 100 年，而距上次 1906 年地震已過去 120 年。這讓我們意識到斷層活動的規律與潛在風險。</p>
+        
+        <div class="reflection-box">
+            <b>梅山斷層 vs. 熊本地震：</b> 兩者雖皆為陸域地震，但釋能方式不同。熊本斷層滑移速率高、主前震序列清晰；梅山斷層則週期長，多以零星小地震釋放能量。
+        </div>
+
+        <h3>🛠️ 專業監測技術</h3>
+        <p>了解京都大學與氣象廳的分工：氣象廳負責 <b>警報發布</b>，而研究所則專注於 <b>科學解釋與風險評估</b>。觀測項目包含：</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <span style="background: #334155; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">次聲波 (Infrasound)</span>
+            <span style="background: #334155; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">磁場觀測 (岩漿移動)</span>
+            <span style="background: #334155; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">地殼變形 (GPS/傾斜儀)</span>
+        </div>
+    </div>
+
+    <!-- 總結 -->
+    <div class="content-card" style="border-top: 4px solid var(--accent);">
+        <h2>🌟 總結：地底偵探的職責</h2>
+        <p>通過這次演講，我深刻體會到地球物理不只是公式，而是與生命息息相關的守護。從博士拍下的斷層露頭照片中，我看見了地球原始的力量，也確立了未來在數位地震學領域深耕的目標。</p>
+    </div>
+
+</div>
+
+<footer>
+    <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
+</footer>
+
+</body>
+</html>
