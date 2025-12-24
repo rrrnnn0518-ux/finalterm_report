@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>W04 地球物理專題演講 | 層析成像研究</title>
+    <title>W04 地球物理專題演講 | 甘禮有博士：地震層析成像</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -20,6 +20,7 @@
             color: var(--text);
             margin: 0;
             line-height: 1.7;
+            overflow-x: hidden;
         }
 
         nav {
@@ -34,20 +35,9 @@
             z-index: 1000;
         }
 
-        nav a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        nav a { color: var(--accent); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; }
 
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
 
         .header-section {
             border-left: 4px solid var(--accent);
@@ -58,7 +48,7 @@
         h1 { color: #fff; font-size: 2.2rem; margin-bottom: 10px; }
         .week-tag { background: var(--accent); color: #000; padding: 2px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; }
 
-        /* --- 新增：地震層析掃描特效區塊 --- */
+        /* --- 保留：地震層析掃描特效區塊 --- */
         .seismic-scan-visual {
             width: 100%;
             height: 280px;
@@ -68,7 +58,7 @@
             position: relative;
             overflow: hidden;
             border: 1px solid #334155;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.15);
         }
 
         .scan-grid {
@@ -105,27 +95,20 @@
             padding: 10px 0;
         }
 
-        .wave-svg {
-            width: 100%;
-            height: 30px;
-            stroke: var(--tech);
-            stroke-width: 1.5;
-            fill: none;
-            opacity: 0.6;
-        }
+        .wave-svg { width: 100%; height: 30px; stroke: var(--tech); stroke-width: 1.5; fill: none; opacity: 0.6; }
 
         .scan-status {
             position: absolute;
             bottom: 15px;
-            left: 20px;
+            right: 20px;
             color: var(--tech);
             font-family: monospace;
             font-size: 0.75rem;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-        /* ------------------------------ */
 
+        /* --- 報告內容卡片 --- */
         .content-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -135,62 +118,117 @@
         }
 
         h2 { color: var(--tech); border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 0; }
+        h3 { color: var(--accent); margin-top: 20px; }
+
+        .logic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .logic-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid var(--tech);
+        }
+
+        .highlight-box {
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
 
         ul { padding-left: 20px; }
         li { margin-bottom: 10px; }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--sub-text);
-            font-size: 0.9rem;
+        .badge-light {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            background: #334155;
+            border-radius: 4px;
+            color: var(--tech);
+            margin-right: 5px;
         }
+
+        footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html">← 返回課程總覽</a>
-    <div style="color: var(--sub-text); font-size: 0.8rem;">林靖融 | 專家演講筆記</div>
+    <div style="color: var(--sub-text); font-size: 0.8rem;">地球物理筆記 | 專題演講報告</div>
 </nav>
 
 <div class="container">
     <div class="header-section">
-        <span class="week-tag">WEEK 04</span>
-        <h1>層析成像與阿蘇火山研究</h1>
-        <p style="color: var(--sub-text);">演講者：甘禮有 博士 (Dr. Gan Liyou)</p>
+        <span class="week-tag">WEEK 04 GUEST LECTURE</span>
+        <h1>Seismic Tomography：地震層析成像</h1>
+        <p style="color: var(--sub-text);">主講人：甘禮有 博士 (國立臺灣大學地質系博士後)</p>
     </div>
 
-    <!-- 這是修改後的小區塊：地震相關特效 -->
+    <!-- 動態視覺特效：層析掃描模擬 -->
     <div class="seismic-scan-visual">
         <div class="scan-grid"></div>
         <div class="scan-line"></div>
-        <div class="wave-lines-container" id="waves">
-            <!-- 由 JavaScript 產生波形 -->
-        </div>
+        <div class="wave-lines-container" id="waves"></div>
         <div class="scan-status">
-            >> DATA SCANNING: INVERSE MODELING...
+            >> SYSTEM READY: INVERSION IN PROGRESS...
         </div>
     </div>
 
+    <!-- 第一部分：核心概念彙整 -->
+    <div class="content-card" data-aos="fade-up">
+        <h2>📌 演講內容摘要：地底的數位斷層掃描</h2>
+        <p>甘博士以深入淺出的方式，將複雜的層析成像類比為醫療用的 <b>CT Scan</b>。透過接收器紀錄地震波穿過地層的時間差，反推地底的速度結構。</p>
+        
+        <div class="highlight-box">
+            <strong>核心物理邏輯：</strong> 牛頓第二運動定律 <span style="color:var(--accent); font-family:serif; font-size:1.2rem;">F = ma</span>
+            <p style="margin-top:5px; font-size:0.9rem; color:var(--sub-text);">博士強調：所有的數學運算與模型推斷，最終都回歸到最基礎的物理規律，這讓我們能繞開艱深的公式，直擊地球物理的核心。</p>
+        </div>
+    </div>
+
+    <!-- 第二部分：正演與逆推的對比 (報告重點) -->
     <div class="content-card">
-        <h2>📌 演講摘要</h2>
-        <p>本次演講深入探討了地震波層析成像技術的原理及其在火山結構研究中的應用。重點介紹了：</p>
+        <h2>🧠 正演問題 vs 逆推問題</h2>
+        <p>理解層析成像的關鍵在於這兩者的轉換。博士用尺度觀念讓我們快速理解：</p>
+        
+        <div class="logic-grid">
+            <div class="logic-item">
+                <span class="badge-light">Forward</span>
+                <h4 style="margin:5px 0; color:var(--accent);">正演問題</h4>
+                <p style="font-size:0.85rem;">給定<b>地底模型</b>，計算地震波在其中傳播後的<b>觀測資料</b>（如到時、震幅）。</p>
+            </div>
+            <div class="logic-item">
+                <span class="badge-light">Inverse</span>
+                <h4 style="margin:5px 0; color:var(--tech);">逆推問題</h4>
+                <p style="font-size:0.85rem;">拿著實地<b>觀測資料</b>，反過來尋找符合這些數據的<b>地下物理模型</b>。</p>
+            </div>
+        </div>
+        <p style="margin-top:15px; font-size:0.9rem;">這是一個「病態問題」(Ill-posed problem)，在有限的測站與採樣下，往往不只一種模型可以描述觀測資料，因此需要透過 <b>交叉比對</b> 來優化準確度。</p>
+    </div>
+
+    <!-- 第三部分：研究應用案例 -->
+    <div class="content-card">
+        <h2>🗺️ 實務應用：阿蘇火山與台灣構造</h2>
         <ul>
-            <li><strong>正演 (Forward Problem)：</strong> 根據已知模型計算預期觀測數據。</li>
-            <li><strong>逆推 (Inverse Problem)：</strong> 根據觀測數據推斷地下介質模型。</li>
-            <li><strong>地震層析成像 (Tomography)：</strong> 利用地震波穿過地下介質的走時殘差，反演地下的波速結構。</li>
+            <li><b>阿蘇火山 (Aso Volcano)：</b> 透過層析成像辨識出火山下方的低速帶，推斷超臨界流體與岩漿庫的遷移路徑。</li>
+            <li><b>全波形逆推 (FWI)：</b> 相比傳統走時分析，能提供更高解析度的地殼圖像，精確繪製岩石圈地震構造。</li>
         </ul>
     </div>
 
-    <div class="content-card">
-        <h2>💡 層析成像 (Tomography) 概論</h2>
-        <p>層析成像技術不僅應用於醫學上的 CT 掃描，在地球物理中更是探測地殼結構的利器。透過數以萬計的地震射線，我們可以將地底下的波速「影像化」，辨識出高溫岩漿庫或地殼異常體。</p>
-    </div>
-
-    <div class="content-card">
-        <h2>🌋 甘博士的研究亮點</h2>
-        <p>甘博士分享了關於日本阿蘇火山 (Aso Volcano) 的最新研究成果。透過層析成像反演出的地殼速度結構，清晰顯示了火山下方的岩漿供應路徑與低速帶分佈，這對預測火山活動具有極高參考價值。</p>
+    <!-- 第四部分：個人心得感悟 -->
+    <div class="content-card" style="border-top: 4px solid var(--accent);">
+        <h2>💡 學習心得：從理論到職涯的啟發</h2>
+        <p>這次演講對我最大的啟發有兩點：</p>
+        <ol>
+            <li><b>科學敘述的力量：</b> 博士能將高深的層析演算轉化為邏輯式的概念，讓知之甚少的學生也能大致理解。這提醒我，做研究不僅要會運算，更要能清晰地敘述背後的物理目的。</li>
+            <li><b>職涯視野的開拓：</b> 博士分享其留學法國與實習的經歷。了解到台灣地物研究資源與國際的落差，但也看見了透過主動投遞資歷來進入頂尖實驗室的途徑。研究員那種相對自由且專注的生活方式，也讓我對未來的深造路徑產生了濃厚興趣。</li>
+        </ol>
     </div>
 
 </div>
@@ -200,7 +238,7 @@
 </footer>
 
 <script>
-    // 產生動態震波線條的邏輯
+    // 產生動態震波線條的邏輯 (維持現有特效)
     const waveBox = document.getElementById('waves');
     const rowCount = 5;
 
@@ -215,9 +253,7 @@
         function animate() {
             let d = "M 0 15";
             for (let x = 0; x <= 800; x += 10) {
-                // 基礎雜訊
                 let y = 15 + (Math.random() - 0.5) * 5;
-                // 隨機出現較大的「震波脈衝」
                 if (Math.random() > 0.95) y += (Math.random() - 0.5) * 20;
                 d += ` L ${x} ${y}`;
             }
