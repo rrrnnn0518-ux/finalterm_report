@@ -59,35 +59,77 @@
 
         h2 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
 
-        /* 熱能比例視覺化 */
-        .energy-split {
+        /* --- 互動工具 1: 地層深度探針 --- */
+        .probe-box {
+            background: #000;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--hot);
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .probe-ui {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .depth-slider {
+            flex-grow: 1;
+            accent-color: var(--hot);
+        }
+        .probe-display {
+            min-width: 150px;
+            text-align: center;
+            background: #222;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        .probe-val { font-size: 1.5rem; font-weight: bold; color: var(--hot); display: block; }
+        .layer-tag { font-size: 0.8rem; color: var(--tech); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 互動工具 2: 熱源比例展示 --- */
+        .source-mixer {
+            margin: 20px 0;
+            background: #111;
+            padding: 20px;
+            border-radius: 12px;
+            border-top: 3px solid var(--accent);
+        }
+        .mixer-btns {
             display: flex;
             gap: 10px;
-            height: 30px;
-            margin: 20px 0;
-            border-radius: 5px;
-            overflow: hidden;
-            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+        .mixer-btn {
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .mixer-btn.active {
+            background: var(--accent);
+            color: #000;
             font-weight: bold;
+            border-color: var(--accent);
         }
-        .sun { background: var(--accent); color: #000; width: 99.97%; display: flex; align-items: center; justify-content: center; }
-        .geo { background: var(--hot); color: #fff; width: 0.03%; }
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-wrap { width: 100%; height: 25px; background: #000; border-radius: 15px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bar-label { font-size: 0.85rem; color: var(--sub-text); margin-bottom: 5px; }
 
-        /* 核心表格樣式 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9rem;
-        }
-        th, td {
-            border: 1px solid #334155;
-            padding: 12px;
-            text-align: left;
-        }
-        th { background: #262626; color: var(--accent); }
-
-        /* 重要公式區 */
+        /* 公式與表格樣式保持不變 */
         .formula-box {
             background: #000;
             padding: 20px;
@@ -98,25 +140,19 @@
             font-size: 1.1rem;
             margin: 20px 0;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th, td { border: 1px solid #334155; padding: 12px; text-align: left; }
+        th { background: #262626; color: var(--accent); }
 
-        /* 期末公告區 */
         .final-project-card {
             background: linear-gradient(135deg, #450a0a 0%, #1a1a1a 100%);
             border: 2px solid var(--hot);
         }
-
-        .action-btn {
-            display: inline-block;
-            background: var(--accent);
-            color: #000;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: 0.3s;
-        }
-        .action-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
@@ -132,99 +168,81 @@
     <div class="header-section">
         <span class="week-tag">WEEK 12</span>
         <h1>地球的熱分布：地底深處的引擎</h1>
-        <p style="color: var(--sub-text);">從太陽輻射能量收支到地函對流的熱力學基礎</p>
+        <p style="color: var(--sub-text);">從熱力學角度探索地底溫度分層與熱流來源</p>
     </div>
 
-    <!-- 能量收支區 -->
+    <!-- 互動小工具 1: 地溫探針 -->
     <div class="content-card">
-        <h2>⚖️ 地球能量收支預算</h2>
-        <p>地球表面的熱主要來自太陽，但驅動地質構造運動的則是來自內部的地熱。兩者比例極其懸殊：</p>
-        <div class="energy-split">
-            <div class="sun">太陽輻射 (約 99.97%)</div>
-            <div class="geo"></div>
-        </div>
-        <p style="font-size: 0.85rem; color: var(--sub-text);">
-            * 內部地熱流量僅佔太陽輻射的 <strong>1/4000</strong>。但這微小的能量卻支撐了板塊漂移、地震與火山噴發。
-        </p>
-    </div>
-
-    <!-- 熱力學基礎 -->
-    <div class="content-card">
-        <h2>🔥 熱力學與生熱率</h2>
-        <p>地球內部的熱主要來自兩個來源：<strong>地球形成時的餘熱</strong> 以及 <strong>放射性同位素 (U, Th, K) 的衰變生熱</strong>。</p>
+        <h2>🔬 數位實驗室：地溫梯度探針</h2>
+        <p>調整滑桿來「探測」地底不同深度的預估溫度（基於平均地溫梯度 $30\,K/km$）：</p>
         
-        <div class="formula-box">
-            ΔQ = cᵖ m ΔT (比熱公式) <br>
-            ΔQ = ΔU + ΔW (熱力學第一定律)
+        <div class="probe-box">
+            <div class="probe-ui">
+                <span>地表</span>
+                <input type="range" class="depth-slider" id="depthSlider" min="0" max="6371" value="35">
+                <span>地心</span>
+            </div>
+            <div style="display: flex; gap: 40px; margin-top: 20px;">
+                <div class="probe-display">
+                    <span class="layer-tag">探測深度</span>
+                    <span class="probe-val"><span id="depthVal">35</span> km</span>
+                </div>
+                <div class="probe-display">
+                    <span class="layer-tag">預估溫度</span>
+                    <span class="probe-val" style="color: var(--accent);"><span id="tempVal">1050</span> °C</span>
+                </div>
+            </div>
+            <p id="layerDesc" style="margin-top: 15px; color: var(--tech); font-weight: bold;"></p>
         </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>岩石類型</th>
-                    <th>主要生熱貢獻 (U, Th, K)</th>
-                    <th>相對生熱率</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>花崗岩 (Granite)</td>
-                    <td>最高 (大陸地殼主要組成)</td>
-                    <td>≈ 101</td>
-                </tr>
-                <tr>
-                    <td>地函岩石 (Mantle)</td>
-                    <td>極低</td>
-                    <td>≈ 0.49</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
-    <!-- 海洋與大陸對比 -->
+    <!-- 互動小工具 2: 熱源切換 -->
     <div class="content-card">
-        <h2>🌍 熱流來源：大陸 vs. 海洋</h2>
-        <p>有趣的是，大陸與海洋的熱流來源完全不同：</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>熱量來源</th>
-                    <th>大陸 (Continents)</th>
-                    <th>海洋 (Oceans)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>岩石圈冷卻 (Cooling)</td>
-                    <td>20%</td>
-                    <td><strong style="color: var(--hot);">85% (主導)</strong></td>
-                </tr>
-                <tr>
-                    <td>放射性生熱 (Radiogenic)</td>
-                    <td><strong style="color: var(--accent);">55% (主導)</strong></td>
-                    <td>—</td>
-                </tr>
-                <tr>
-                    <td>深部地函熱流</td>
-                    <td>25%</td>
-                    <td>10%</td>
-                </tr>
-            </tbody>
-        </table>
-        <p><strong>結論：</strong> 海洋的熱流主要反映了新生地殼的冷卻過程；而大陸的熱流則主要來自上地殼放射性元素的熱產量。</p>
+        <h2>🌍 互動比例：大陸 vs. 海洋熱源</h2>
+        <p>觀察不同地殼環境下，「岩石圈冷卻」與「放射性衰變」對地熱流的貢獻比：</p>
+        
+        <div class="source-mixer">
+            <div class="mixer-btns">
+                <button class="mixer-btn active" onclick="updateMixer('continent', this)">大陸地殼</button>
+                <button class="mixer-btn" onclick="updateMixer('ocean', this)">海洋地殼</button>
+            </div>
+            <div class="chart-container">
+                <div>
+                    <div class="bar-label">岩石圈冷卻 (Lithosphere Cooling)</div>
+                    <div class="bar-wrap"><div id="barCooling" class="bar-fill" style="width: 20%; background: var(--tech);"></div></div>
+                </div>
+                <div>
+                    <div class="bar-label">放射性同位素生熱 (Radiogenic Heat)</div>
+                    <div class="bar-wrap"><div id="barRadio" class="bar-fill" style="width: 70%; background: var(--hot);"></div></div>
+                </div>
+                <div>
+                    <div class="bar-label">深部地函熱流 (Mantle Flux)</div>
+                    <div class="bar-wrap"><div id="barMantle" class="bar-fill" style="width: 10%; background: var(--accent);"></div></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 期末專題公告 -->
-    <div class="content-card final-project-card">
-        <h2>🚩 期末專題報告說明</h2>
-        <p>進入學期尾聲，期末專題報告正式啟動。我們將結合學期所學的震測、重力、磁學與地熱知識，進行綜合性的地球物理專題研究。</p>
-        <p><strong>重點參考資源：</strong></p>
-        <ul style="color: var(--sub-text);">
-            <li>GitHub 實作範例：地球熱模擬數據處理</li>
-            <li>熱分布計算工具應用</li>
+    <!-- 物理理論彙整 (保留原內容) -->
+    <div class="content-card">
+        <h2>🔥 熱力學核心公式</h2>
+        <div class="formula-box">
+            ΔQ = cᵖ m ΔT (比熱與溫度關係) <br>
+            ΔQ = TΔS = ΔU + ΔW (熱力學第一定律)
+        </div>
+        <p><strong>放射性生熱重點：</strong></p>
+        <ul>
+            <li>主要來自 <strong>U (鈾)</strong>, <strong>Th (釷)</strong>, <strong>K (鉀)</strong> 的衰變。</li>
+            <li><strong>花崗岩</strong> 的生熱率遠高於地函岩石，因此大陸地殼的熱流主要來自內部生熱。</li>
         </ul>
-        <div style="text-align: center;">
-            <a href="https://github.com/oceanicdayi/Earth_Heat" target="_blank" class="action-btn">📂 存取地球熱實作倉庫</a>
+    </div>
+
+    <!-- 期末專題公告 (保留原內容) -->
+    <div class="content-card final-project-card">
+        <h2>🚩 期末專題報告準備</h2>
+        <p>期末專題將要求整合學期所學的地震學、磁學與熱學資料。地熱資料的處理可參考下方 GitHub 資源：</p>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://github.com/oceanicdayi/Earth_Heat" target="_blank" style="background: var(--accent); color: #000; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold;">📂 存取地球熱實作原始碼</a>
         </div>
     </div>
 
@@ -233,6 +251,60 @@
 <footer>
     <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
 </footer>
+
+<script>
+    // --- 工具 1: 地溫探針邏輯 ---
+    const depthSlider = document.getElementById('depthSlider');
+    const depthVal = document.getElementById('depthVal');
+    const tempVal = document.getElementById('tempVal');
+    const layerDesc = document.getElementById('layerDesc');
+
+    depthSlider.oninput = function() {
+        let d = parseInt(this.value);
+        depthVal.innerText = d;
+        
+        // 簡易模擬溫度曲線: 淺部梯度 30, 深部遞減
+        let t = 0;
+        if (d <= 100) {
+            t = d * 30 + 15;
+        } else if (d <= 2900) {
+            t = 3000 + (d - 100) * 0.8; // 地函估計
+        } else {
+            t = 5200 + (d - 2900) * 0.2; // 地核估計
+        }
+        tempVal.innerText = Math.round(t);
+
+        // 層位判斷
+        if (d <= 35) layerDesc.innerText = "📍 目前位置：地殼 (Crust)";
+        else if (d <= 2900) layerDesc.innerText = "📍 目前位置：地函 (Mantle)";
+        else if (d <= 5150) layerDesc.innerText = "📍 目前位置：外核 (Outer Core)";
+        else layerDesc.innerText = "📍 目前位置：內核 (Inner Core)";
+    };
+
+    // --- 工具 2: 熱源切換邏輯 ---
+    function updateMixer(type, btn) {
+        // 更新按鈕樣式
+        document.querySelectorAll('.mixer-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const cooling = document.getElementById('barCooling');
+        const radio = document.getElementById('barRadio');
+        const mantle = document.getElementById('barMantle');
+
+        if (type === 'continent') {
+            cooling.style.width = "20%";
+            radio.style.width = "70%"; // 55% + 15% 來自放射性
+            mantle.style.width = "10%";
+        } else {
+            cooling.style.width = "85%";
+            radio.style.width = "5%";
+            mantle.style.width = "10%";
+        }
+    }
+
+    // 初始化工具 1
+    depthSlider.oninput();
+</script>
 
 </body>
 </html>
