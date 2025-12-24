@@ -56,104 +56,56 @@
             margin-bottom: 30px;
             border: 1px solid #334155;
             position: relative;
-            transition: 0.3s;
         }
 
         h2 { color: var(--accent); margin-top: 0; display: flex; align-items: center; gap: 10px; }
 
         /* --- 互動工具 1: 地熱技術選擇器 --- */
-        .tech-selector {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
+        .tech-selector { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
         .tech-btn {
-            background: #262626;
-            border: 1px solid #334155;
-            color: var(--sub-text);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+            background: #262626; border: 1px solid #334155; color: var(--sub-text);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
+        .tech-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(16, 185, 129, 0.1); }
+        #tech-display { background: #000; padding: 20px; border-radius: 12px; min-height: 120px; border-left: 3px solid var(--accent); margin-top: 10px; }
 
-        .tech-btn.active {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        #tech-display {
+        /* --- 互動工具 2: 數位訊號處理模擬器 (New) --- */
+        .signal-lab {
             background: #000;
-            padding: 20px;
-            border-radius: 12px;
-            min-height: 120px;
-            border-left: 3px solid var(--accent);
-            margin-top: 10px;
-        }
-
-        /* --- 互動工具 2: 震波脈衝模擬 --- */
-        .seismic-monitor {
-            background: #000;
-            height: 150px;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 15px;
+            padding: 25px;
             margin: 20px 0;
             border: 1px solid var(--ai-blue);
         }
+        .lab-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .control-group { display: flex; flex-direction: column; gap: 5px; }
+        .control-group label { font-size: 0.8rem; color: var(--sub-text); }
+        input[type=range] { accent-color: var(--ai-blue); }
 
-        .wave {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            stroke: var(--ai-blue);
-            stroke-width: 2;
-            fill: none;
-        }
+        .viz-canvas-wrap { background: #080808; border-radius: 8px; position: relative; height: 150px; overflow: hidden; }
+        .canvas-label { position: absolute; top: 10px; left: 10px; font-size: 0.7rem; color: var(--ai-blue); font-family: monospace; }
 
         /* AI 平台展示區 */
         .platform-hero {
             background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
-            border: 1px solid var(--ai-blue);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            margin: 30px 0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid var(--ai-blue); border-radius: 20px; padding: 40px; text-align: center; margin: 30px 0;
         }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; text-align: left; }
+        .feature-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; font-size: 0.85rem; border-left: 3px solid var(--tech); }
 
         .action-btn {
-            display: inline-block;
-            background: var(--ai-blue);
-            color: #fff;
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 800;
-            margin-top: 25px;
-            transition: 0.3s;
+            display: inline-block; background: var(--ai-blue); color: #fff; padding: 15px 35px;
+            border-radius: 50px; text-decoration: none; font-weight: 800; margin-top: 25px; transition: 0.3s;
         }
-
         .action-btn:hover { transform: scale(1.05); background: #fff; color: var(--ai-blue); }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-            text-align: left;
+        /* 模擬監控面板 (New) */
+        .monitor-panel {
+            display: flex; justify-content: space-between; background: #111;
+            padding: 10px 20px; border-radius: 10px; margin-bottom: 20px; font-family: monospace; font-size: 0.8rem;
         }
-
-        .feature-box {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-        }
+        .status-dot { height: 8px; width: 8px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
@@ -169,58 +121,82 @@
     <div class="header-section">
         <span class="week-tag">WEEK 13</span>
         <h1>地熱能源探勘與數位地震實驗室</h1>
-        <p style="color: var(--sub-text);">整合演講核心知識與基於 Hugging Face 的 AI 震波分析平台</p>
+        <p style="color: var(--sub-text);">從再生能源物理探勘到雲端互動式地震分析平台的佈署</p>
     </div>
 
-    <!-- 互動區 1: 地熱技術探討 -->
+    <!-- 模擬數據流面板 -->
+    <div class="monitor-panel">
+        <div><span class="status-dot"></span> FDSN SERVER: CONNECTED</div>
+        <div>STATION: TATO (Taipei, Taiwan)</div>
+        <div id="live-time"></div>
+    </div>
+
+    <!-- 互動區 1: 地熱技術 -->
     <div class="content-card">
         <h2>🔥 地熱探勘技術選擇器</h2>
-        <p>點擊下方按鈕以切換本週演講探討的四大核心技術細節：</p>
+        <p>本週演講重點整理：針對地下熱儲層的非破壞性探測技術。</p>
         
         <div class="tech-selector">
             <button class="tech-btn active" onclick="showTech('micro')">微震監測</button>
-            <button class="tech-btn" onclick="showTech('mt')">大地電磁法 (MT)</button>
-            <button class="tech-btn" onclick="showTech('status')">探勘近況</button>
-            <button class="tech-btn" onclick="showTech('ai')">AI 應用</button>
+            <button class="tech-btn" onclick="showTech('mt')">大地電磁 (MT)</button>
+            <button class="tech-btn" onclick="showTech('status')">探勘現況</button>
+            <button class="tech-btn" onclick="showTech('ai')">AI 與地熱</button>
         </div>
 
         <div id="tech-display">
             <h3 id="tech-title" style="color: var(--accent); margin-top:0;">微震監測 (Microseismic)</h3>
-            <p id="tech-desc">透過監測地下極微小的地震活動（微震），我們可以精確定位地下熱儲層的流體流動路徑與裂縫發育情況。這在地熱井的誘發裂隙監測中至關重要。</p>
+            <p id="tech-desc">地熱開發中，透過監測流體注入引起的「誘發地震」，可以精確掌握地下裂隙的發育程度。物理核心在於追蹤震央位置（Hypocenter）的時空演化，確保熱交換效率並監控環境風險。</p>
         </div>
     </div>
 
-    <!-- 互動區 2: 地震平台展示 -->
+    <!-- 互動區 2: 數位訊號處理實驗室 (互動工具) -->
     <div class="content-card">
-        <h2>🚀 期末專案：AI 互動式地震視覺化平台</h2>
-        <p>這是利用 <strong>Python/Gradio</strong> 開發並部署於 <strong>Hugging Face Space</strong> 的地震波處理工具。</p>
+        <h2>🎛️ 數位訊號處理實驗室</h2>
+        <p>模擬你的 <strong>Eq_demo</strong> 平台核心功能：調整下方滑桿，觀察濾波器如何從雜訊中提取地震波訊號。</p>
         
-        <!-- 模擬監測器 -->
-        <div class="seismic-monitor">
-            <div style="position: absolute; top: 10px; left: 10px; font-size: 0.7rem; color: var(--tech); z-index: 5;">
-                LIVE WAVEFORM SIMULATOR (FILTERED)
+        <div class="signal-lab">
+            <div class="lab-controls">
+                <div class="control-group">
+                    <label>訊號頻率 (Hz)</label>
+                    <input type="range" id="freqSlider" min="1" max="10" step="0.1" value="2">
+                </div>
+                <div class="control-group">
+                    <label>雜訊強度 (Noise)</label>
+                    <input type="range" id="noiseSlider" min="0" max="50" value="20">
+                </div>
             </div>
-            <svg class="wave" viewBox="0 0 800 150">
-                <path id="seismicPath" d="M 0 75 Q 20 75 40 75 T 80 75 T 120 75 T 160 75 T 200 75 T 240 75 T 280 75 T 320 75 T 360 75 T 400 75"></path>
-            </svg>
+            <div class="viz-canvas-wrap">
+                <div class="canvas-label">SIMULATED WAVEFORM: <span id="lab-stat">PROCESSING...</span></div>
+                <svg width="100%" height="150" style="overflow: visible;">
+                    <path id="labPath" d="" fill="none" stroke="#6366f1" stroke-width="2.5"></path>
+                </svg>
+            </div>
         </div>
+        <p style="font-size: 0.85rem; color: var(--sub-text);">
+            * 物理原理：利用 ObsPy 的 <code>stream.filter('bandpass')</code> 函數，我們可以過濾掉馬路車輛等高頻雜訊，保留地震特有的長週期波動。
+        </p>
+    </div>
 
+    <!-- 專案展示區 -->
+    <div class="content-card">
+        <h2>🚀 期末核心成果：AI 地震視覺化平台</h2>
         <div class="platform-hero">
-            <h3 style="margin: 0;">Eq_demo On Hugging Face</h3>
+            <h3 style="margin: 0; color: #fff; font-size: 1.8rem;">Eq_demo On Hugging Face</h3>
+            <p style="color: var(--sub-text); margin-top: 10px;">結合 ObsPy 與 Gradio 的雲端高效能解決方案</p>
             <div class="feature-grid">
-                <div class="feature-box"><strong>📈 自動走時繪製</strong><br>動態疊加 IASP91 理論走時，簡化震相判讀。</div>
-                <div class="feature-box"><strong>☁️ FDSN 雲端抓取</strong><br>直接連線 IRIS 資料庫，無需下載龐大數據。</div>
-                <div class="feature-box"><strong>🎛️ 實時數位濾波</strong><br>內建 Bandpass 與切換通道的高效能處理。</div>
-                <div class="feature-box"><strong>🤖 AI 輔助開發</strong><br>利用 Gemini 優化代碼結構，提升 UI 響應。</div>
+                <div class="feature-box"><strong>📈 Record Section</strong><br>自動依據震央距離排列波形，動態疊加 IASP91 理論走時，讓震相判讀更精確。</div>
+                <div class="feature-box"><strong>☁️ 雲端自動採集</strong><br>整合 IRIS FDSN 客戶端，透過 Python 實現全球地震紀錄的自動抓取與快取處理。</div>
+                <div class="feature-box"><strong>🎛️ 即時參數調校</strong><br>使用者可於網頁介面即時修改 Bandpass 頻帶寬度，免去重新編寫腳本的繁瑣過程。</div>
+                <div class="feature-box"><strong>🤖 Gemini 協作開發</strong><br>利用 AI 優化 Plotly 視覺化效能，並解決雲端伺服器上的記憶體配置問題。</div>
             </div>
-            <a href="https://huggingface.co/spaces/cwadayi/Eq_demo" target="_blank" class="action-btn">啟動線上實驗室 →</a>
+            <a href="https://huggingface.co/spaces/cwadayi/Eq_demo" target="_blank" class="action-btn">啟動雲端實驗室 →</a>
         </div>
     </div>
 
-    <!-- 心得區 -->
-    <div class="content-card">
-        <h2>💡 數位轉型心得</h2>
-        <p>本週不僅學習了地熱能的物理背景，更體會到 <strong>AI 如何縮短「理論」到「工具」的距離</strong>。透過 Gradio 介面，我們能將複雜的 ObsPy 指令封裝成直觀的拉桿與按鈕，這讓非程式背景的人也能參與地震觀測。這正是我致力於期末製作的方向：讓地科數據更親民、更強大。</p>
+    <!-- 心得感悟 -->
+    <div class="content-card" style="border-top: 4px solid var(--ai-blue);">
+        <h2>💡 學習感悟：從數據中看見價值</h2>
+        <p>這學期的課程在 W13 達到了一個巔峰。我深刻體會到，地球物理學家的價值不僅在於理解地底的物理方程式，更在於**「如何透過數位工具將這些複雜的數據視覺化」**。透過 AI 輔助開發，我能將原本需要專業背景才能操作的數據分析流程，封裝成直觀、易用的雲端平台，這正是數位地球物理的未來方向。</p>
     </div>
 
 </div>
@@ -230,57 +206,50 @@
 </footer>
 
 <script>
-    // --- 互動功能 1: 技術展示切換 ---
+    // --- 實時時間顯示 ---
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('live-time').innerText = "UTC TIME: " + now.toISOString().slice(0,19).replace('T', ' ');
+    }
+    setInterval(updateTime, 1000);
+
+    // --- 互動功能 1: 地熱技術展示 ---
     const techData = {
-        'micro': {
-            title: '微震監測 (Microseismic)',
-            desc: '透過監測地下極微小的地震活動（微震），我們可以精確定位地下熱儲層的流體流動路徑與裂縫發育情況。這在地熱井的誘發裂隙監測中至關重要。'
-        },
-        'mt': {
-            title: '大地電磁法 (MT)',
-            desc: '利用地表的天然電磁場變化，探測地下深層的電阻率分佈。因為含水熱儲層通常具有低電阻特徵，MT 是標定地熱目標最有效的手段之一。'
-        },
-        'status': {
-            title: '探勘近況 (Exploration Status)',
-            desc: '台灣目前正致力於大屯火山群與宜蘭地區的深層地熱開發。整合地質、地球物理與地球化學的綜合調查是提升成功率的關鍵。'
-        },
-        'ai': {
-            title: '人工智慧與地熱 (AI & Geothermal)',
-            desc: 'AI 能夠在海量的地震紀錄與電磁數據中，自動識別潛在的異常特徵。機器學習模型已被用於優化井位選取，大幅降低開發風險。'
-        }
+        'micro': { title: '微震監測 (Microseismic)', desc: '地熱開發中，透過監測流體注入引起的「誘發地震」，可以精確掌握地下裂隙的發育程度。物理核心在於追蹤震央位置的時空演化，確保熱交換效率並監控環境風險。' },
+        'mt': { title: '大地電磁 (MT)', desc: '利用自然界的交變電磁場探測地下電阻率結構。由於熱儲層通常含有高溫流體與礦化水，呈現低電阻特徵，MT 是定位地熱田最有效的地球物理手段之一。' },
+        'status': { title: '探勘現況 (Exploration Status)', desc: '目前國際趨勢正從淺層熱儲轉向「增強型地熱系統」(EGS)。台灣宜蘭與大屯火山區具備極佳潛力，結合微震與重力探勘能大幅降低開發鑽井的風險。' },
+        'ai': { title: 'AI 應用 (AI in Geothermal)', desc: '人工智慧能用於優化測站佈署與自動辨識訊號。特別是在雜訊環境下，透過深度學習模型（如 PhaseNet）提取微震訊號，能顯著提升地熱儲層的成像解析度。' }
     };
 
     function showTech(id) {
-        // 更新按鈕狀態
         document.querySelectorAll('.tech-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
-        
-        // 更新文字內容
         document.getElementById('tech-title').innerText = techData[id].title;
         document.getElementById('tech-desc').innerText = techData[id].desc;
     }
 
-    // --- 互動功能 2: 簡單的震波脈衝動畫 ---
-    let path = document.getElementById('seismicPath');
-    let points = [];
-    for (let i = 0; i <= 40; i++) { points.push({ x: i * 20, y: 75 }); }
+    // --- 互動功能 2: 訊號處理模擬 ---
+    const freqSlider = document.getElementById('freqSlider');
+    const noiseSlider = document.getElementById('noiseSlider');
+    const labPath = document.getElementById('labPath');
 
-    function animateWave() {
-        let d = `M 0 75`;
-        points.forEach((p, i) => {
-            if (i > 0) {
-                // 產生隨機擾動模擬濾波後的波形
-                let noise = (Math.random() - 0.5) * 10;
-                p.y = 75 + noise;
-                // 每隔一段時間產生一個大脈衝
-                if (Date.now() % 3000 < 50) { p.y += (Math.random() - 0.5) * 60; }
-                d += ` L ${p.x} ${p.y}`;
-            }
-        });
-        path.setAttribute('d', d);
-        requestAnimationFrame(animateWave);
+    function drawWave() {
+        let f = parseFloat(freqSlider.value);
+        let n = parseInt(noiseSlider.value);
+        let d = "M 0 75";
+        
+        for(let x = 0; x <= 950; x += 5) {
+            // 正弦波訊號
+            let signal = Math.sin(x * 0.05 * f) * 30;
+            // 隨機雜訊
+            let noise = (Math.random() - 0.5) * n;
+            d += ` L ${x} ${75 + signal + noise}`;
+        }
+        labPath.setAttribute('d', d);
+        document.getElementById('lab-stat').innerText = `FREQ: ${f}Hz | NOISE: ${n}%`;
+        requestAnimationFrame(drawWave);
     }
-    animateWave();
+    drawWave();
 </script>
 
 </body>
