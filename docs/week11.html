@@ -13,6 +13,7 @@
             --field: #38bdf8;  /* 磁力線藍 */
             --text: #e2e8f0;
             --sub-text: #94a3b8;
+            --gold: #fbbf24;
         }
 
         body {
@@ -35,7 +36,7 @@
             z-index: 1000;
         }
 
-        nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        nav a { color: var(--gold); text-decoration: none; font-weight: bold; }
 
         .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
 
@@ -59,20 +60,65 @@
 
         h2 { color: var(--tech); margin-top: 0; display: flex; align-items: center; gap: 10px; }
 
-        /* 磁場視覺化裝飾 */
-        .mag-lines {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 80px;
-            height: 80px;
-            opacity: 0.2;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(10px);
+        /* --- APW 互動模擬器樣式 --- */
+        .interactive-widget {
+            background: #000;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid var(--accent);
         }
 
-        /* 核心概念格 */
+        .simulation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #globe-svg {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #1e1b4b 0%, #000 100%);
+            border-radius: 50%;
+            border: 2px solid #334155;
+        }
+
+        .slider-control {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .timeline-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--sub-text);
+            margin-top: 10px;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: #333;
+            height: 6px;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* --------------------------- */
+
         .concept-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -87,9 +133,8 @@
             border-left: 3px solid var(--field);
         }
 
-        .concept-item h3 { color: var(--field); margin-top: 0; font-size: 1.1rem; }
+        .concept-item h3 { color: var(--field); margin: 0 0 10px 0; font-size: 1.1rem; }
 
-        /* APW 展示區 */
         .apw-section {
             background: linear-gradient(to bottom right, #1e1b4b, #000);
             padding: 25px;
@@ -98,30 +143,11 @@
             margin: 20px 0;
         }
 
-        .apw-highlight {
-            color: var(--accent);
-            font-weight: bold;
-            font-style: italic;
-        }
+        .apw-highlight { color: var(--accent); font-weight: bold; font-style: italic; }
 
-        /* 重點總結列表 */
-        .summary-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .summary-list li {
-            padding-left: 30px;
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .summary-list li::before {
-            content: "✦";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
+        .summary-list { list-style: none; padding: 0; }
+        .summary-list li { padding-left: 30px; position: relative; margin-bottom: 12px; }
+        .summary-list li::before { content: "✦"; position: absolute; left: 0; color: var(--accent); }
 
         .blog-link {
             display: inline-block;
@@ -131,8 +157,6 @@
             font-size: 0.9rem;
             border-bottom: 1px dashed var(--field);
         }
-
-        .blog-link:hover { color: #fff; border-bottom-style: solid; }
 
         footer { text-align: center; padding: 40px; color: var(--sub-text); font-size: 0.9rem; }
     </style>
@@ -151,12 +175,52 @@
         <p style="color: var(--sub-text);">探索岩石中封存的磁場記憶，還原板塊漂移的真相</p>
     </div>
 
+    <!-- 互動小工具區塊：放在最前面吸引觀眾 -->
+    <div class="content-card">
+        <h2>🔬 互動實驗室：APW 路徑模擬器</h2>
+        <p>拖動滑桿觀察：當大陸向北移動時，其岩石測得的「視極移路徑 (APW)」是如何產生的。</p>
+        
+        <div class="interactive-widget">
+            <div class="simulation-container">
+                <svg id="globe-svg" viewBox="0 0 200 200">
+                    <!-- 地球網格線 -->
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#222" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#222" />
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#222" />
+                    
+                    <!-- 真實北極 -->
+                    <circle cx="100" cy="100" r="3" fill="var(--accent)" />
+                    <text x="105" y="95" fill="var(--accent)" font-size="8">正北極 (Fixed)</text>
+
+                    <!-- APW 路徑線 -->
+                    <path id="apw-path" d="" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4" />
+
+                    <!-- 大陸本體 -->
+                    <path id="continent" d="M-10,-5 L10,-5 L15,5 L-5,10 Z" fill="rgba(192, 132, 252, 0.4)" stroke="var(--tech)" stroke-width="1" />
+                    
+                    <!-- 大陸記錄的磁北極 -->
+                    <circle id="virtual-pole" cx="100" cy="100" r="4" fill="var(--gold)" />
+                    <text id="pole-label" x="110" y="110" fill="var(--gold)" font-size="8">觀測極點</text>
+                </svg>
+
+                <div class="slider-control">
+                    <div style="margin-bottom: 10px; font-weight: bold;">時間：<span id="time-display" style="color:var(--gold)">200</span> Ma (百萬年前)</div>
+                    <input type="range" id="time-slider" min="0" max="200" value="200">
+                    <div class="timeline-label">
+                        <span>200 Ma (中生代)</span>
+                        <span>現在 (Present)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--sub-text);">
+            * 提示：請觀察黃色虛線。並非北極在動，而是大陸向北漂移導致岩石記錄的「指向」發生偏移。
+        </p>
+    </div>
+
     <!-- 地磁學基礎區 -->
     <div class="content-card">
-        <div class="mag-lines"></div>
         <h2>🧲 地磁學核心理論</h2>
-        <p>地球不僅是一個大磁鐵，更是一個動態的發電機（Geodynamo）。岩石在形成時會記錄下當時的磁場資訊，成為我們研究地質歷史的「磁性錄音帶」。</p>
-        
         <div class="concept-grid">
             <div class="concept-item">
                 <h3>地磁要素 (Magnetic Elements)</h3>
@@ -175,7 +239,7 @@
         <div class="apw-section">
             <p>1950 年代，科學家發現不同大陸上的岩石紀錄顯示，磁極在歷史上的位置似乎在移動。但有趣的是：<br><br>
             <span class="apw-highlight">「不同大陸繪製出的磁極移動軌跡竟然完全不同！」</span></p>
-            <p>這證明了並非地極在亂跑，而是 **大陸本身在漂移**。這項證據直接復活了當時沉寂已久的「大陸漂移學說」。</p>
+            <p>這證明了並非地極在亂跑，而是 **大陸本身在漂移**。這項證據直接復活了當時沉寂已久的「大陸漂移學學說」。</p>
         </div>
         <p><strong>關鍵意義：</strong></p>
         <ul class="summary-list">
@@ -188,7 +252,6 @@
     <!-- 教材統整區 -->
     <div class="content-card">
         <h2>📖 課程教材精華統整</h2>
-        <p>根據本週學習資料，地磁學的應用範疇包含：</p>
         <div class="concept-grid">
             <div>
                 <h4 style="color: var(--accent);">1. 地磁測勘實務</h4>
@@ -203,17 +266,60 @@
         </div>
     </div>
 
-    <!-- 學習感悟 -->
     <div class="content-card">
         <h2>💡 學習感悟：看不見的力量</h2>
         <p>地磁學最吸引我的地方在於，它利用一種「看不見的力量」來解釋長達數億年的地理變遷。當我們在作業 11 中使用 PyGMT 繪圖時，每一條線段背後，其實都包含了古地磁學所提供的座標導引。沒有了磁學，我們對板塊歷史的認知將是一片空白。</p>
     </div>
-
 </div>
 
 <footer>
     <p>製作者：林靖融 | 2024 地球物理學學期成果展</p>
 </footer>
+
+<script>
+    const slider = document.getElementById('time-slider');
+    const timeDisplay = document.getElementById('time-display');
+    const continent = document.getElementById('continent');
+    const virtualPole = document.getElementById('virtual-pole');
+    const poleLabel = document.getElementById('pole-label');
+    const apwPath = document.getElementById('apw-path');
+
+    // 模擬 APW 路徑的坐標
+    function updateSimulation() {
+        const val = parseInt(slider.value);
+        timeDisplay.innerText = val;
+
+        // 數值轉換：將 200~0 映射到漂移軌跡
+        // 大陸位置：從南方移向北方
+        const continentY = 160 - (200 - val) * 0.3; 
+        const continentX = 100 + Math.sin((200-val)/20) * 20;
+        continent.setAttribute('transform', `translate(${continentX}, ${continentY})`);
+
+        // 虛擬極點：從目前大陸位置往北方「看」過去
+        // 在 200Ma 時，極點看起來在很遠的地方，隨著漂移回到正北
+        const poleY = 100 - (val) * 0.4;
+        const poleX = 100 + (val) * 0.2;
+        
+        virtualPole.setAttribute('cx', poleX);
+        virtualPole.setAttribute('cy', poleY);
+        poleLabel.setAttribute('x', poleX + 8);
+        poleLabel.setAttribute('y', poleY + 5);
+
+        // 更新 APW 路徑線（黃色虛線）
+        let d = `M 100 100`; // 從現在的北極開始
+        for(let i=0; i <= (200-val); i+=10) {
+            let tempVal = 200 - i;
+            let px = 100 + (200 - tempVal) * 0.2;
+            let py = 100 - (200 - tempVal) * 0.4;
+            d += ` L ${px} ${py}`;
+        }
+        apwPath.setAttribute('d', d);
+    }
+
+    slider.addEventListener('input', updateSimulation);
+    // 初始化
+    updateSimulation();
+</script>
 
 </body>
 </html>
